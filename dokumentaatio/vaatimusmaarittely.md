@@ -5,10 +5,12 @@
 Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/periodi, opintojen kesto) perusteella.
 
 ## Käyttöliittymäluonnos
+
 ![Sovelluksen käyttöliittymäluonnos](kuvat/kayttoliittymahahmotelma.svg)
 Sovellus aukeaa kurssien lisäysnäkymään ja oikealta yläkulmalta pääsee vaihtamaan näkymää.
 Jos tällainen aikataulunäkymä osoittautuu liian vaativaksi, niin teen näkymästä puurakenteen esim.
-```
+
+```txt
 2023 (30 op)
     1. periodi (15 op)
         Kurssi 1
