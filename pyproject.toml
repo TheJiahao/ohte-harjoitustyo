@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "study-planner"
+version = "0.1.0"
+description = "Sovelluksen avulla voidaan muodostaa aikataulu opinnoille."
+authors = ["Jiahao Li <42709836+TheJiahao@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "study_planner"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+coverage = "^7.2.2"
+pytest = "^7.2.2"
+invoke = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
