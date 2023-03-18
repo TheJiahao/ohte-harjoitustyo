@@ -3,7 +3,7 @@
 ## Dokumentaatio
 
 - [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
-- [Työaikakirjanpito](dokumentaatio/tuntikirjanpito.md)
+- [Työaikakirjanpito](dokumentaatio/tyoaikakirjanpito.md)
 
 ## Tehtävät
 
