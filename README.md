@@ -2,8 +2,8 @@
 
 ## Dokumentaatio
 
-- [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
-- [Työaikakirjanpito](dokumentaatio/tyoaikakirjanpito.md)
+- [Vaatimusmäärittely](study-planner/dokumentaatio/vaatimusmaarittely.md)
+- [Työaikakirjanpito](study-planner/dokumentaatio/tyoaikakirjanpito.md)
 
 ## Tehtävät
 

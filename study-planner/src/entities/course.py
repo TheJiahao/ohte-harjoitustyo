@@ -6,11 +6,11 @@ class Course:
         self,
         name: str,
         credits: int,
-        timing: list[bool] = [],
+        timing: set[int],
         requirements: set = set(),
     ) -> None:
         self.name: str = name
         self.credits: int = credits
-        self.timing: list[bool] = timing
+        self.timing: set[int] = timing
         self.requiments: set = requirements
         self.id = str(uuid.uuid4())
