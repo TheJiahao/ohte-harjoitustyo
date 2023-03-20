@@ -4,7 +4,7 @@
 
 - [Vaatimusmäärittely](study-planner/dokumentaatio/vaatimusmaarittely.md)
 - [Työaikakirjanpito](study-planner/dokumentaatio/tyoaikakirjanpito.md)
-
+- [Changelog](study-planner/dokumentaatio/changelog.md)
 ## Tehtävät
 
 ### Viikko 1
