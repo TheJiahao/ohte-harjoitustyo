@@ -1,5 +1,3 @@
-class Planner_service:
+class PlannerService:
     def __init__(self) -> None:
         pass
-
-    
