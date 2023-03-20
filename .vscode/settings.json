@@ -1,8 +1,9 @@
 {
     "python.testing.pytestArgs": [
-        "src"
+        "${workspaceFolder}/study-planner/src"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "python.testing.cwd": "${workspaceFolder}"
+    "python.testing.cwd": "${workspaceFolder}/study-planner",
+    "terminal.integrated.cwd": "${workspaceFolder}/study-planner"
 }
