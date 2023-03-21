@@ -8,7 +8,7 @@ def start(ctx):
 
 @task
 def test(ctx):
-    ctx.run("pytest src", pty=True)
+    ctx.run("cd ./src && pytest . && cd ..", pty=True)
 
 
 @task
