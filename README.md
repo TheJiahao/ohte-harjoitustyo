@@ -4,6 +4,6 @@ Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/p
 
 ## Dokumentaatio
 
-- [Vaatimusmäärittely](study-planner/dokumentaatio/vaatimusmaarittely.md)
-- [Työaikakirjanpito](study-planner/dokumentaatio/tyoaikakirjanpito.md)
-- [Changelog](study-planner/dokumentaatio/changelog.md)
+- [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
+- [Työaikakirjanpito](dokumentaatio/tyoaikakirjanpito.md)
+- [Changelog](dokumentaatio/changelog.md)
