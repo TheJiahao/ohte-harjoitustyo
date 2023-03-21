@@ -26,6 +26,8 @@ class TestInitializeDatabase(unittest.TestCase):
         self.assertEqual(tables, {"Courses", "Requirements", "Periods"})
 
     def test_drop_tables(self):
+        self.cursor.execute("CREATE TABLE Courses (test TEXT PRIMARY KEY)")
+
         drop_tables(self.connection)
 
         rows = self.cursor.execute(
