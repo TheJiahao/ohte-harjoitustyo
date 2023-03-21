@@ -5,5 +5,7 @@
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.testing.cwd": "${workspaceFolder}/study-planner",
-    "terminal.integrated.cwd": "${workspaceFolder}/study-planner"
+    "terminal.integrated.cwd": "${workspaceFolder}/study-planner",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }
