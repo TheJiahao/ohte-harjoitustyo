@@ -8,10 +8,10 @@ def start(ctx):
 
 @task
 def test(ctx):
-    ctx.run("cd ./src && pytest . && cd ..", pty=True)
+    ctx.run("pytest src", pty=True)
 
 
 @task
 def coverage_report(ctx):
-    ctx.run("cd ./src && coverage run --branch -m pytest . && cd ..", pty=True)
+    ctx.run("coverage run --branch -m pytest src", pty=True)
     ctx.run("coverage html", pty=True)

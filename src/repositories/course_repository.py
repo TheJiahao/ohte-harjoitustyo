@@ -8,6 +8,7 @@ def get_course_by_row(row) -> Course | None:
 
     return Course(row["name"], row["credits"])
 
+
 class CourseRepository:
     def __init__(self, connection) -> None:
         self.__connection = connection
@@ -26,7 +27,7 @@ class CourseRepository:
             self.__cursor.execute(
                 "INSERT INTO Periods (course_id, period) VALUES (?, ?)", (course.id, period))
 
-        for requirement_id in course.requiments:
+        for requirement_id in course.requirements:
             self.__cursor.execute(
                 "INSERT INTO Requirements (course_id, requirement_id) VALUES (?, ?)", (course.id, requirement_id))
 
