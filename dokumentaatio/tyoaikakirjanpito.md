@@ -7,3 +7,4 @@
 |18.3.|1 tunti|Alustettu harjoitustyö ja tutkittu referenssisovellusta|
 |20.3.|5 tuntia|Lisätty sovelluksen konfiguraatiot, alkeelliset toiminnot tietokannan käsittelyä varten ja vastaavat testit|
 |21.3.|3 tuntia|Säädetty projektiasetuksia, refaktoroitu Course-luokkaa, lisätty ja debuggattu testejä|
+|29.3.|3 tuntia|Säädetty TkInter toimimaan, lisätty alustava käyttöliittymä|
