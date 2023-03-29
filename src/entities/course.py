@@ -2,7 +2,14 @@ import uuid
 
 
 class Course:
-    def __init__(self, name: str, credits: int, timing: set[int] = set(), requirements: set[str] = set(), course_id: str | None = None) -> None:
+    def __init__(
+        self,
+        name: str,
+        credits: int,
+        timing: set[int] = set(),
+        requirements: set[str] = set(),
+        course_id: str | None = None,
+    ) -> None:
         self.__name: str = name
         self.__credits: int = credits
         self.__timing: set[int] = timing

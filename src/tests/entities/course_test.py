@@ -7,8 +7,7 @@ class TestCourse(unittest.TestCase):
         pass
 
     def test_course_without_requirements_initialized_correctly(self):
-        course = Course(
-            "Ohte", 5, {3})
+        course = Course("Ohte", 5, {3})
 
         self.assertEqual(course.name, "Ohte")
         self.assertEqual(course.credits, 5)
@@ -17,8 +16,7 @@ class TestCourse(unittest.TestCase):
         self.assertNotEqual(course.id, None)
 
     def test_course_without_timing_initialized_correctly(self):
-        course = Course(
-            "Ohte", 5, requirements={"A", "B"})
+        course = Course("Ohte", 5, requirements={"A", "B"})
 
         self.assertEqual(course.name, "Ohte")
         self.assertEqual(course.credits, 5)

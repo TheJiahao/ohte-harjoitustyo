@@ -20,16 +20,22 @@ class CourseRepository:
         pass
 
     def create(self, course: Course) -> Course:
-        self.__cursor.execute("INSERT INTO Courses (id, name, credits) VALUES (?, ?, ?)",
-                              (course.id, course.name, course.credits))
+        self.__cursor.execute(
+            "INSERT INTO Courses (id, name, credits) VALUES (?, ?, ?)",
+            (course.id, course.name, course.credits),
+        )
 
         for period in course.timing:
             self.__cursor.execute(
-                "INSERT INTO Periods (course_id, period) VALUES (?, ?)", (course.id, period))
+                "INSERT INTO Periods (course_id, period) VALUES (?, ?)",
+                (course.id, period),
+            )
 
         for requirement_id in course.requirements:
             self.__cursor.execute(
-                "INSERT INTO Requirements (course_id, requirement_id) VALUES (?, ?)", (course.id, requirement_id))
+                "INSERT INTO Requirements (course_id, requirement_id) VALUES (?, ?)",
+                (course.id, requirement_id),
+            )
 
         self.__connection.commit()
 
