@@ -4,6 +4,5 @@
     "python.testing.cwd": "${workspaceFolder}/src",
     "terminal.integrated.cwd": "${workspaceFolder}",
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true,
-    "python.formatting.provider": "autopep8"
+    "python.linting.enabled": true
 }
