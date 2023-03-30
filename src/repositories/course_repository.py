@@ -1,5 +1,5 @@
-from entities.course import Course
 from database_connection import get_database_connection
+from entities.course import Course
 
 
 def get_course_by_row(row) -> Course | None:
