@@ -1,5 +1,6 @@
-from entities.course import Course
 import unittest
+
+from entities.course import Course
 
 
 class TestCourse(unittest.TestCase):
