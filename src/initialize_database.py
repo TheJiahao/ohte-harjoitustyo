@@ -49,6 +49,8 @@ def drop_tables(connection):
     cursor.execute("DROP TABLE IF EXISTS Requirements")
     cursor.execute("DROP TABLE IF EXISTS Periods")
 
+    connection.commit()
+
 
 def initialize_database():
     """Alustaa tietokannan."""
