@@ -100,6 +100,13 @@ class CourseRepository:
             course_data["name"], course_data["credits"], timing, requirements, id
         )
 
+    def find_all(self) -> list[Course]:
+        cursor = self.__connection.cursor()
+
+        rows = cursor.execute("SELECT id FROM Courses").fetchall()
+
+        return [self.find_by_id(row["id"]) for row in rows if row is not None]
+
     def find_requirements(self, id: int) -> set[int]:
         cursor = self.__connection.cursor()
 
