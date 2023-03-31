@@ -1,3 +1,4 @@
+from copy import deepcopy
 from sqlite3 import Connection
 
 from database_connection import get_database_connection
@@ -26,6 +27,8 @@ class CourseRepository:
             Course: Kurssi uudella tietokannassa käytetyllä id:llä.
         """
 
+        course = deepcopy(course)
+
         cursor = self.__connection.cursor()
 
         if course.id == -1:
@@ -34,7 +37,7 @@ class CourseRepository:
                 (course.name, course.credits),
             )
 
-            course.id = cursor.lastrowid
+            course.id = cursor.lastrowid # type: ignore
         else:
             if self.find_by_id(course.id) is not None:
                 self.delete(course.id)
