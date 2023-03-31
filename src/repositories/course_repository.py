@@ -61,6 +61,20 @@ class CourseRepository:
 
         self.__connection.commit()
 
+    def find_by_id(self, id: int) -> Course:
+        cursor = self.__connection.cursor()
+
+        course_data = cursor.execute(
+            "SELECT * FROM Courses WHERE id=?", (id,)
+        ).fetchone()
+
+        requirements = self.__find_requirements(id)
+        timing = self.__find_timing(id)
+
+        return Course(
+            course_data["name"], course_data["credits"], timing, requirements, id
+        )
+
     def __find_requirements(self, id: int) -> set[int]:
         cursor = self.__connection.cursor()
 
@@ -78,12 +92,6 @@ class CourseRepository:
         ).fetchall()
 
         return {row["period"] for row in timing}
-
-    def get_course_by_row(self, row: Row) -> Course | None:
-        if row is None:
-            return None
-
-        return Course(row["name"], row["credits"])
 
 
 course_repository = CourseRepository(get_database_connection())
