@@ -17,7 +17,7 @@ Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/p
     poetry install
     ```
 
-3. Käynnistä sovellus (ei vielä toimi):
+3. Käynnistä sovellus (tyhjä käyttöliittymä):
 
     ```shell
     poetry run invoke start

@@ -8,3 +8,5 @@
 ## Viikko 3
 
 - Refaktoroitu ja testattu Course-luokka
+- Toteutettu CourseRepository-luokka, joka vastaa kurssien tallennuksesta tietokantaan
+- Testattu CourseRepositoryn kaikki metodit
