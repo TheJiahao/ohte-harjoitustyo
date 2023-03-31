@@ -11,8 +11,7 @@ def create_tables(connection):
         CREATE TABLE Courses (
             id INTEGER PRIMARY KEY,
             name TEXT,
-            credits INTEGER,
-            UNIQUE(name)
+            credits INTEGER
         )
         """
     )
