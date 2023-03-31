@@ -1,4 +1,5 @@
-from database_connection import get_database_connection
+from sqlite3 import Connection, Cursor, Row
+
 from entities.course import Course
 
 
@@ -10,14 +11,9 @@ def get_course_by_row(row) -> Course | None:
 
 
 class CourseRepository:
-    def __init__(self, connection) -> None:
-        self.__connection = connection
-        self.__cursor = self.__connection.cursor()
-
-    def find_all(self) -> list[Course]:
-        courses = self.__cursor.execute("SELECT * FROM Courses").fetchall()
-
-        pass
+    def __init__(self, connection: Connection) -> None:
+        self.__connection: Connection = connection
+        self.__cursor: Cursor = self.__connection.cursor()
 
     def create(self, course: Course) -> Course:
         self.__cursor.execute(
