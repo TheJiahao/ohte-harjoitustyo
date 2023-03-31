@@ -9,9 +9,9 @@ class Course:
             Kurssin nimi.
         __credits (int):
             Kurssin opintopistemäärä.
-        __timing (list[bool]):
-            Kurssin perioditarjonta tauluna.
-            Oletukseltaan 5-alkioinen taulu False-arvoilla.
+        __timing (set[int]):
+            Kurssin perioditarjonta joukkona.
+            Oletukseltaan tyhjä joukko.
         __requirements (set[int]):
             Kurssin esitietovaatimuskurssien id:t joukkona.
             Oletukseltaan tyhjä joukko.
@@ -23,7 +23,7 @@ class Course:
         self,
         name: str,
         credits: int,
-        timing: list[bool] | None = None,
+        timing: set[int] | None = None,
         requirements: set[int] | None = None,
         course_id: int | None = None,
     ) -> None:
@@ -34,7 +34,7 @@ class Course:
                 Kurssin nimi.
             credits (int):
                 Kurssin opintopistemäärä.
-            timing (list[bool] | None, optional):
+            timing (set[int] | None, optional):
                 Kurssin perioditarjonta tauluna. Oletukseltaan None.
             requirements (set[int] | None, optional):
                 Kurssin esitietovaatimuskurssien id:t joukkona.
@@ -44,7 +44,7 @@ class Course:
         """
         self.__name: str = name
         self.__credits: int = credits
-        self.__timing: list[bool] = timing or [False] * 5
+        self.__timing: set[int] = timing or set()
         self.__requiments: set[int] = requirements or set()
         self.__id: int = course_id or -1
 
@@ -57,7 +57,7 @@ class Course:
         return self.__credits
 
     @property
-    def timing(self) -> list[bool]:
+    def timing(self) -> set[int]:
         return copy.copy(self.__timing)
 
     @property
@@ -92,20 +92,29 @@ class Course:
         """
         self.__name = name
 
-    def set_period(self, period: int, status: bool) -> None:
-        """Asettaa annetun tilan periodille.
+    def add_period(self, period: int) -> None:
+        """Lisää periodin kurssille.
 
         Args:
-            period (int): Muutettava periodi.
-            status (bool): Periodin tila.
+            period (int): Lisättävä periodi.
 
         Raises:
-            ValueError: Periodi ei kelpaa.
+            ValueError: Ei-positiivinen periodi.
         """
-        if not 0 < period < len(self.timing):
-            raise ValueError(f"Periodi {period} ei kelpaa.")
+        if period <= 0:
+            raise ValueError(f"Ei-positiivinen periodi {period} ei kelpaa.")
 
-        self.__timing[period] = status
+        self.__timing.add(period)
+
+    def remove_period(self, period: int) -> None:
+        """Poistaa periodin kurssilta, jos se on perioditarjonnassa.
+
+        Args:
+            period (int): Poistettava periodi.
+        """
+
+        if period in self.__timing:
+            self.__timing.remove(period)
 
     def add_requirement(self, id: int) -> None:
         """Lisää esitietokurssin.

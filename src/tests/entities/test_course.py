@@ -12,33 +12,24 @@ class TestCourse(unittest.TestCase):
 
         self.assertEqual(course.name, "Ohte")
         self.assertEqual(course.credits, 5)
-        self.assertEqual(course.timing, [False] * 5)
+        self.assertEqual(course.timing, set())
         self.assertEqual(course.requirements, set())
         self.assertNotEqual(course.id, None)
 
     def test_course_with_optional_args_initialized_correctly(self):
-        course = Course("Ohte", 5, [True, False, True, False], {2, 3}, 100)
+        course = Course("Ohte", 5, {1, 3}, {2, 3}, 100)
 
         self.assertEqual(course.name, "Ohte")
         self.assertEqual(course.credits, 5)
-        self.assertEqual(course.timing, [True, False, True, False])
+        self.assertEqual(course.timing, {1, 3})
         self.assertEqual(course.requirements, {2, 3})
         self.assertEqual(course.id, 100)
 
-    def test_credit_setter_raises_error_if_nonpositive_value(self):
-        with self.assertRaises(ValueError):
-            self.course.set_period(-100, True)
-            self.course.set_period(-100, False)
-
-        with self.assertRaises(ValueError):
-            self.course.set_period(0, False)
-            self.course.set_period(0, True)
-
     def test_timing_cannot_be_modified_with_getter(self):
-        self.course.timing[0] = True
-        self.course.timing[4] = True
+        self.course.timing.add(100)
+        self.course.timing.add(40)
 
-        self.assertEqual(self.course.timing, [False] * 5)
+        self.assertEqual(self.course.timing, set())
 
     def test_requirements_cannot_be_modified_with_getter(self):
         self.course.requirements.add(100)
@@ -47,26 +38,38 @@ class TestCourse(unittest.TestCase):
 
         self.assertEqual(self.course.requirements, set())
 
-    def test_set_period(self):
-        self.course.set_period(1, True)
-        self.course.set_period(2, True)
-        self.course.set_period(4, True)
-
-        self.assertEqual(self.course.timing[1], True)
-        self.assertEqual(self.course.timing[2], True)
-        self.assertEqual(self.course.timing[4], True)
-
-    def test_set_period_raises_error_if_invalid_period(self):
+    def test_add_period_raises_error_if_nonpositive_period(self):
         with self.assertRaises(ValueError):
-            self.course.set_period(100, True)
+            self.course.add_period(-100)
 
         with self.assertRaises(ValueError):
-            self.course.set_period(0, False)
+            self.course.add_period(0)
 
-        with self.assertRaises(ValueError):
-            self.course.set_period(-10, True)
+    def test_add_period(self):
+        self.course.add_period(1)
+        self.course.add_period(4)
 
-    def test_add_requirements(self):
+        self.assertEqual(self.course.timing, {1, 4})
+
+    def test_remove_period(self):
+        self.course.add_period(1)
+        self.course.add_period(4)
+
+        self.course.remove_period(4)
+
+        self.assertEqual(self.course.timing, {1})
+
+    def test_remove_period_does_nothing_if_period_not_in_timing(self):
+        self.course.add_period(1)
+        self.course.add_period(4)
+
+        self.course.remove_period(2)
+        self.course.remove_period(-100)
+        self.course.remove_period(0)
+
+        self.assertEqual(self.course.timing, {1, 4})
+
+    def test_add_requirement(self):
         self.course.add_requirement(2)
         self.course.add_requirement(4)
         self.course.add_requirement(10)
