@@ -1,5 +1,6 @@
-from sqlite3 import Connection, Cursor, Row
+from sqlite3 import Connection, Row
 
+from database_connection import get_database_connection
 from entities.course import Course
 
 
@@ -13,7 +14,6 @@ def get_course_by_row(row) -> Course | None:
 class CourseRepository:
     def __init__(self, connection: Connection) -> None:
         self.__connection: Connection = connection
-        self.__cursor: Cursor = self.__connection.cursor()
 
     def create(self, course: Course) -> Course:
         self.__cursor.execute(
@@ -36,3 +36,5 @@ class CourseRepository:
         self.__connection.commit()
 
         return course
+
+course_repository = CourseRepository(get_database_connection())
