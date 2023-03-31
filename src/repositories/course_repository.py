@@ -16,19 +16,23 @@ class CourseRepository:
         self.__connection: Connection = connection
 
     def create(self, course: Course) -> Course:
-        self.__cursor.execute(
+        cursor = self.__connection.cursor()
+
+        cursor.execute(
             "INSERT INTO Courses (id, name, credits) VALUES (?, ?, ?)",
             (course.id, course.name, course.credits),
         )
 
+        course.id = cursor.lastrowid
+
         for period in course.timing:
-            self.__cursor.execute(
+            cursor.execute(
                 "INSERT INTO Periods (course_id, period) VALUES (?, ?)",
                 (course.id, period),
             )
 
         for requirement_id in course.requirements:
-            self.__cursor.execute(
+            cursor.execute(
                 "INSERT INTO Requirements (course_id, requirement_id) VALUES (?, ?)",
                 (course.id, requirement_id),
             )
