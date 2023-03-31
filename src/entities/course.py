@@ -1,4 +1,4 @@
-import copy
+from copy import copy
 
 
 class Course:
@@ -67,11 +67,11 @@ class Course:
 
     @property
     def timing(self) -> set[int]:
-        return copy.copy(self.__timing)
+        return copy(self.__timing)
 
     @property
     def requirements(self) -> set[int]:
-        return copy.copy(self.__requiments)
+        return copy(self.__requiments)
 
     @property
     def id(self) -> int:
