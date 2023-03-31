@@ -59,6 +59,15 @@ class CourseRepository:
 
         return {row["requirement_id"] for row in requirements}
 
+    def __find_timing(self, id: int) -> set[int]:
+        cursor = self.__connection.cursor()
+
+        timing = cursor.execute(
+            "SELECT period FROM Periods WHERE course_id=?", (id,)
+        ).fetchall()
+
+        return {row["period"] for row in timing}
+
     def get_course_by_row(self, row: Row) -> Course | None:
         if row is None:
             return None
