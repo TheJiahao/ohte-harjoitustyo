@@ -4,13 +4,6 @@ from database_connection import get_database_connection
 from entities.course import Course
 
 
-def get_course_by_row(row) -> Course | None:
-    if row is None:
-        return None
-
-    return Course(row["name"], row["credits"])
-
-
 class CourseRepository:
     def __init__(self, connection: Connection) -> None:
         self.__connection: Connection = connection
@@ -56,5 +49,12 @@ class CourseRepository:
         )
 
         self.__connection.commit()
+
+    def get_course_by_row(self, row: Row) -> Course | None:
+        if row is None:
+            return None
+
+        return Course(row["name"], row["credits"])
+
 
 course_repository = CourseRepository(get_database_connection())
