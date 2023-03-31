@@ -83,15 +83,18 @@ class CourseRepository:
 
         self.__connection.commit()
 
-    def find_by_id(self, id: int) -> Course:
+    def find_by_id(self, id: int) -> Course | None:
         cursor = self.__connection.cursor()
 
         course_data = cursor.execute(
             "SELECT * FROM Courses WHERE id=?", (id,)
         ).fetchone()
 
-        requirements = self.__find_requirements(id)
-        timing = self.__find_timing(id)
+        if course_data is None:
+            return None
+
+        requirements = self.find_requirements(id)
+        timing = self.find_timing(id)
 
         return Course(
             course_data["name"], course_data["credits"], timing, requirements, id
