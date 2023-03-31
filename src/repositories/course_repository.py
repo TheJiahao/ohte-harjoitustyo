@@ -11,18 +11,42 @@ class CourseRepository:
     def create(self, course: Course) -> Course:
         cursor = self.__connection.cursor()
 
-        cursor.execute(
-            "INSERT INTO Courses (id, name, credits) VALUES (?, ?, ?)",
-            (course.id, course.name, course.credits),
-        )
+        if course.id == -1:
+            cursor.execute(
+                "INSERT INTO Courses (name, credits) VALUES (?, ?)",
+                (course.name, course.credits),
+            )
 
-        course.id = cursor.lastrowid
+            course.id = cursor.lastrowid
+        else:
+            if self.find_by_id(course.id) is not None:
+                self.delete(course.id)
+
+            cursor.execute(
+                "INSERT INTO Courses (id, name, credits) VALUES (?, ?, ?)",
+                (course.id, course.name, course.credits),
+            )
+
+        self.__connection.commit()
+
+        self.__write_timing(course)
+        self.__write_requirements(course)
+
+        return course
+
+    def __write_timing(self, course: Course) -> None:
+        cursor = self.__connection.cursor()
 
         for period in course.timing:
             cursor.execute(
                 "INSERT INTO Periods (course_id, period) VALUES (?, ?)",
                 (course.id, period),
             )
+
+        self.__connection.commit()
+
+    def __write_requirements(self, course: Course) -> None:
+        cursor = self.__connection.cursor()
 
         for requirement_id in course.requirements:
             cursor.execute(
@@ -31,8 +55,6 @@ class CourseRepository:
             )
 
         self.__connection.commit()
-
-        return course
 
     def delete(self, id: int) -> None:
         """Poistaa id:tä vastaavan kurssin.
