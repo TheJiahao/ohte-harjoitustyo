@@ -50,6 +50,17 @@ class CourseRepository:
 
         self.__connection.commit()
 
+    def delete_all(self) -> None:
+        """Poistaa kaikkien kurssien tiedot.
+        """
+        cursor = self.__connection.cursor()
+
+        cursor.execute("DELETE FROM Courses")
+        cursor.execute("DELETE FROM Periods")
+        cursor.execute("DELETE FROM Requirements")
+
+        self.__connection.commit()
+
     def __find_requirements(self, id: int) -> set[int]:
         cursor = self.__connection.cursor()
 
