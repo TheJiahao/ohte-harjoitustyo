@@ -100,7 +100,7 @@ class CourseRepository:
             course_data["name"], course_data["credits"], timing, requirements, id
         )
 
-    def __find_requirements(self, id: int) -> set[int]:
+    def find_requirements(self, id: int) -> set[int]:
         cursor = self.__connection.cursor()
 
         requirements = cursor.execute(
@@ -109,7 +109,7 @@ class CourseRepository:
 
         return {row["requirement_id"] for row in requirements}
 
-    def __find_timing(self, id: int) -> set[int]:
+    def find_timing(self, id: int) -> set[int]:
         cursor = self.__connection.cursor()
 
         timing = cursor.execute(
