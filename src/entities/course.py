@@ -68,6 +68,22 @@ class Course:
     def id(self) -> int:
         return self.__id
 
+    @id.setter
+    def id(self, id: int) -> None:
+        """Asettaa id:n kurssille.
+
+        Args:
+            id (int): Asetettava id.
+
+        Raises:
+            ValueError: Ei-positiivinen id.
+        """
+
+        if id <= 0:
+            raise ValueError("Ei-positiivinen id ei kelpaa.")
+
+        self.__id = id
+
     @credits.setter
     def credits(self, credits: int) -> None:
         """Asettaa opintopistemäärän kurssille.

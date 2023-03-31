@@ -103,6 +103,18 @@ class TestCourse(unittest.TestCase):
 
         self.assertEqual(self.course.requirements, {1, 2, 10})
 
+    def test_id_setter(self):
+        self.course.id = 100
+
+        self.assertEqual(self.course.id, 100)
+
+    def test_id_setter_raises_error_if_nonpositive_credit(self):
+        with self.assertRaises(ValueError):
+            self.course.id = -100
+
+        with self.assertRaises(ValueError):
+            self.course.id = 0
+
     def test_credits_setter(self):
         self.course.credits = 100
 
