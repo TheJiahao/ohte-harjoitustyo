@@ -37,7 +37,7 @@ class CourseRepository:
                 (course.name, course.credits),
             )
 
-            course.id = cursor.lastrowid # type: ignore
+            course.id = cursor.lastrowid  # type: ignore
         else:
             if self.find_by_id(course.id) is not None:
                 self.delete(course.id)
@@ -141,7 +141,7 @@ class CourseRepository:
 
         rows = cursor.execute("SELECT id FROM Courses ORDER BY id").fetchall()
 
-        return [self.find_by_id(row["id"]) for row in rows if row is not None]
+        return [self.find_by_id(row["id"]) for row in rows if row is not None]  # type: ignore
 
     def find_requirements(self, id: int) -> set[int]:
         """Palauttaa kurssin esitietovaatimukset.
