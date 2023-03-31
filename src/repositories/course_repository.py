@@ -1,4 +1,4 @@
-from sqlite3 import Connection, Row
+from sqlite3 import Connection
 
 from database_connection import get_database_connection
 from entities.course import Course
