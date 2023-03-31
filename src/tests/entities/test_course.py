@@ -131,3 +131,12 @@ class TestCourse(unittest.TestCase):
         self.course.name = "OhJa"
 
         self.assertEqual(self.course.name, "OhJa")
+
+    def test_comparing_courses_work_correctly(self):
+        course_ohte = Course("Ohte", 5, course_id=200)
+        course_ohte2 = Course("Ohte", 5, course_id=200)
+        course_ohpe = Course("OhPe", 5, course_id=100)
+
+        self.assertEqual(course_ohte, course_ohte)
+        self.assertEqual(course_ohte, course_ohte2)
+        self.assertNotEqual(course_ohpe, course_ohte)
