@@ -131,12 +131,12 @@ class CourseRepository:
         """Palauttaa kaikki kurssit.
 
         Returns:
-            list[Course]: Lista kursseista.
+            list[Course]: Lista kursseista id-järjestyksessä.
         """
 
         cursor = self.__connection.cursor()
 
-        rows = cursor.execute("SELECT id FROM Courses").fetchall()
+        rows = cursor.execute("SELECT id FROM Courses ORDER BY id").fetchall()
 
         return [self.find_by_id(row["id"]) for row in rows if row is not None]
 
