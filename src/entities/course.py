@@ -49,7 +49,13 @@ class Course:
         self.__id: int = course_id or -1
 
     def __eq__(self, other: "Course") -> bool:
-        return self.id == other.id
+        return (
+            self.name == other.name
+            and self.credits == other.credits
+            and self.timing == other.timing
+            and self.requirements == other.requirements
+            and self.id == other.id
+        )
 
     @property
     def name(self) -> str:

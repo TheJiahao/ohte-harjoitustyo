@@ -132,11 +132,23 @@ class TestCourse(unittest.TestCase):
 
         self.assertEqual(self.course.name, "OhJa")
 
-    def test_comparing_courses_work_correctly(self):
-        course_ohte = Course("Ohte", 5, course_id=200)
-        course_ohte2 = Course("Ohte", 5, course_id=200)
-        course_ohpe = Course("OhPe", 5, course_id=100)
+    def test_eq_return_true_if_same_attributes(self):
+        course_ohte = Course("Ohte", 5, {2, 4, 5}, {1, 4}, 200)
+        course_ohte2 = Course("Ohte", 5, {2, 4, 5}, {1, 4}, 200)
 
         self.assertEqual(course_ohte, course_ohte)
         self.assertEqual(course_ohte, course_ohte2)
-        self.assertNotEqual(course_ohpe, course_ohte)
+
+    def test_eq_return_false_if_something_differ(self):
+        course = Course("Ohte", 5, {2, 4, 5}, {1, 4}, 200)
+        course_with_different_name = Course("OhJa", 5, {2, 4, 5}, {1, 4}, 200)
+        course_with_different_credits = Course("Ohte", 1, {2, 4, 5}, {1, 4}, 200)
+        course_with_different_timing = Course("Ohte", 1, {4, 5}, {1, 4}, 200)
+        course_with_different_requirements = Course("Ohte", 1, {2, 4, 5}, {4}, 200)
+        course_with_different_id = Course("Ohte", 1, {2, 4, 5}, {1, 4}, 1)
+
+        self.assertNotEqual(course, course_with_different_name)
+        self.assertNotEqual(course, course_with_different_credits)
+        self.assertNotEqual(course, course_with_different_timing)
+        self.assertNotEqual(course, course_with_different_requirements)
+        self.assertNotEqual(course, course_with_different_id)
