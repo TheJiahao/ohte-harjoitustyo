@@ -5,10 +5,27 @@ from entities.course import Course
 
 
 class CourseRepository:
+    """Kurssien tietokantaoperaatioista vastaava luokka."""
+
     def __init__(self, connection: Connection) -> None:
+        """Luokan konstruktori.
+
+        Args:
+            connection (Connection): Tietokantayhteys.
+        """
+
         self.__connection: Connection = connection
 
     def create(self, course: Course) -> Course:
+        """Tallentaa kurssin tietokantaan tai muokkaa jo olevaa.
+
+        Args:
+            course (Course): Tallennettava tai muokattava kurssi.
+
+        Returns:
+            Course: Kurssi uudella tietokannassa käytetyllä id:llä.
+        """
+
         cursor = self.__connection.cursor()
 
         if course.id == -1:
@@ -62,6 +79,7 @@ class CourseRepository:
         Args:
             id (int): Kurssin id.
         """
+
         cursor = self.__connection.cursor()
 
         cursor.execute("DELETE FROM Courses WHERE id=?", (id,))
@@ -73,8 +91,8 @@ class CourseRepository:
         self.__connection.commit()
 
     def delete_all(self) -> None:
-        """Poistaa kaikkien kurssien tiedot.
-        """
+        """Poistaa kaikki kurssit tietokannasta."""
+
         cursor = self.__connection.cursor()
 
         cursor.execute("DELETE FROM Courses")
@@ -84,6 +102,15 @@ class CourseRepository:
         self.__connection.commit()
 
     def find_by_id(self, id: int) -> Course | None:
+        """Palauttaa id:tä vastaavan kurssin.
+
+        Args:
+            id (int): Haettavan kurssin id.
+
+        Returns:
+            Course | None: id:tä vastaava kurssi tai None, jos ei löydy.
+        """
+
         cursor = self.__connection.cursor()
 
         course_data = cursor.execute(
@@ -101,6 +128,12 @@ class CourseRepository:
         )
 
     def find_all(self) -> list[Course]:
+        """Palauttaa kaikki kurssit.
+
+        Returns:
+            list[Course]: Lista kursseista.
+        """
+
         cursor = self.__connection.cursor()
 
         rows = cursor.execute("SELECT id FROM Courses").fetchall()
@@ -108,6 +141,15 @@ class CourseRepository:
         return [self.find_by_id(row["id"]) for row in rows if row is not None]
 
     def find_requirements(self, id: int) -> set[int]:
+        """Palauttaa kurssin esitietovaatimukset.
+
+        Args:
+            id (int): Haettavan kurssin id.
+
+        Returns:
+            set[int]: Esitietokurssien id:t joukkona.
+        """
+
         cursor = self.__connection.cursor()
 
         requirements = cursor.execute(
@@ -117,6 +159,15 @@ class CourseRepository:
         return {row["requirement_id"] for row in requirements}
 
     def find_timing(self, id: int) -> set[int]:
+        """Palauttaa kurssin perioditarjonnan.
+
+        Args:
+            id (int): Haettavan kurssin id.
+
+        Returns:
+            set[int]: Kurssin perioditarjonta.
+        """
+
         cursor = self.__connection.cursor()
 
         timing = cursor.execute(
