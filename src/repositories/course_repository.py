@@ -50,6 +50,15 @@ class CourseRepository:
 
         self.__connection.commit()
 
+    def __find_requirements(self, id: int) -> set[int]:
+        cursor = self.__connection.cursor()
+
+        requirements = cursor.execute(
+            "SELECT requirement_id FROM Requirements WHERE course_id=?", (id,)
+        ).fetchall()
+
+        return {row["requirement_id"] for row in requirements}
+
     def get_course_by_row(self, row: Row) -> Course | None:
         if row is None:
             return None
