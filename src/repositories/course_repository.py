@@ -41,4 +41,20 @@ class CourseRepository:
 
         return course
 
+    def delete(self, id: int) -> None:
+        """Poistaa id:tä vastaavan kurssin.
+
+        Args:
+            id (int): Kurssin id.
+        """
+        cursor = self.__connection.cursor()
+
+        cursor.execute("DELETE FROM Courses WHERE id=?", (id,))
+        cursor.execute("DELETE FROM Periods WHERE course_id=?", (id,))
+        cursor.execute(
+            "DELETE FROM Requirements WHERE course_id=? or requirement_id=?", (id,)
+        )
+
+        self.__connection.commit()
+
 course_repository = CourseRepository(get_database_connection())
