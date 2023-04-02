@@ -10,7 +10,7 @@ Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/p
 
 ## Asennus
 
-1. Asenna Python `3.11.x`.
+1. Asenna Python `3.10.x`.
 2. Asenna riippuvuudet:
 
     ```shell
