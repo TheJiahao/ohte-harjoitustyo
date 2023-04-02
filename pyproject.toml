@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "study_planner"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 python-dotenv = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
