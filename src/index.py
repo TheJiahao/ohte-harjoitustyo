@@ -7,6 +7,9 @@ def main():
     window = Tk()
     window.title("Study-planner")
 
+    ui_view = UI(window)
+    ui_view.start()
+
     window.mainloop()
 
 
