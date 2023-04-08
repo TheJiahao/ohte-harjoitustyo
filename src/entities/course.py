@@ -15,7 +15,7 @@ class Course:
         __requirements (set[int]):
             Kurssin esitietovaatimuskurssien id:t joukkona.
             Oletukseltaan tyhjä joukko.
-        __course_id (int):
+        __id (int):
             Kurssin id. Oletukseltaan -1.
     """
 
