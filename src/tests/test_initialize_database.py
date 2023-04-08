@@ -1,6 +1,7 @@
 import unittest
-from initialize_database import *
+
 from database_connection import get_database_connection
+from initialize_database import *
 
 
 class TestInitializeDatabase(unittest.TestCase):
