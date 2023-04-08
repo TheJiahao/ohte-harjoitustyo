@@ -1,6 +1,11 @@
 {
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
+    "python.testing.pytestArgs": [
+        "-c",
+        "${workspaceFolder}/pytest.ini"
+    ],
+    "python.envFile": "${workspaceFolder}/.env.test",
     "python.testing.cwd": "${workspaceFolder}/src",
     "terminal.integrated.cwd": "${workspaceFolder}",
     "python.linting.pylintEnabled": true,
