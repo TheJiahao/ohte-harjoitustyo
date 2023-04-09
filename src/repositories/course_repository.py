@@ -8,7 +8,7 @@ from entities.course import Course
 class CourseRepository:
     """Kurssien tietokantaoperaatioista vastaava luokka."""
 
-    def __init__(self, connection: Connection) -> None:
+    def __init__(self, connection: Connection = get_database_connection()) -> None:
         """Luokan konstruktori.
 
         Args:
@@ -178,6 +178,3 @@ class CourseRepository:
         ).fetchall()
 
         return {row["period"] for row in timing}
-
-
-course_repository = CourseRepository(get_database_connection())
