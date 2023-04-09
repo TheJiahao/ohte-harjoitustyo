@@ -76,7 +76,7 @@ class CreateCourseView(View):
         self.__timing_frame = ttk.Frame(master=self._frame)
 
         for i in range(1, 5):
-            button = Checkbutton(master=self.__timing_frame, text=str(i))
+            button = ttk.Checkbutton(master=self.__timing_frame, text=str(i))
 
             button.grid(row=1, column=i)
 
