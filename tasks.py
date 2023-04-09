@@ -19,6 +19,7 @@ def coverage_report(ctx):
 
 @task
 def format(ctx):
+    ctx.run("isort src", pty=True)
     ctx.run("black src", pty=True)
 
 
