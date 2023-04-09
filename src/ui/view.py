@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from tkinter import Menu, constants, ttk, Toplevel, Button
+from tkinter import Menu, constants, ttk
 
 
 class View(ABC):
@@ -11,8 +11,6 @@ class View(ABC):
         self._frame = ttk.Frame(master=self._root)
         self.__menubar = Menu(self._root)
 
-        self._initialize()
-
     def pack(self) -> None:
         self._frame.pack(fill=constants.X)
 
@@ -21,9 +19,9 @@ class View(ABC):
 
     @abstractmethod
     def _initialize(self) -> None:
-        self.__initialize_menu()
+        self._initialize_menu()
 
-    def __initialize_menu(self) -> None:
+    def _initialize_menu(self) -> None:
         view_menu = Menu(self.__menubar, tearoff=0)
         view_menu.add_command(label="Kurssit")
 
