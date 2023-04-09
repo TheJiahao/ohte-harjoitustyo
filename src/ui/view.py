@@ -23,7 +23,10 @@ class View(ABC):
 
     def _initialize_menu(self) -> None:
         view_menu = Menu(self.__menubar, tearoff=0)
+
         view_menu.add_command(label="Kurssit")
+        view_menu.add_command(label="Laskuri")
+        view_menu.add_command(label="Aikataulu")
 
         self.__menubar.add_cascade(label="Näkymä", menu=view_menu)
 
