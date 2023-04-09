@@ -10,5 +10,6 @@
 |29.3.|3 tuntia|Säädetty TkInter toimimaan, lisätty alustava käyttöliittymä|
 |30.3.|2 tuntia 30 min|Päivitetty README, refaktoroitu Course-luokka ja lisätty testit|
 |31.3|3 tuntia 30 min|Toteutettu ja testattu CourseRepository, refaktoroitu ja testattu Course-luokkaa, päivitetty changlogia|
-|8.4.|3 tuntia|Säädytty testin konfiguraatiota, lisätty alustava arkkitehtuuridokumentti, lisätty alustava käyttöliittymä|
+|8.4.|3 tuntia|Säädetty testin konfiguraatiota, lisätty alustava arkkitehtuuridokumentti, lisätty kurssin lisäysnäkymä käyttöliittymään|
+|9.4.|2 tuntia|Täydennetty kurssin lisäysnäkymää, lisätty sovelluslogiikasta vastaava luokka|
 |Yht.|?||
