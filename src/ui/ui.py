@@ -1,12 +1,25 @@
+from tkinter import Tk
+
 from ui.create_course_view import CreateCourseView
+from ui.view import View
 
 
 class UI:
-    def __init__(self, root) -> None:
-        self.__root = root
-        self.__current_view = None
+    """Luokka, joka vastaa sovelluksen käyttöliittymästä."""
+
+    def __init__(self, root: Tk) -> None:
+        """Luokan konstruktori.
+
+        Args:
+            root (Tk): Tkinterin juurikomponentti.
+        """
+
+        self.__root: Tk = root
+        self.__current_view: View | None = None
 
     def start(self) -> None:
+        """Käynnistää käyttöliittymän."""
+
         self.__show_create_course_view()
 
     def __hide_current_view(self) -> None:

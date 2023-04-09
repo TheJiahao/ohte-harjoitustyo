@@ -1,18 +1,25 @@
-from tkinter import Checkbutton, constants, ttk
+from tkinter import Checkbutton, Tk, constants, ttk
 
 from ui.view import View
 
 
 class CreateCourseView(View):
+    """Luokka, joka vastaa kurssin luomisnäkymästä."""
+
     def __init__(
         self,
-        root,
+        root: Tk,
     ) -> None:
+        """Luokan konstruktori.
+
+        Args:
+            root (Tk): Tkinterin juurikomponentti.
+        """
         super().__init__(root)
-        self.__course_dropdown_list = None
-        self.__name_entry = None
-        self.__credits_entry = None
-        self.__timing_frame = None
+        self.__course_dropdown_list: ttk.Combobox | None = None
+        self.__name_entry: ttk.Entry | None = None
+        self.__credits_entry: ttk.Entry | None = None
+        self.__timing_frame: ttk.Frame | None = None
 
         self._initialize()
 

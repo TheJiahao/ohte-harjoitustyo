@@ -3,7 +3,7 @@ from tkinter import Tk
 from ui.ui import UI
 
 
-def main():
+def main() -> None:
     window = Tk()
     window.title("Study-planner")
 

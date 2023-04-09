@@ -1,15 +1,17 @@
 from abc import ABC, abstractmethod
-from tkinter import Menu, constants, ttk
+from tkinter import Menu, Tk, constants, ttk
 
 
 class View(ABC):
+    """Luokka, joka tarjoaa pohjan näkymille."""
+
     def __init__(
         self,
-        root,
+        root: Tk,
     ) -> None:
-        self._root = root
-        self._frame = ttk.Frame(master=self._root)
-        self.__menubar = Menu(self._root)
+        self._root: Tk = root
+        self._frame: ttk.Frame = ttk.Frame(master=self._root)
+        self.__menubar: Menu = Menu(self._root)
 
     def pack(self) -> None:
         self._frame.pack(fill=constants.X)
