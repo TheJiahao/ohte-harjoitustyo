@@ -126,7 +126,7 @@ class CreateCourseView(View):
 
         add_dependency_button.grid(row=5, column=2, sticky=constants.E)
         dependency_label.grid(row=5, column=1, sticky=constants.W)
-        self.__dependency_frame.grid(row=6, column=1, sticky=constants.W)
+        self.__dependency_frame.grid(row=6, column=1, columnspan=2, sticky=constants.W)
 
     def __update_course_list(self) -> None:
         self.__course_list = [
@@ -177,8 +177,8 @@ class CreateCourseView(View):
             command=dependency_row.destroy,
         )
 
-        dependency_dropdown.grid(row=1, column=1, sticky=constants.W)
-        delete_button.grid(row=1, column=2, sticky=constants.W)
+        delete_button.grid(row=1, column=1, sticky=constants.W)
+        dependency_dropdown.grid(row=1, column=2, sticky=constants.W)
         dependency_row.grid(column=1)
 
         self.__dependencies.append(dependency_variable)
