@@ -1,4 +1,4 @@
-from tkinter import Checkbutton, Tk, constants, ttk
+from tkinter import Tk, constants, ttk
 
 from ui.view import View
 
@@ -18,7 +18,7 @@ class CreateCourseView(View):
         super().__init__(root)
         self.__course_dropdown_list: ttk.Combobox | None = None
         self.__name_entry: ttk.Entry | None = None
-        self.__credits_entry: ttk.Entry | None = None
+        self.__credits_spinbox: ttk.Spinbox | None = None
         self.__timing_frame: ttk.Frame | None = None
 
         self._initialize()
@@ -50,7 +50,7 @@ class CreateCourseView(View):
         self.__course_dropdown_list = ttk.Combobox(master=self._frame)
 
         course_label.grid(row=1, column=1, sticky=constants.W)
-        self.__course_dropdown_list.grid(row=1, column=2)
+        self.__course_dropdown_list.grid(row=1, column=2, sticky=constants.W)
 
     def __initialize_name_field(self) -> None:
         name_label = ttk.Label(master=self._frame, text="Nimi")
@@ -58,15 +58,17 @@ class CreateCourseView(View):
         self.__name_entry = ttk.Entry(master=self._frame)
 
         name_label.grid(row=2, column=1, sticky=constants.W)
-        self.__name_entry.grid(row=2, column=2)
+        self.__name_entry.grid(row=2, column=2, sticky=constants.W)
 
     def __initialize_credits_field(self) -> None:
         credits_label = ttk.Label(master=self._frame, text="Laajuus (op)")
 
-        self.__credits_entry = ttk.Entry(master=self._frame)
+        self.__credits_spinbox = ttk.Spinbox(
+            master=self._frame, from_=0, to=20, increment=1, width=2
+        )
 
         credits_label.grid(row=3, column=1, sticky=constants.W)
-        self.__credits_entry.grid(row=3, column=2)
+        self.__credits_spinbox.grid(row=3, column=2, sticky=constants.W)
 
     def __initialize_timing_field(self) -> None:
         timing_label = ttk.Label(master=self._frame, text="Ajoitus (periodit)")
@@ -80,7 +82,7 @@ class CreateCourseView(View):
 
             button.grid(row=1, column=i)
 
-        self.__timing_frame.grid(row=4, column=2)
+        self.__timing_frame.grid(row=4, column=2, sticky=constants.W)
 
     def __initialize_dependencies_field(self) -> None:
         dependency_label = ttk.Label(master=self._frame, text="Esitietovaatimukset")
