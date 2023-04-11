@@ -442,6 +442,18 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "sv-ttk"
+version = "2.4.3"
+description = "A gorgeous theme for Tkinter, based on Windows 11's UI"
+category = "main"
+optional = false
+python-versions = ">=3.4"
+files = [
+    {file = "sv_ttk-2.4.3-py3-none-any.whl", hash = "sha256:1b2c9a2b6a4129d01597302aa4ef9903a950bf9cac28ca0cbac0fb814c20a8fc"},
+    {file = "sv_ttk-2.4.3.tar.gz", hash = "sha256:6f8be148157274a204ae68a12fff71edde3565500107286c8772eb3e8f422a2d"},
+]
+
+[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -565,4 +577,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "7a6143e217533658a6e5438de6c146cc947f0f64922f62437fe3bc8dd7757b51"
+content-hash = "b4a4cfed3fd7ab18214a413caf2fd9fbc3c7983bd89049b7fa12f5bc388079db"

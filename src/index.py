@@ -1,5 +1,7 @@
 from tkinter import Tk
 
+import sv_ttk
+
 from ui.ui import UI
 
 
@@ -9,6 +11,8 @@ def main() -> None:
 
     ui_view = UI(window)
     ui_view.start()
+
+    sv_ttk.set_theme("light")
 
     window.mainloop()
 
