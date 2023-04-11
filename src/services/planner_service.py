@@ -12,15 +12,6 @@ class PlannerService:
 
         self.__course_repository = course_repository
 
-    def get_courses(self) -> list[Course]:
-        """Palauttaa kaikki kurssit.
-
-        Returns:
-            list[Course]: Kurssit.
-        """
-
-        return self.__course_repository.find_all()
-
     def __get_courses_in_topological_order(self) -> list[Course]:
         """Palauttaa kurssit topologisessa järjestyksessä.
 
@@ -29,7 +20,7 @@ class PlannerService:
         """
 
         dependencies_dict = {
-            course.id: course.requirements for course in self.get_courses()
+            course.id: course.requirements for course in self.get_all_courses()
         }
 
         sorter = TopologicalSorter(dependencies_dict)
@@ -46,6 +37,15 @@ class PlannerService:
             Course | None: Id:tä vastaava kurssi tai None, jos kurssia ei löydy.
         """
         return self.__course_repository.find_by_id(id)
+
+    def get_all_courses(self) -> list[Course]:
+        """Palauttaa kaikki kurssit.
+
+        Returns:
+            list[Course]: Kurssit.
+        """
+
+        return self.__course_repository.find_all()
 
     def create_course(self, course: Course) -> None:
         """Lisää kurssin tietokantaan.
