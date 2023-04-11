@@ -22,14 +22,16 @@ class CreateCourseView(View):
         self.__name_variable: StringVar = StringVar(value="")
         self.__credits_variable: IntVar = IntVar(value=0)
         self.__course_variable: StringVar = StringVar(value="")
-        self.__course_list: list[str] = [
-            str(course) for course in planner_service.get_all_courses()
-        ]
+        self.__course_list: list[str] = planner_service.get_all_courses()
         self.__timing_frame: ttk.Frame = ttk.Frame(master=self._frame)
-        self.__timing: list[BooleanVar] = [BooleanVar(value=False) for i in range(4)]
+        self.__timing: dict[int, BooleanVar] = {
+            i: BooleanVar(value=False) for i in range(1, 5)
+        }
 
         self.__dependency_frame: ttk.Frame = ttk.Frame(master=self._frame)
         self.__dependencies: list[StringVar] = []
+
+        self.__current_id: int = -1
 
         self._initialize()
 
@@ -70,10 +72,11 @@ class CreateCourseView(View):
             state="readonly",
             values=self.__course_list,
             textvariable=self.__course_variable,
+            postcommand=lambda: course_dropdown_list.configure(
+                values=self.__course_list
+            ),
         )
         course_dropdown_list.bind("<<ComboboxSelected>>", self.__fill_course_data)
-
-        self.__update_course_list()
 
         course_label.grid(row=1, column=1, sticky=constants.W)
         course_dropdown_list.grid(row=1, column=2, sticky=constants.W)
@@ -106,12 +109,12 @@ class CreateCourseView(View):
 
         timing_label.grid(row=4, column=1, sticky=constants.W)
 
-        for i in range(4):
+        for i in range(1, 5):
             button = ttk.Checkbutton(
-                master=self.__timing_frame, text=str(i + 1), variable=self.__timing[i]
+                master=self.__timing_frame, text=str(i), variable=self.__timing[i]
             )
 
-            button.grid(row=1, column=i + 1)
+            button.grid(row=1, column=i)
 
         self.__timing_frame.grid(row=4, column=2, sticky=constants.W)
 
@@ -128,33 +131,49 @@ class CreateCourseView(View):
         dependency_label.grid(row=5, column=1, sticky=constants.W)
         self.__dependency_frame.grid(row=6, column=1, columnspan=2, sticky=constants.W)
 
-    def __update_course_list(self) -> None:
-        self.__course_list = [
-            str(course) for course in planner_service.get_all_courses()
-        ]
-
     def __fill_course_data(self, event) -> None:
-        course_id = int(self.__course_variable.get().split(":")[0])
+        self.__current_id = self.__extract_id(self.__course_variable)
 
-        course = planner_service.get_course(course_id)
+        course = planner_service.get_course(self.__current_id)
 
         if course is None:
             return
 
+        self.__clear_data()
+
         self.__name_variable.set(course.name)
         self.__credits_variable.set(course.credits)
 
-        self.__clear_period_selection()
-
         for period in course.timing:
-            self.__timing[period - 1].set(True)
+            self.__timing[period].set(True)
 
-    def __clear_period_selection(self) -> None:
-        for period in self.__timing:
-            period.set(False)
+    def __clear_data(self) -> None:
+        self.__current_id = -1
+        self.__name_variable.set("")
+        self.__credits_variable.set(0)
+
+        for i in range(1, 5):
+            self.__timing[i].set(False)
+
+        for row in self.__dependency_frame.winfo_children():
+            row.destroy()
 
     def __handle_save(self) -> None:
-        pass
+        name = self.__name_variable.get()
+        credits = self.__credits_variable.get()
+
+        timing = {i for i in range(1, 5) if self.__timing[i].get()}
+        dependencies = {
+            self.__extract_id(course_variable)
+            for course_variable in self.__dependencies
+        }
+
+        course = Course(name, credits, timing, dependencies, self.__current_id)
+
+        planner_service.create_course(course)
+
+        self.__course_list = planner_service.get_all_courses()
+        self.__clear_data()
 
     def __handle_delete(self) -> None:
         pass
@@ -182,3 +201,6 @@ class CreateCourseView(View):
         dependency_row.grid(column=1)
 
         self.__dependencies.append(dependency_variable)
+
+    def __extract_id(self, course_variable: StringVar) -> int:
+        return int(course_variable.get().split(":")[0])
