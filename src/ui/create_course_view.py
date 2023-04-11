@@ -1,4 +1,4 @@
-from tkinter import BooleanVar, IntVar, StringVar, Tk, constants, ttk
+from tkinter import BooleanVar, IntVar, StringVar, constants, ttk
 
 from entities.course import Course
 from services import planner_service
@@ -10,12 +10,12 @@ class CreateCourseView(View):
 
     def __init__(
         self,
-        root: Tk,
+        root: ttk.Widget,
     ) -> None:
         """Luokan konstruktori.
 
         Args:
-            root (Tk): Tkinterin juurikomponentti.
+            root (ttk.Widget): Juurikomponentti näkymälle.
         """
         super().__init__(root)
 
@@ -41,9 +41,11 @@ class CreateCourseView(View):
     def destroy(self) -> None:
         self._frame.destroy()
 
-    def _initialize(self) -> None:
-        super()._initialize()
+    @property
+    def frame(self) -> ttk.Frame:
+        return self._frame
 
+    def _initialize(self) -> None:
         self.__initialize_course_field()
         self.__initialize_name_field()
         self.__initialize_credits_field()

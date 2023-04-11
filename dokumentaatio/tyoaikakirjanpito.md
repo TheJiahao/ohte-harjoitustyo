@@ -12,5 +12,5 @@
 |31.3|3 tuntia 30 min|Toteutettu ja testattu CourseRepository, refaktoroitu ja testattu Course-luokkaa, päivitetty changlogia|
 |8.4.|3 tuntia|Säädetty testin konfiguraatiota, lisätty alustava arkkitehtuuridokumentti, lisätty kurssin lisäysnäkymä käyttöliittymään|
 |9.4.|2 tuntia|Täydennetty kurssin lisäysnäkymää, lisätty sovelluslogiikasta vastaava luokka|
-|11.4.|3 tuntia|Lisätty alustava kurssien lisäystoiminto|
+|11.4.|3 tuntia 30 min|Lisätty alustava kurssien lisäystoiminto, refaktoroitu käyttöliittymä käyttämään `ttk.Notebook`-luokkaa|
 |Yht.|?||

@@ -1,4 +1,4 @@
-from tkinter import Tk
+from tkinter import Tk, ttk
 
 from ui.create_course_view import CreateCourseView
 from ui.view import View
@@ -14,23 +14,16 @@ class UI:
             root (Tk): Tkinterin juurikomponentti.
         """
 
-        self.__root: Tk = root
-        self.__current_view: View | None = None
+        self.__notebook: ttk.Notebook = ttk.Notebook(root)
+
+        self.__initialize()
 
     def start(self) -> None:
         """Käynnistää käyttöliittymän."""
 
-        self.__show_create_course_view()
+        self.__notebook.pack()
 
-    def __hide_current_view(self) -> None:
-        if self.__current_view:
-            self.__current_view.destroy()
+    def __initialize(self) -> None:
+        create_course_view = CreateCourseView(self.__notebook)
 
-        self.__current_view = None
-
-    def __show_create_course_view(self) -> None:
-        self.__hide_current_view()
-
-        self.__current_view = CreateCourseView(self.__root)
-
-        self.__current_view.pack()
+        self.__notebook.add(create_course_view.frame, text="Lisää kurssi")
