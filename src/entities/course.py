@@ -57,6 +57,9 @@ class Course:
             and self.id == other.id
         )
 
+    def __str__(self) -> str:
+        return f"{self.__id}: {self.__name}, {self.__credits} op"
+
     @property
     def name(self) -> str:
         return self.__name

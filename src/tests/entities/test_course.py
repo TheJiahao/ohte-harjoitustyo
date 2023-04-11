@@ -152,3 +152,10 @@ class TestCourse(unittest.TestCase):
         self.assertNotEqual(course, course_with_different_timing)
         self.assertNotEqual(course, course_with_different_requirements)
         self.assertNotEqual(course, course_with_different_id)
+
+    def test_str(self):
+        course1 = Course("Ohte", 5, {1, 2, 3}, {2, 4, 6, 5}, course_id=200)
+        course2 = Course("OhJa", 5, {1, 2}, {2, 4}, course_id=10)
+
+        self.assertEqual(str(course1), "200: Ohte, 5 op")
+        self.assertEqual(str(course2), "10: OhJa, 5 op")
