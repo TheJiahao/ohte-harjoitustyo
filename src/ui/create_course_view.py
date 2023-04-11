@@ -25,8 +25,11 @@ class CreateCourseView(View):
         self.__course_list: list[str] = [
             str(course) for course in planner_service.get_all_courses()
         ]
-        self.__timing_frame: ttk.Frame | None = None
+        self.__timing_frame: ttk.Frame = ttk.Frame(master=self._frame)
         self.__timing: list[BooleanVar] = [BooleanVar(value=False) for i in range(4)]
+
+        self.__dependency_frame: ttk.Frame = ttk.Frame(master=self._frame)
+        self.__dependencies: list[StringVar] = []
 
         self._initialize()
 
@@ -47,17 +50,17 @@ class CreateCourseView(View):
 
         save_button = ttk.Button(
             master=self._frame,
-            text="Tallenna kurssi",
+            text="Tallenna",
             command=self.__handle_save,
         )
-        save_button.grid(row=6, column=1, sticky=constants.W)
+        save_button.grid(row=7, column=1, sticky=(constants.W, constants.S))
 
         delete_button = ttk.Button(
             master=self._frame,
-            text="Poista kurssi",
+            text="Poista",
             command=self.__handle_delete,
         )
-        delete_button.grid(row=6, column=2, sticky=constants.E)
+        delete_button.grid(row=7, column=2, sticky=(constants.E, constants.S))
 
     def __initialize_course_field(self) -> None:
         course_label = ttk.Label(master=self._frame, text="Selaa")
@@ -103,8 +106,6 @@ class CreateCourseView(View):
 
         timing_label.grid(row=4, column=1, sticky=constants.W)
 
-        self.__timing_frame = ttk.Frame(master=self._frame)
-
         for i in range(4):
             button = ttk.Checkbutton(
                 master=self.__timing_frame, text=str(i + 1), variable=self.__timing[i]
@@ -117,7 +118,67 @@ class CreateCourseView(View):
     def __initialize_dependencies_field(self) -> None:
         dependency_label = ttk.Label(master=self._frame, text="Esitietovaatimukset")
 
-        add_dependency_button = ttk.Button(master=self._frame, text="Lisää")
+        add_dependency_button = ttk.Button(
+            master=self._frame,
+            text="+",
+            command=self.__handle_add_dependency,
+        )
 
         add_dependency_button.grid(row=5, column=2, sticky=constants.E)
         dependency_label.grid(row=5, column=1, sticky=constants.W)
+        self.__dependency_frame.grid(row=6, column=1, sticky=constants.W)
+
+    def __update_course_list(self) -> None:
+        self.__course_list = [
+            str(course) for course in planner_service.get_all_courses()
+        ]
+
+    def __fill_course_data(self, event) -> None:
+        course_id = int(self.__course_variable.get().split(":")[0])
+
+        course = planner_service.get_course(course_id)
+
+        if course is None:
+            return
+
+        self.__name_variable.set(course.name)
+        self.__credits_variable.set(course.credits)
+
+        self.__clear_period_selection()
+
+        for period in course.timing:
+            self.__timing[period - 1].set(True)
+
+    def __clear_period_selection(self) -> None:
+        for period in self.__timing:
+            period.set(False)
+
+    def __handle_save(self) -> None:
+        pass
+
+    def __handle_delete(self) -> None:
+        pass
+
+    def __handle_add_dependency(self) -> None:
+        dependency_variable = StringVar(value="")
+
+        dependency_row = ttk.Frame(master=self.__dependency_frame)
+
+        dependency_dropdown = ttk.Combobox(
+            master=dependency_row,
+            values=self.__course_list,
+            state="readonly",
+            textvariable=dependency_variable,
+        )
+
+        delete_button = ttk.Button(
+            master=dependency_row,
+            text="-",
+            command=dependency_row.destroy,
+        )
+
+        dependency_dropdown.grid(row=1, column=1, sticky=constants.W)
+        delete_button.grid(row=1, column=2, sticky=constants.W)
+        dependency_row.grid(column=1)
+
+        self.__dependencies.append(dependency_variable)
