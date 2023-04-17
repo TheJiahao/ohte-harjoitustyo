@@ -27,16 +27,18 @@ Jos tällainen aikataulunäkymä osoittautuu liian vaativaksi, niin teen näkym�
 
 ### Perusversio
 
-- Kurssien lisäys tietoineen (nimi, opintopisteet, ajoitus, edeltävät opinnot)
-- Kurssitietojen säilyttäminen tietokannassa
-- Aikataulu topologisessa järjestyksessä (esitietovaatimukset täyttyvät ennen kurssia)
+- [x] Kurssien lisäys tietoineen (nimi, opintopisteet, ajoitus, edeltävät opinnot)
+- [ ] Lisättyjen kurssien muokkaus ja selaaminen
+- [ ] Lisättyjen kurssien poistaminen
+- [x] Kurssitietojen säilyttäminen tietokannassa
+- [ ] Aikataulu topologisessa järjestyksessä (esitietovaatimukset täyttyvät ennen kurssia)
 
 ### Jatkokehitysideoita
 
-- Kurssitietojen lukeminen `json`-tiedostosta
-- Aikataulun vieminen `json`-tiedostona
-- Opintopisteyläraja periodille
-- Periodin ja lukuvuoden opintopistemäärän näyttäminen
-- Kurssien haku verkosta (jos löytyy API, todennäköisesti ei toteudu)
-- Periodien työmäärän tasapainottaminen
-- Kesäperiodit
+- [ ] Kurssitietojen lukeminen `json`-tiedostosta
+- [ ] Aikataulun vieminen `json`-tiedostona
+- [ ] Opintopisteyläraja periodille
+- [ ] Periodin ja lukuvuoden opintopistemäärän näyttäminen
+- [ ] Kurssien haku verkosta (jos löytyy API, todennäköisesti ei toteudu)
+- [ ] Periodien työmäärän tasapainottaminen
+- [ ] Kesäperiodit
