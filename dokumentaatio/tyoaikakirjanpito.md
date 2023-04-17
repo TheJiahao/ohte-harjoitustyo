@@ -13,4 +13,5 @@
 |8.4.|3 tuntia|Säädetty testin konfiguraatiota, lisätty alustava arkkitehtuuridokumentti, lisätty kurssin lisäysnäkymä käyttöliittymään|
 |9.4.|2 tuntia|Täydennetty kurssin lisäysnäkymää, lisätty sovelluslogiikasta vastaava luokka|
 |11.4.|3 tuntia 30 min|Lisätty alustava kurssien lisäystoiminto, refaktoroitu käyttöliittymä käyttämään `ttk.Notebook`-luokkaa|
-|Yht.|?||
+|17.4.|1 tunti 30 min|Refaktoroitu koodia, lisätty kurssien muokkaustoiminto|
+|Yht.|30 tuntia 30 min||

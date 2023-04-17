@@ -13,5 +13,5 @@
 
 ## Viikko 4
 
-- Lisätty alustava käyttöliittymä, pelkkä kurssien lisäys
+- Lisätty alustava käyttöliittymä, jolla voi lisätä ja muokata kursseja
 - Lisätty sovelluslogiikasta vastaava `PlannerService`-luokka

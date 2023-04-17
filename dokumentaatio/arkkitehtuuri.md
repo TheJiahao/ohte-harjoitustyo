@@ -6,23 +6,20 @@ Sovelluksen ainoa oma tietorakenne on `Course`-luokka, joka kuvaa kurssia.
 
 ```mermaid
 classDiagram
+    PlannerService ..> Course
+    
     class Course {
         -name
         -credits
         -timing
         -requirements
         -id
-        
-        +add_period(period)
-        +remove_period(period)
-        +add_requirement(id)
-        +remove_requirement(id)
     }
 ```
 
 ## Algoritmi
 
-Sovelluksen toiminta perustuu suunnatun verkon topologiseen järjestykseen[^tirakirja].
+Sovelluksen toiminta perustuu suunnatun verkon topologiseen järjestykseen [^tirakirja].
 Lisäksi oletetaan, että jos samalla periodilla on tarjolla kurssi ja sen esitietokurssi, niin ne voidaan suorittaa rinnakkain.
 
 Algoritmin vaiheet:
