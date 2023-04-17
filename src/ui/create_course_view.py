@@ -28,8 +28,8 @@ class CreateCourseView(View):
             i: BooleanVar(value=False) for i in range(1, 5)
         }
 
-        self.__dependency_frame: ttk.Frame = ttk.Frame(master=self._frame)
-        self.__dependencies: list[StringVar] = []
+        self.__requirement_frame: ttk.Frame = ttk.Frame(master=self._frame)
+        self.__requirements: list[StringVar] = []
 
         self.__current_id: int = -1
 
@@ -50,7 +50,7 @@ class CreateCourseView(View):
         self.__initialize_name_field()
         self.__initialize_credits_field()
         self.__initialize_timing_field()
-        self.__initialize_dependencies_field()
+        self.__initialize_requirements_field()
 
         save_button = ttk.Button(
             master=self._frame,
@@ -120,18 +120,18 @@ class CreateCourseView(View):
 
         self.__timing_frame.grid(row=4, column=2, sticky=constants.W)
 
-    def __initialize_dependencies_field(self) -> None:
-        dependency_label = ttk.Label(master=self._frame, text="Esitietovaatimukset")
+    def __initialize_requirements_field(self) -> None:
+        requirement_label = ttk.Label(master=self._frame, text="Esitietovaatimukset")
 
-        add_dependency_button = ttk.Button(
+        add_requirement_button = ttk.Button(
             master=self._frame,
             text="+",
-            command=self.__handle_add_dependency,
+            command=self.__handle_add_requirement,
         )
 
-        add_dependency_button.grid(row=5, column=2, sticky=constants.E)
-        dependency_label.grid(row=5, column=1, sticky=constants.W)
-        self.__dependency_frame.grid(row=6, column=1, columnspan=2, sticky=constants.W)
+        add_requirement_button.grid(row=5, column=2, sticky=constants.E)
+        requirement_label.grid(row=5, column=1, sticky=constants.W)
+        self.__requirement_frame.grid(row=6, column=1, columnspan=2, sticky=constants.W)
 
     def __fill_course_data(self, event) -> None:
         self.__current_id = self.__extract_id(self.__course_variable)
@@ -157,7 +157,7 @@ class CreateCourseView(View):
         for i in range(1, 5):
             self.__timing[i].set(False)
 
-        for row in self.__dependency_frame.winfo_children():
+        for row in self.__requirement_frame.winfo_children():
             row.destroy()
 
     def __handle_save(self) -> None:
@@ -165,12 +165,12 @@ class CreateCourseView(View):
         credits = self.__credits_variable.get()
 
         timing = {i for i in range(1, 5) if self.__timing[i].get()}
-        dependencies = {
+        requirements = {
             self.__extract_id(course_variable)
-            for course_variable in self.__dependencies
+            for course_variable in self.__requirements
         }
 
-        course = Course(name, credits, timing, dependencies, self.__current_id)
+        course = Course(name, credits, timing, requirements, self.__current_id)
 
         planner_service.create_course(course)
 
@@ -180,29 +180,29 @@ class CreateCourseView(View):
     def __handle_delete(self) -> None:
         pass
 
-    def __handle_add_dependency(self) -> None:
-        dependency_variable = StringVar(value="")
+    def __handle_add_requirement(self) -> None:
+        requirement_variable = StringVar(value="")
 
-        dependency_row = ttk.Frame(master=self.__dependency_frame)
+        requirement_row = ttk.Frame(master=self.__requirement_frame)
 
-        dependency_dropdown = ttk.Combobox(
-            master=dependency_row,
+        requirements_dropdown = ttk.Combobox(
+            master=requirement_row,
             values=self.__course_list,
             state="readonly",
-            textvariable=dependency_variable,
+            textvariable=requirement_variable,
         )
 
         delete_button = ttk.Button(
-            master=dependency_row,
+            master=requirement_row,
             text="-",
-            command=dependency_row.destroy,
+            command=requirement_row.destroy,
         )
 
         delete_button.grid(row=1, column=1, sticky=constants.W)
-        dependency_dropdown.grid(row=1, column=2, sticky=constants.W)
-        dependency_row.grid(column=1)
+        requirements_dropdown.grid(row=1, column=2, sticky=constants.W)
+        requirement_row.grid(column=1)
 
-        self.__dependencies.append(dependency_variable)
+        self.__requirements.append(requirement_variable)
 
     def __extract_id(self, course_variable: StringVar) -> int:
         return int(course_variable.get().split(":")[0])
