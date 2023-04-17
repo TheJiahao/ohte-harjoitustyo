@@ -180,7 +180,13 @@ class CreateCourseView(View):
         self.__clear_data()
 
     def __handle_delete(self) -> None:
-        pass
+        self.show_popup_window("Varmista poisto.")
+
+        if self._confirm:
+            planner_service.delete_course(self.__current_id)
+
+            self.__course_list = planner_service.get_all_courses()
+            self.__clear_data()
 
     def __handle_add_requirement(self, course: Course | None = None) -> None:
         requirement_row = ttk.Frame(master=self.__requirement_frame)
