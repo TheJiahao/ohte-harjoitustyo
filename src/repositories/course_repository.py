@@ -76,7 +76,7 @@ class CourseRepository:
 
         self.__connection.commit()
 
-    def delete(self, id: int) -> None:
+    def delete(self, course_id: int) -> None:
         """Poistaa id:tä vastaavan kurssin.
 
         Args:
@@ -85,10 +85,10 @@ class CourseRepository:
 
         cursor = self.__connection.cursor()
 
-        cursor.execute("DELETE FROM Courses WHERE id=?", (id,))
-        cursor.execute("DELETE FROM Periods WHERE course_id=?", (id,))
+        cursor.execute("DELETE FROM Courses WHERE id=?", (course_id,))
+        cursor.execute("DELETE FROM Periods WHERE course_id=?", (course_id,))
         cursor.execute(
-            "DELETE FROM Requirements WHERE course_id=:id or requirement_id=:id", (id,)
+            "DELETE FROM Requirements WHERE course_id=:id or requirement_id=:id", (course_id,)
         )
 
         self.__connection.commit()
@@ -104,7 +104,7 @@ class CourseRepository:
 
         self.__connection.commit()
 
-    def find_by_id(self, id: int) -> Course | None:
+    def find_by_id(self, course_id: int) -> Course | None:
         """Palauttaa id:tä vastaavan kurssin.
 
         Args:
@@ -117,17 +117,17 @@ class CourseRepository:
         cursor = self.__connection.cursor()
 
         course_data = cursor.execute(
-            "SELECT * FROM Courses WHERE id=?", (id,)
+            "SELECT * FROM Courses WHERE id=?", (course_id,)
         ).fetchone()
 
         if course_data is None:
             return None
 
-        requirements = self.find_requirements(id)
-        timing = self.find_timing(id)
+        requirements = self.find_requirements(course_id)
+        timing = self.find_timing(course_id)
 
         return Course(
-            course_data["name"], course_data["credits"], timing, requirements, id
+            course_data["name"], course_data["credits"], timing, requirements, course_id
         )
 
     def find_all(self) -> list[Course]:
@@ -143,7 +143,7 @@ class CourseRepository:
 
         return [self.find_by_id(row["id"]) for row in rows if row is not None]  # type: ignore
 
-    def find_requirements(self, id: int) -> set[int]:
+    def find_requirements(self, course_id: int) -> set[int]:
         """Palauttaa kurssin esitietovaatimukset.
 
         Args:
@@ -156,12 +156,12 @@ class CourseRepository:
         cursor = self.__connection.cursor()
 
         requirements = cursor.execute(
-            "SELECT requirement_id FROM Requirements WHERE course_id=?", (id,)
+            "SELECT requirement_id FROM Requirements WHERE course_id=?", (course_id,)
         ).fetchall()
 
         return {row["requirement_id"] for row in requirements}
 
-    def find_timing(self, id: int) -> set[int]:
+    def find_timing(self, course_id: int) -> set[int]:
         """Palauttaa kurssin perioditarjonnan.
 
         Args:
@@ -174,7 +174,7 @@ class CourseRepository:
         cursor = self.__connection.cursor()
 
         timing = cursor.execute(
-            "SELECT period FROM Periods WHERE course_id=?", (id,)
+            "SELECT period FROM Periods WHERE course_id=?", (course_id,)
         ).fetchall()
 
         return {row["period"] for row in timing}

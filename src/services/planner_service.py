@@ -12,7 +12,7 @@ class PlannerService:
 
         self.__course_repository = course_repository
 
-    def __get_courses_in_topological_order(self) -> list[Course]:
+    def get_courses_in_topological_order(self) -> list[Course]:
         """Palauttaa kurssit topologisessa järjestyksessä.
 
         Returns:
@@ -27,7 +27,7 @@ class PlannerService:
 
         return [self.get_course(id) for id in sorter.static_order()]
 
-    def get_course(self, id: int) -> Course | None:
+    def get_course(self, course_id: int) -> Course | None:
         """Palauttaa id:tä vastaavan kurssin.
 
         Args:
@@ -36,7 +36,7 @@ class PlannerService:
         Returns:
             Course | None: Id:tä vastaava kurssi tai None, jos kurssia ei löydy.
         """
-        return self.__course_repository.find_by_id(id)
+        return self.__course_repository.find_by_id(course_id)
 
     def get_all_courses(self) -> list[str]:
         """Palauttaa kaikki kurssit.
@@ -56,14 +56,14 @@ class PlannerService:
 
         self.__course_repository.create(course)
 
-    def delete_course(self, id: int) -> None:
+    def delete_course(self, course_id: int) -> None:
         """Poistaa id:tä vastaavan kurssin.
 
         Args:
             id (int): Poistettavan kurssin id.
         """
 
-        self.__course_repository.delete(id)
+        self.__course_repository.delete(course_id)
 
     def delete_all_courses(self) -> None:
         """Poistaa kaikki kurssit tietokannasta."""
