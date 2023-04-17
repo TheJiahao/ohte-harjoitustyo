@@ -29,8 +29,6 @@ class CreateCourseView(View):
         }
 
         self.__requirement_frame: ttk.Frame = ttk.Frame(master=self._frame)
-        self.__requirements: list[StringVar] = []
-
         self.__current_id: int = -1
 
         self._initialize()
@@ -50,7 +48,7 @@ class CreateCourseView(View):
         self.__initialize_name_field()
         self.__initialize_credits_field()
         self.__initialize_timing_field()
-        self.__initialize_requirements_field()
+        self.__initialize_requirement_field()
 
         save_button = ttk.Button(
             master=self._frame,
@@ -120,7 +118,7 @@ class CreateCourseView(View):
 
         self.__timing_frame.grid(row=4, column=2, sticky=constants.W)
 
-    def __initialize_requirements_field(self) -> None:
+    def __initialize_requirement_field(self) -> None:
         requirement_label = ttk.Label(master=self._frame, text="Esitietovaatimukset")
 
         add_requirement_button = ttk.Button(
@@ -149,6 +147,10 @@ class CreateCourseView(View):
         for period in course.timing:
             self.__timing[period].set(True)
 
+        for requirement_id in course.requirements:
+            requirement = planner_service.get_course(requirement_id)
+            self.__handle_add_requirement(requirement)
+
     def __clear_data(self) -> None:
         self.__current_id = -1
         self.__name_variable.set("")
@@ -167,7 +169,7 @@ class CreateCourseView(View):
         timing = {i for i in range(1, 5) if self.__timing[i].get()}
         requirements = {
             self.__extract_id(course_variable)
-            for course_variable in self.__requirements
+            for course_variable in self.__requirement_frame
         }
 
         course = Course(name, credits, timing, requirements, self.__current_id)
@@ -180,16 +182,13 @@ class CreateCourseView(View):
     def __handle_delete(self) -> None:
         pass
 
-    def __handle_add_requirement(self) -> None:
-        requirement_variable = StringVar(value="")
-
+    def __handle_add_requirement(self, course: Course | None = None) -> None:
         requirement_row = ttk.Frame(master=self.__requirement_frame)
 
-        requirements_dropdown = ttk.Combobox(
+        requirement_dropdown = ttk.Combobox(
             master=requirement_row,
             values=self.__course_list,
             state="readonly",
-            textvariable=requirement_variable,
         )
 
         delete_button = ttk.Button(
@@ -198,11 +197,12 @@ class CreateCourseView(View):
             command=requirement_row.destroy,
         )
 
-        delete_button.grid(row=1, column=1, sticky=constants.W)
-        requirements_dropdown.grid(row=1, column=2, sticky=constants.W)
-        requirement_row.grid(column=1)
+        if course:
+            requirement_dropdown.set(course)
 
-        self.__requirements.append(requirement_variable)
+        delete_button.grid(row=1, column=1, sticky=constants.W)
+        requirement_dropdown.grid(row=1, column=2, sticky=constants.W)
+        requirement_row.grid(column=1)
 
     def __extract_id(self, course_variable: StringVar) -> int:
         return int(course_variable.get().split(":")[0])
