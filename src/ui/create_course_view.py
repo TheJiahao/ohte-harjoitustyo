@@ -166,6 +166,8 @@ class CreateCourseView(View):
         for i in range(1, 5):
             self.__timing[i].set(False)
 
+        self.__requirements.clear()
+
         for row in self.__requirement_frame.winfo_children():
             row.destroy()
 
