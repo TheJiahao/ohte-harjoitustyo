@@ -17,6 +17,7 @@ class CreateCourseView(View):
         Args:
             root (ttk.Widget): Juurikomponentti näkymälle.
         """
+
         super().__init__(root)
 
         self.__name_variable: StringVar = StringVar(value="")
@@ -133,6 +134,8 @@ class CreateCourseView(View):
         self.__requirement_frame.grid(row=6, column=1, columnspan=2, sticky=constants.W)
 
     def __fill_course_data(self, event) -> None:
+        """Täyttää valitun kurssin tiedot."""
+
         self.__clear_data()
 
         self.__current_id = self.__extract_id(self.__course_variable)
@@ -152,6 +155,8 @@ class CreateCourseView(View):
             self.__handle_add_requirement(requirement)
 
     def __clear_data(self) -> None:
+        """Tyhjentää täytetyt tiedot, paitsi tällä hetkellä valitun kurssin."""
+
         self.__current_id = -1
         self.__name_variable.set("")
         self.__credits_variable.set(0)
@@ -163,6 +168,8 @@ class CreateCourseView(View):
             row.destroy()
 
     def __handle_save(self) -> None:
+        """Tallentaa kurssin tiedot."""
+
         name = self.__name_variable.get()
         credits = self.__credits_variable.get()
 
@@ -181,6 +188,8 @@ class CreateCourseView(View):
         self.__clear_data()
 
     def __handle_delete(self) -> None:
+        """Poistaa kurssin, vaatii käyttäjältä varmistuksen."""
+
         self.show_popup_window("Varmista poisto.")
 
         if self._confirm:
@@ -190,6 +199,12 @@ class CreateCourseView(View):
             self.__clear_data()
 
     def __handle_add_requirement(self, course: Course | None = None) -> None:
+        """Lisää esitietovaatimusrivin.
+
+        Args:
+            course (Course | None, optional): Esitiedoksi lisättävä kurssi. Oletukseltaan None.
+        """
+
         requirement_variable = StringVar(value="")
         requirement_row = ttk.Frame(master=self.__requirement_frame)
 
@@ -218,8 +233,23 @@ class CreateCourseView(View):
         requirement_row.grid(column=1)
 
     def __handle_remove_requirement(self, variable: StringVar, row: ttk.Frame) -> None:
+        """Poistaa esitietovaatimuksen.
+
+        Args:
+            variable (StringVar): Esitietokurssin merkkijonoesitystä tallentava muuttuja.
+            row (ttk.Frame): Poistettava esitietorivi.
+        """
+
         self.__requirements.remove(variable)
         row.destroy()
 
     def __extract_id(self, course_variable: StringVar) -> int:
+        """Palauttaa kurssin id:n.
+
+        Args:
+            course_variable (StringVar): Kurssin merkkijonoesitystä tallentava muuttuja.
+
+        Returns:
+            int: Kurssin id.
+        """
         return int(course_variable.get().split(":")[0])
