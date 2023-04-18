@@ -1,5 +1,5 @@
 from tkinter import BooleanVar, IntVar, StringVar, constants, ttk
-from tkinter.messagebox import askyesno
+from tkinter.messagebox import askyesno, showerror
 
 from entities.course import Course
 from services import planner_service
@@ -143,6 +143,7 @@ class CreateCourseView(View):
         course = planner_service.get_course(self.__current_id)
 
         if course is None:
+            showerror("Virhe", "Valittua kurssia ei löydy!")
             return
 
         self.__name_variable.set(course.name)
@@ -193,11 +194,14 @@ class CreateCourseView(View):
 
         confirm = askyesno("Poista kurssi", "Varmista poisto")
 
-        if confirm:
-            planner_service.delete_course(self.__current_id)
+        if not confirm:
+            return
 
-            self.__course_list = planner_service.get_all_courses()
-            self.__clear_data()
+        planner_service.delete_course(self.__current_id)
+
+        self.__course_list = planner_service.get_all_courses()
+        self.__course_variable.set("")
+        self.__clear_data()
 
     def __handle_add_requirement(self, course: Course | None = None) -> None:
         """Lisää esitietovaatimusrivin.
