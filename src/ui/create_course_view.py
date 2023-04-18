@@ -1,4 +1,5 @@
 from tkinter import BooleanVar, IntVar, StringVar, constants, ttk
+from tkinter.messagebox import askyesno
 
 from entities.course import Course
 from services import planner_service
@@ -190,9 +191,9 @@ class CreateCourseView(View):
     def __handle_delete(self) -> None:
         """Poistaa kurssin, vaatii käyttäjältä varmistuksen."""
 
-        self.show_popup_window("Varmista poisto.")
+        confirm = askyesno("Poista kurssi", "Varmista poisto")
 
-        if self._confirm:
+        if confirm:
             planner_service.delete_course(self.__current_id)
 
             self.__course_list = planner_service.get_all_courses()
