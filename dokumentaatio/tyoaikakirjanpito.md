@@ -14,5 +14,5 @@
 |9.4.|2 tuntia|Täydennetty kurssin lisäysnäkymää, lisätty sovelluslogiikasta vastaava luokka|
 |11.4.|3 tuntia 30 min|Lisätty alustava kurssien lisäystoiminto, refaktoroitu käyttöliittymä käyttämään `ttk.Notebook`-luokkaa|
 |17.4.|1 tunti 30 min|Refaktoroitu koodia, lisätty kurssien muokkaustoiminto|
-|18.4.|1 tunti|Korjattu kurssien lisäys ja muokkaustoiminto, lisätty kurssin poistotoiminto|
+|18.4.|1 tunti|Korjattu kurssien lisäys- ja muokkaustoiminto, lisätty kurssin poistotoiminto|
 |Yht.|31 tuntia 30 min||

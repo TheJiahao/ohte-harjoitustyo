@@ -29,7 +29,7 @@ Jos tällainen aikataulunäkymä osoittautuu liian vaativaksi, niin teen näkym�
 
 - [x] Kurssien lisäys tietoineen (nimi, opintopisteet, ajoitus, edeltävät opinnot)
 - [x] Lisättyjen kurssien muokkaus ja selaaminen
-- [ ] Lisättyjen kurssien poistaminen
+- [x] Lisättyjen kurssien poistaminen
 - [x] Kurssitietojen säilyttäminen tietokannassa
 - [ ] Aikataulu topologisessa järjestyksessä (esitietovaatimukset täyttyvät ennen kurssia)
 
