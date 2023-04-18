@@ -88,7 +88,8 @@ class CourseRepository:
         cursor.execute("DELETE FROM Courses WHERE id=?", (course_id,))
         cursor.execute("DELETE FROM Periods WHERE course_id=?", (course_id,))
         cursor.execute(
-            "DELETE FROM Requirements WHERE course_id=:id or requirement_id=:id", (course_id,)
+            "DELETE FROM Requirements WHERE course_id=:id or requirement_id=:id",
+            (course_id,),
         )
 
         self.__connection.commit()
