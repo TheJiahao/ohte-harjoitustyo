@@ -29,6 +29,7 @@ class CreateCourseView(View):
         }
 
         self.__requirement_frame: ttk.Frame = ttk.Frame(master=self._frame)
+        self.__requirements: list[StringVar] = []
         self.__current_id: int = -1
 
         self._initialize()
@@ -132,14 +133,13 @@ class CreateCourseView(View):
         self.__requirement_frame.grid(row=6, column=1, columnspan=2, sticky=constants.W)
 
     def __fill_course_data(self, event) -> None:
-        self.__current_id = self.__extract_id(self.__course_variable)
+        self.__clear_data()
 
+        self.__current_id = self.__extract_id(self.__course_variable)
         course = planner_service.get_course(self.__current_id)
 
         if course is None:
             return
-
-        self.__clear_data()
 
         self.__name_variable.set(course.name)
         self.__credits_variable.set(course.credits)
@@ -169,7 +169,7 @@ class CreateCourseView(View):
         timing = {i for i in range(1, 5) if self.__timing[i].get()}
         requirements = {
             self.__extract_id(course_variable)
-            for course_variable in self.__requirement_frame
+            for course_variable in self.__requirements
         }
 
         course = Course(name, credits, timing, requirements, self.__current_id)
@@ -189,26 +189,36 @@ class CreateCourseView(View):
             self.__clear_data()
 
     def __handle_add_requirement(self, course: Course | None = None) -> None:
+        requirement_variable = StringVar(value="")
         requirement_row = ttk.Frame(master=self.__requirement_frame)
+
+        self.__requirements.append(requirement_variable)
 
         requirement_dropdown = ttk.Combobox(
             master=requirement_row,
             values=self.__course_list,
+            textvariable=requirement_variable,
             state="readonly",
         )
 
         delete_button = ttk.Button(
             master=requirement_row,
             text="-",
-            command=requirement_row.destroy,
+            command=lambda: self.__handle_remove_requirement(
+                requirement_variable, requirement_row
+            ),
         )
 
         if course:
-            requirement_dropdown.set(course)
+            requirement_variable.set(str(course))
 
         delete_button.grid(row=1, column=1, sticky=constants.W)
         requirement_dropdown.grid(row=1, column=2, sticky=constants.W)
         requirement_row.grid(column=1)
+
+    def __handle_remove_requirement(self, variable: StringVar, row: ttk.Frame) -> None:
+        self.__requirements.remove(variable)
+        row.destroy()
 
     def __extract_id(self, course_variable: StringVar) -> int:
         return int(course_variable.get().split(":")[0])
