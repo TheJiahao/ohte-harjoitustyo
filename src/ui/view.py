@@ -11,7 +11,6 @@ class View(ABC):
     ) -> None:
         self._root: ttk.Widget = root
         self._frame: ttk.Frame = ttk.Frame(master=self._root)
-        self._confirm: bool = False
 
     def pack(self) -> None:
         self._frame.pack(fill=constants.X)
