@@ -177,6 +177,7 @@ class CreateCourseView(View):
         planner_service.create_course(course)
 
         self.__course_list = planner_service.get_all_courses()
+        self.__course_variable.set("")
         self.__clear_data()
 
     def __handle_delete(self) -> None:
