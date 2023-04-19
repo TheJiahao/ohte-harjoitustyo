@@ -15,5 +15,5 @@
 |11.4.|3 tuntia 30 min|Lisätty alustava kurssien lisäystoiminto, refaktoroitu käyttöliittymä käyttämään `ttk.Notebook`-luokkaa|
 |17.4.|1 tunti 30 min|Refaktoroitu koodia, lisätty kurssien muokkaustoiminto|
 |18.4.|1 tunti 30 min|Korjattu kurssien lisäys- ja muokkaustoiminto, lisätty kurssin poistotoiminto|
-|19.4.|2 tunti|Lisätty testejä `PlannerService`-luokalle. Yritetty toteuttaa aikataulutusalgoritmi.|
+|19.4.|4 tuntia|Lisätty testejä `PlannerService`-luokalle, lisätty alustava aikataulutusalgoritmi, refaktoroitu `Course`- ja `CourseRepository`-luokkia|
 |Yht.|34 tuntia||
