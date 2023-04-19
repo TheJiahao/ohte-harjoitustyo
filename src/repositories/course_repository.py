@@ -37,9 +37,11 @@ class CourseRepository:
                 (course.name, course.credits),
             )
 
-            course.id = cursor.lastrowid  # type: ignore
+            if cursor.lastrowid:
+                course.id = cursor.lastrowid
+
         else:
-            if self.find_by_id(course.id) is not None:
+            if self.find_by_id(course.id):
                 self.delete(course.id)
 
             cursor.execute(
