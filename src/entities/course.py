@@ -49,13 +49,16 @@ class Course:
         self.__id: int = course_id or -1
 
     def __eq__(self, other: "Course") -> bool:
-        return (
-            self.name == other.name
-            and self.credits == other.credits
-            and self.timing == other.timing
-            and self.requirements == other.requirements
-            and self.id == other.id
-        )
+        if isinstance(other, Course):
+            return (
+                self.name == other.name
+                and self.credits == other.credits
+                and self.timing == other.timing
+                and self.requirements == other.requirements
+                and self.id == other.id
+            )
+
+        return False
 
     def __str__(self) -> str:
         return f"{self.__id}: {self.__name}, {self.__credits} op"
