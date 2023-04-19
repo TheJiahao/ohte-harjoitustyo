@@ -1,6 +1,7 @@
 from graphlib import TopologicalSorter
 
 from entities.course import Course
+from repositories.course_repository import CourseRepository
 from repositories import course_repository
 
 
@@ -10,7 +11,7 @@ class PlannerService:
     def __init__(self) -> None:
         """Luokan konstruktori."""
 
-        self.__course_repository = course_repository
+        self.__course_repository: CourseRepository = course_repository
 
     def get_courses_in_topological_order(self) -> list[Course]:
         """Palauttaa kurssit topologisessa järjestyksessä.
