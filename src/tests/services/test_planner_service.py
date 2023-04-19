@@ -76,7 +76,7 @@ class TestPlannerService(unittest.TestCase):
 
         self.assertEqual(
             self.planner_service.get_all_courses(),
-            [str(self.course_ohpe), str(self.course_ohja)],
+            [self.course_ohpe, self.course_ohja],
         )
 
     def test_delete_course(self):

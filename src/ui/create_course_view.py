@@ -24,7 +24,7 @@ class CreateCourseView(View):
         self.__name_variable: StringVar = StringVar(value="")
         self.__credits_variable: IntVar = IntVar(value=0)
         self.__course_variable: StringVar = StringVar(value="")
-        self.__course_list: list[str] = planner_service.get_all_courses()
+        self.__course_list: list[str] = []
         self.__timing_frame: ttk.Frame = ttk.Frame(master=self._frame)
         self.__timing: dict[int, BooleanVar] = {
             i: BooleanVar(value=False) for i in range(1, 5)
@@ -47,6 +47,8 @@ class CreateCourseView(View):
         return self._frame
 
     def _initialize(self) -> None:
+        self.__update_course_list()
+
         self.__initialize_course_field()
         self.__initialize_name_field()
         self.__initialize_credits_field()
@@ -187,8 +189,8 @@ class CreateCourseView(View):
 
         planner_service.create_course(course)
 
-        self.__course_list = planner_service.get_all_courses()
         self.__course_variable.set("")
+        self.__update_course_list()
         self.__clear_data()
 
     def __handle_delete(self) -> None:
@@ -201,8 +203,8 @@ class CreateCourseView(View):
 
         planner_service.delete_course(self.__current_id)
 
-        self.__course_list = planner_service.get_all_courses()
         self.__course_variable.set("")
+        self.__update_course_list()
         self.__clear_data()
 
     def __handle_add_requirement(self, course: Course | None = None) -> None:
@@ -260,3 +262,8 @@ class CreateCourseView(View):
             int: Kurssin id.
         """
         return int(course_variable.get().split(":")[0])
+
+    def __update_course_list(self) -> None:
+        self.__course_list = [
+            str(course) for course in planner_service.get_all_courses()
+        ]

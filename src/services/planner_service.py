@@ -47,14 +47,14 @@ class PlannerService:
         """
         return self.__course_repository.find_by_id(course_id)
 
-    def get_all_courses(self) -> list[str]:
+    def get_all_courses(self) -> list[Course]:
         """Palauttaa kaikki kurssit.
 
         Returns:
             list[str]: Kurssit merkkijonoina.
         """
 
-        return [str(course) for course in self.__course_repository.find_all()]
+        return self.__course_repository.find_all()
 
     def create_course(self, course: Course) -> None:
         """Lisää kurssin tietokantaan.
