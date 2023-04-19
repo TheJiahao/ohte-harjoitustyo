@@ -80,7 +80,7 @@ class CourseRepository:
         """Poistaa id:tä vastaavan kurssin.
 
         Args:
-            id (int): Kurssin id.
+            course_id (int): Kurssin id.
         """
 
         cursor = self.__connection.cursor()
@@ -88,7 +88,7 @@ class CourseRepository:
         cursor.execute("DELETE FROM Courses WHERE id=?", (course_id,))
         cursor.execute("DELETE FROM Periods WHERE course_id=?", (course_id,))
         cursor.execute(
-            "DELETE FROM Requirements WHERE course_id=:id or requirement_id=:id",
+            "DELETE FROM Requirements WHERE course_id=:course_id or requirement_id=:course_id",
             (course_id,),
         )
 
