@@ -63,6 +63,9 @@ class Course:
     def __str__(self) -> str:
         return f"{self.__id}: {self.__name}, {self.__credits} op"
 
+    def __repr__(self) -> str:
+        return f'Course({self.name}, {self.credits}, {self.timing}, {self.requirements}, {self.id})'
+
     @property
     def name(self) -> str:
         return self.__name

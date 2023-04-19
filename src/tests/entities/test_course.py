@@ -182,3 +182,14 @@ class TestCourse(unittest.TestCase):
 
         self.assertEqual(str(course1), "200: Ohte, 5 op")
         self.assertEqual(str(course2), "10: OhJa, 5 op")
+
+    def test_repr(self):
+        course = course = Course("Ohte", 5, {1, 2, 3}, {2, 4}, course_id=200)
+
+        self.assertIn(
+            repr(course),
+            [
+                "Course(Ohte, 5, {1, 2, 3}, {2, 4}, 200)",
+                "Course(Ohte, 5, {1, 2, 3}, {4, 2}, 200)",
+            ],
+        )
