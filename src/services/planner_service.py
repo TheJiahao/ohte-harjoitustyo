@@ -1,15 +1,23 @@
 from graphlib import TopologicalSorter
 
 from entities.course import Course
+from repositories import course_repository as default_course_repository
 from repositories.course_repository import CourseRepository
-from repositories import course_repository
 
 
 class PlannerService:
-    """Luokka, joka vastaa sovelluksen logiikasta."""
+    """""Luokka, joka vastaa sovelluksen logiikasta.""" ""
 
-    def __init__(self) -> None:
-        """Luokan konstruktori."""
+    def __init__(
+        self, course_repository: CourseRepository = default_course_repository
+    ) -> None:
+        """Luokan konstruktori.
+
+        Args:
+            course_repository (CourseRepository, optional):
+                Olio, joka vastaa kurssien tallentamisesta.
+                Oletukseltaan default_course_repository.
+        """
 
         self.__course_repository: CourseRepository = course_repository
 
