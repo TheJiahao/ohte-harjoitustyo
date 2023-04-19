@@ -41,9 +41,32 @@ class TestPlannerService(unittest.TestCase):
     def setUp(self) -> None:
         self.course_ohpe = Course("OhPe", 5, {1, 2, 3, 4}, course_id=1)
         self.course_ohja = Course("OhJa", 5)
-        self.planner_service = PlannerService(FakeCourseRepository())
+        self.planner_service = PlannerService(course_repository=FakeCourseRepository())
 
         self.planner_service.delete_all_courses()
+
+    def validate_topological_order(self, courses: list[Course]) -> bool:
+        seen = set()
+
+        for course in courses:
+            if not course.requirements.issubset(seen):
+                return False
+
+            seen.add(course.id)
+
+        return True
+
+    def validate_schedule(self, schedule: list[list[Course]]) -> bool:
+        seen = set()
+
+        for period in schedule:
+            for course in period:
+                if not course.requirements.issubset(seen):
+                    return False
+
+                seen.add(course.id)
+
+        return True
 
     def test_create_course_with_non_existing_course(self):
         self.planner_service.create_course(self.course_ohpe)
@@ -93,3 +116,45 @@ class TestPlannerService(unittest.TestCase):
         self.planner_service.delete_all_courses()
 
         self.assertEqual(self.planner_service.get_all_courses(), [])
+
+    def test_get_courses_in_topological_order(self):
+        # Testattavat kurssit verkkona:
+        # B -> C -> E
+        # ^    ^    ^
+        # |    |  /
+        # A -> D
+
+        a = Course("A", 10, {1, 2, 3}, course_id=1)
+        b = Course("B", 10, {1, 2, 3}, {1}, course_id=2)
+        c = Course("C", 10, {1, 2, 3}, {2, 4}, course_id=3)
+        d = Course("D", 10, {1, 2, 3}, {1}, course_id=4)
+        e = Course("E", 10, {1, 2, 3}, {3, 4}, course_id=5)
+
+        self.planner_service.create_course(a)
+        self.planner_service.create_course(b)
+        self.planner_service.create_course(c)
+        self.planner_service.create_course(d)
+        self.planner_service.create_course(e)
+
+        courses = self.planner_service.get_courses_in_topological_order()
+
+        self.assertTrue(self.validate_topological_order(courses))
+
+    def test_get_schedule(self):
+        course_ohpe = Course("Ohpe", 5, {1, 3}, course_id=1)
+        course_ohja = Course("Ohja", 5, {2, 4}, {1}, course_id=2)
+        course_jym = Course("Jym", 5, {1}, course_id=3)
+        course_tito = Course("Tito", 5, {2, 3}, {1}, course_id=4)
+        course_tira = Course("Tira", 10, {3}, {3, 4}, course_id=5)
+        course_tilpe = Course("Tilpe", 5, {4}, {4, 5}, course_id=6)
+
+        self.planner_service.create_course(course_ohpe)
+        self.planner_service.create_course(course_ohja)
+        self.planner_service.create_course(course_jym)
+        self.planner_service.create_course(course_tito)
+        self.planner_service.create_course(course_tira)
+        self.planner_service.create_course(course_tilpe)
+
+        schedule = self.planner_service.get_schedule()
+
+        self.assertTrue(self.validate_schedule(schedule))

@@ -27,7 +27,7 @@ class PlannerService:
                 Oletukseltaan default_course_repository.
         """
 
-        self.__periods = periods
+        self.__periods: int = periods
         self.__course_repository: CourseRepository = course_repository
 
     def get_course(self, course_id: int) -> Course | None:
@@ -75,6 +75,8 @@ class PlannerService:
 
     def get_courses_in_topological_order(self) -> list[Course]:
         """Palauttaa kurssit topologisessa järjestyksessä.
+        Jos jokin esitietovaatimuskurssi ei ole olemassa (esimerkiksi poiston takia),
+        niin se jätetään huomioimatta.
 
         Returns:
             list[Course]: Kurssit topologisessa järjestyksessä.
@@ -90,7 +92,7 @@ class PlannerService:
             course for id in sorter.static_order() if (course := self.get_course(id))
         ]
 
-    def assign_courses_to_periods(
+    def get_schedule(
         self, max_credits: int = 15, starting_period: int = 1
     ) -> list[list[Course]]:
         """Jakaa kurssit sopiviin periodeihin.
@@ -116,10 +118,11 @@ class PlannerService:
         courses = self.get_courses_in_topological_order()
         result = [[]]
         passed_periods = 0
+        valid_periods = list(range(1, self.__periods + 1))
 
         for course in courses:
-            if not course.timing.intersection(range(1, self.__periods)):
-                raise TimingError(f"Kurssilla {course} ei ole ajoitusta.")
+            if not course.timing.intersection(valid_periods):
+                raise TimingError(f"'Kurssilla {course}' ei ole ajoitusta.")
 
             total_credits = 0
 
@@ -130,7 +133,7 @@ class PlannerService:
             ):
                 total_credits = 0
                 passed_periods += 1
-                result[passed_periods] = []
+                result.append([])
 
             total_credits += course.credits
 
