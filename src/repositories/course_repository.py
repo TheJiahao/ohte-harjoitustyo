@@ -1,4 +1,3 @@
-from copy import deepcopy
 from sqlite3 import Connection
 
 from database_connection import get_database_connection
@@ -17,8 +16,9 @@ class CourseRepository:
 
         self.__connection: Connection = connection
 
-    def create(self, course: Course) -> Course:
+    def create(self, course: Course) -> None:
         """Tallentaa kurssin tietokantaan tai muokkaa jo olevaa.
+        Voi muokata annetun kurssin id:n.
 
         Args:
             course (Course): Tallennettava tai muokattava kurssi.
@@ -26,8 +26,6 @@ class CourseRepository:
         Returns:
             Course: Kurssi uudella tietokannassa käytetyllä id:llä.
         """
-
-        course = deepcopy(course)
 
         cursor = self.__connection.cursor()
 
@@ -53,8 +51,6 @@ class CourseRepository:
 
         self.__write_timing(course)
         self.__write_requirements(course)
-
-        return course
 
     def __write_timing(self, course: Course) -> None:
         cursor = self.__connection.cursor()

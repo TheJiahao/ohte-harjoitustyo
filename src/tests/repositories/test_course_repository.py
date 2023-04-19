@@ -43,13 +43,6 @@ class TestCourseRepository(unittest.TestCase):
 
         self.assertEqual(course, course_repository.find_by_id(20))
 
-    def test_create_does_not_change_given_course(self):
-        course = Course("Raja-arvot", 5, {1, 2})
-
-        course_repository.create(course)
-
-        self.assertEqual(course, Course("Raja-arvot", 5, {1, 2}))
-
     def test_delete(self):
         course_repository.create(self.course_ohja)
         course_repository.create(self.course_ohte)
@@ -90,7 +83,8 @@ class TestCourseRepository(unittest.TestCase):
         self.assertEqual(course_repository.find_all(), [])
 
     def test_find_requirements(self):
-        course = course_repository.create(Course("Tikake", 5, requirements={5, 3, 2}))
+        course = Course("Tikake", 5, requirements={5, 3, 2})
+        course_repository.create(course)
 
         self.assertEqual(course_repository.find_requirements(course.id), {5, 3, 2})
 
@@ -98,12 +92,14 @@ class TestCourseRepository(unittest.TestCase):
         self.assertEqual(course_repository.find_requirements(2), set())
 
     def test_find_requirements_returns_empty_set_if_no_requirements(self):
-        course = course_repository.create(Course("Linis 1", 5))
+        course = Course("Linis 1", 5)
+        course_repository.create(course)
 
         self.assertEqual(course_repository.find_requirements(course.id), set())
 
     def test_find_timing(self):
-        course = course_repository.create(Course("Tikake", 5, timing={5, 3, 2}))
+        course = Course("Tikake", 5, timing={5, 3, 2})
+        course_repository.create(course)
 
         self.assertEqual(course_repository.find_timing(course.id), {5, 3, 2})
 
@@ -111,6 +107,7 @@ class TestCourseRepository(unittest.TestCase):
         self.assertEqual(course_repository.find_timing(2), set())
 
     def test_find_timing_returns_empty_set_if_no_timing(self):
-        course = course_repository.create(Course("Linis 1", 5))
+        course = Course("Linis 1", 5)
+        course_repository.create(course)
 
         self.assertEqual(course_repository.find_timing(course.id), set())
