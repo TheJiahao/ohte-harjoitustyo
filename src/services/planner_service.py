@@ -103,12 +103,13 @@ class PlannerService:
             course for id in sorter.static_order() if (course := self.get_course(id))
         ]
 
-    def set(self, starting_year: int, max_credits: int, starting_period: int) -> None:
+    def set(self, starting_year: int, starting_period: int, max_credits: int) -> None:
         """Asettaa parametrit aikataulun määrittämistä varten.
 
         Args:
+            starting_year (int): Aloitusvuosi.
+            starting_period (int): Aloitusperiodi.
             max_credits (int): Opintopisteyläraja periodille.
-            starting_period (int, optional): Aloitusperiodi.
         """
         self.__max_credits = max_credits
         self.__starting_year = starting_year
