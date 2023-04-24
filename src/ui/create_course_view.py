@@ -34,13 +34,9 @@ class CreateCourseView(View):
         self.__requirements: list[StringVar] = []
         self.__current_id: int = -1
 
-        self._initialize()
+        self.__initialize()
 
-    @property
-    def frame(self) -> ttk.Frame:
-        return self._frame
-
-    def _initialize(self) -> None:
+    def __initialize(self) -> None:
         self.__update_course_list()
 
         self.__initialize_course_field()
