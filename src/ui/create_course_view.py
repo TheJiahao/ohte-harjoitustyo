@@ -50,14 +50,14 @@ class CreateCourseView(View):
             text="Tallenna",
             command=self.__handle_save,
         )
-        save_button.grid(row=7, column=1, sticky=(constants.W, constants.S))
+        save_button.grid(row=7, column=1, sticky=constants.W + constants.S)
 
         delete_button = ttk.Button(
             master=self._frame,
             text="Poista",
             command=self.__handle_delete,
         )
-        delete_button.grid(row=7, column=2, sticky=(constants.E, constants.S))
+        delete_button.grid(row=7, column=2, sticky=constants.E + constants.S)
 
     def __initialize_course_field(self) -> None:
         course_label = ttk.Label(master=self._frame, text="Selaa")
