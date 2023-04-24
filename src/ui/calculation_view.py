@@ -4,6 +4,7 @@ from tkinter.messagebox import showerror
 from typing import Callable
 
 from services import planner_service
+from services.planner_service import TimingError
 from ui.view import View
 
 
@@ -86,5 +87,9 @@ class CalculationView(View):
             planner_service.set(starting_year, starting_period, max_credits)
 
             self.__handle_show_schedule_view()
-        except TclError:
-            showerror("Virhe", "Tarkista syötteet, vain kokonaisluvut kelpaavat.")
+
+        except TimingError as error:
+            showerror("Virhe", str(error))
+
+        """ else:
+            showerror("Virhe", "Tarkista, että kurssit eivät ole keskenään riippuvia.") """
