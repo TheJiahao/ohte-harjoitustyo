@@ -29,6 +29,8 @@ class PlannerService:
 
         self.__periods: int = periods
         self.__course_repository: CourseRepository = course_repository
+        self.__max_credits: int = 15
+        self.__starting_period: int = 1
 
     def get_course(self, course_id: int) -> Course | None:
         """Palauttaa id:tä vastaavan kurssin.
@@ -92,18 +94,19 @@ class PlannerService:
             course for id in sorter.static_order() if (course := self.get_course(id))
         ]
 
-    def get_schedule(
-        self, max_credits: int = 15, starting_period: int = 1
-    ) -> list[list[Course]]:
-        """Jakaa kurssit sopiviin periodeihin.
+    def set(self, max_credits: int, starting_period: int) -> None:
+        """Asettaa parametrit aikataulun määrittämistä varten.
 
         Args:
-            max_credits (int, optional):
-                Opintopisteyläraja periodille.
-                Oletukseltaan 15 op/periodi eli 60 op/lukuvuosi.
+            max_credits (int): Opintopisteyläraja periodille.
+            starting_period (int, optional): Aloitusperiodi.
+        """
+        self.__max_credits = max_credits
+        self.__starting_period = starting_period
 
-            starting_period (int, optional):
-                Aloitusperiodi. Oletukseltaan 1.
+    def get_schedule(self) -> list[list[Course]]:
+        """Jakaa kurssit sopiviin periodeihin.
+
         Raises:
             TimingError:
                 Kurssin ajoitus ei kelpaa eli on joko tyhjä tai ei sisällä sopivia periodeja.
@@ -128,8 +131,9 @@ class PlannerService:
 
             # Edellisen tarkistuksen takia tämä silmukka päättyy varmasti
             while (
-                passed_periods + starting_period % self.__periods not in course.timing
-                or total_credits > max_credits
+                passed_periods + self.__starting_period % self.__periods
+                not in course.timing
+                or total_credits > self.__max_credits
             ):
                 total_credits = 0
                 passed_periods += 1
