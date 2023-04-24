@@ -1,7 +1,7 @@
 from tkinter import Tk, ttk
 
 from ui.create_course_view import CreateCourseView
-from ui.view import View
+from ui.calculation_view import CalculationView
 
 
 class UI:
@@ -25,5 +25,7 @@ class UI:
 
     def __initialize(self) -> None:
         create_course_view = CreateCourseView(self.__notebook)
+        calculation_view = CalculationView(self.__notebook)
 
         self.__notebook.add(create_course_view.frame, text="Lisää kurssi")
+        self.__notebook.add(calculation_view.frame, text="Laskuri")
