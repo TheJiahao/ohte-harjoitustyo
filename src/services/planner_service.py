@@ -27,11 +27,15 @@ class PlannerService:
                 Oletukseltaan default_course_repository.
         """
 
-        self.__periods: int = periods
+        self.__periods_per_year: int = periods
         self.__course_repository: CourseRepository = course_repository
         self.__starting_year: int = 0
         self.__starting_period: int = 1
         self.__max_credits: int = 15
+
+    @property
+    def periods_per_year(self) -> int:
+        return self.__periods_per_year
 
     @property
     def starting_year(self) -> int:
@@ -132,7 +136,7 @@ class PlannerService:
         courses = self.get_courses_in_topological_order()
         result = [[]]
         passed_periods = 0
-        valid_periods = list(range(1, self.__periods + 1))
+        valid_periods = list(range(1, self.__periods_per_year + 1))
 
         for course in courses:
             if not course.timing.intersection(valid_periods):
@@ -142,7 +146,7 @@ class PlannerService:
 
             # Edellisen tarkistuksen takia tämä silmukka päättyy varmasti
             while (
-                passed_periods + self.__starting_period % self.__periods
+                passed_periods + self.__starting_period % self.__periods_per_year
                 not in course.timing
                 or total_credits > self.__max_credits
             ):
