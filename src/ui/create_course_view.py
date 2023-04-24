@@ -36,12 +36,6 @@ class CreateCourseView(View):
 
         self._initialize()
 
-    def pack(self) -> None:
-        self._frame.pack(fill=constants.X)
-
-    def destroy(self) -> None:
-        self._frame.destroy()
-
     @property
     def frame(self) -> ttk.Frame:
         return self._frame

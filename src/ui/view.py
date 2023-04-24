@@ -17,3 +17,7 @@ class View(ABC):
 
     def destroy(self) -> None:
         self._frame.destroy()
+
+    @property
+    def frame(self) -> ttk.Frame:
+        return self._frame
