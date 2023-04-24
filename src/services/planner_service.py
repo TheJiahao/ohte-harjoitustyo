@@ -136,7 +136,7 @@ class PlannerService:
 
         for course in courses:
             if not course.timing.intersection(valid_periods):
-                raise TimingError(f"'Kurssilla {course}' ei ole ajoitusta.")
+                raise TimingError(f"Kurssilla '{course}' ei ole ajoitusta.")
 
             total_credits = 0
 
