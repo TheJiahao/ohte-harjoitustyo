@@ -29,8 +29,17 @@ class PlannerService:
 
         self.__periods: int = periods
         self.__course_repository: CourseRepository = course_repository
-        self.__max_credits: int = 15
+        self.__starting_year: int = 0
         self.__starting_period: int = 1
+        self.__max_credits: int = 15
+
+    @property
+    def starting_year(self) -> int:
+        return self.__starting_year
+
+    @property
+    def starting_period(self) -> int:
+        return self.__starting_period
 
     def get_course(self, course_id: int) -> Course | None:
         """Palauttaa id:tä vastaavan kurssin.
@@ -94,7 +103,7 @@ class PlannerService:
             course for id in sorter.static_order() if (course := self.get_course(id))
         ]
 
-    def set(self, max_credits: int, starting_period: int) -> None:
+    def set(self, starting_year: int, max_credits: int, starting_period: int) -> None:
         """Asettaa parametrit aikataulun määrittämistä varten.
 
         Args:
@@ -102,6 +111,7 @@ class PlannerService:
             starting_period (int, optional): Aloitusperiodi.
         """
         self.__max_credits = max_credits
+        self.__starting_year = starting_year
         self.__starting_period = starting_period
 
     def get_schedule(self) -> list[list[Course]]:
