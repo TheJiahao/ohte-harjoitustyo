@@ -1,15 +1,20 @@
-from tkinter import IntVar, constants, ttk
+from datetime import date
+from tkinter import IntVar, constants, ttk, TclError
+from tkinter.messagebox import showerror
+from typing import Callable
 
+from services import planner_service
 from ui.view import View
 
 
 class CalculationView(View):
-    def __init__(self, root: ttk.Widget) -> None:
+    def __init__(self, root: ttk.Widget, handle_show_schedule_view: Callable) -> None:
         super().__init__(root)
 
-        self.__credits_variable = IntVar()
-        self.__period_variable = IntVar()
-        self.__year_variable = IntVar()
+        self.__credits_variable: IntVar = IntVar(value=15)
+        self.__period_variable: IntVar = IntVar(value=1)
+        self.__year_variable: IntVar = IntVar(value=date.today().year)
+        self.__handle_show_schedule_view: Callable = handle_show_schedule_view
 
         self.__initialize()
 
@@ -73,4 +78,13 @@ class CalculationView(View):
         period_spinbox.grid(row=3, column=2, sticky=constants.W)
 
     def __handle_calculate(self) -> None:
-        pass
+        try:
+            max_credits = self.__credits_variable.get()
+            starting_year = self.__year_variable.get()
+            starting_period = self.__period_variable.get()
+
+            planner_service.set(starting_year, starting_period, max_credits)
+
+            self.__handle_show_schedule_view()
+        except TclError:
+            showerror("Virhe", "Tarkista syötteet, vain kokonaisluvut kelpaavat.")
