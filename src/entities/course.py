@@ -22,7 +22,7 @@ class Course:
     def __init__(
         self,
         name: str,
-        credits: int,
+        course_credits: int,
         timing: set[int] | None = None,
         requirements: set[int] | None = None,
         course_id: int | None = None,
@@ -43,7 +43,7 @@ class Course:
                 Kurssin id. Oletukseltaan None.
         """
         self.__name: str = name
-        self.__credits: int = credits
+        self.__credits: int = course_credits
         self.__timing: set[int] = timing or set()
         self.__requiments: set[int] = requirements or set()
         self.__id: int = course_id or -1
@@ -87,7 +87,7 @@ class Course:
         return self.__id
 
     @id.setter
-    def id(self, id: int) -> None:
+    def id(self, value: int) -> None:
         """Asettaa id:n kurssille.
 
         Args:
@@ -97,13 +97,13 @@ class Course:
             ValueError: Ei-positiivinen id.
         """
 
-        if id <= 0:
+        if value <= 0:
             raise ValueError("Ei-positiivinen id ei kelpaa.")
 
-        self.__id = id
+        self.__id = value
 
     @credits.setter
-    def credits(self, credits: int) -> None:
+    def credits(self, value: int) -> None:
         """Asettaa opintopistemäärän kurssille.
 
         Args:
@@ -112,10 +112,10 @@ class Course:
         Raises:
             ValueError: Opintopistemäärä on ei-positiivinen.
         """
-        if credits <= 0:
+        if value <= 0:
             raise ValueError("Ei-positiivinen opintopiste ei kelpaa.")
 
-        self.__credits = credits
+        self.__credits = value
 
     @name.setter
     def name(self, name: str) -> None:
@@ -150,7 +150,7 @@ class Course:
         if period in self.__timing:
             self.__timing.remove(period)
 
-    def add_requirement(self, id: int) -> None:
+    def add_requirement(self, course_id: int) -> None:
         """Lisää esitietokurssin.
 
         Args:
@@ -159,17 +159,17 @@ class Course:
         Raises:
             ValueError: Ei-positiivinen id.
         """
-        if id <= 0:
+        if course_id <= 0:
             raise ValueError("Ei-positiivinen id ei kelpaa.")
 
-        self.__requiments.add(id)
+        self.__requiments.add(course_id)
 
-    def remove_requirement(self, id: int) -> None:
+    def remove_requirement(self, course_id: int) -> None:
         """Poistaa esitietokurssin, jos se on esitietovaatimuksissa.
 
         Args:
             id (int): Poistettavan esitietokurssin id.
         """
 
-        if id in self.__requiments:
-            self.__requiments.remove(id)
+        if course_id in self.__requiments:
+            self.__requiments.remove(course_id)
