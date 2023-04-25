@@ -1,20 +1,21 @@
-from sqlite3 import Connection
+from sqlite3 import Connection, Cursor
 
-from database_connection import get_database_connection
+from entities import database
 from entities.course import Course
 
 
 class CourseRepository:
     """Kurssien tietokantaoperaatioista vastaava luokka."""
 
-    def __init__(self, connection: Connection = get_database_connection()) -> None:
+    def __init__(self) -> None:
         """Luokan konstruktori.
 
         Args:
             connection (Connection): Tietokantayhteys.
         """
 
-        self.__connection: Connection = connection
+        self.__connection: Connection = database.connection
+        self.__cursor: Cursor = database.cursor
 
     def create(self, course: Course) -> None:
         """Tallentaa kurssin tietokantaan tai muokkaa jo olevaa.
@@ -27,22 +28,22 @@ class CourseRepository:
             Course: Kurssi uudella tietokannassa käytetyllä id:llä.
         """
 
-        cursor = self.__connection.cursor()
+        self.__cursor = self.__connection.cursor()
 
         if course.id == -1:
-            cursor.execute(
+            self.__cursor.execute(
                 "INSERT INTO Courses (name, credits) VALUES (?, ?)",
                 (course.name, course.credits),
             )
 
-            if cursor.lastrowid:
-                course.id = cursor.lastrowid
+            if self.__cursor.lastrowid:
+                course.id = self.__cursor.lastrowid
 
         else:
             if self.find_by_id(course.id):
                 self.delete(course.id)
 
-            cursor.execute(
+            self.__cursor.execute(
                 "INSERT INTO Courses (id, name, credits) VALUES (?, ?, ?)",
                 (course.id, course.name, course.credits),
             )

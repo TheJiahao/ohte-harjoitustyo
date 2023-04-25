@@ -1,5 +1,5 @@
-from initialize_database import initialize_database
+from entities import database
 
 
 def build() -> None:
-    initialize_database()
+    database.initialize()
