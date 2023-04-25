@@ -45,6 +45,31 @@ class PlannerService:
     def starting_period(self) -> int:
         return self.__starting_period
 
+    @property
+    def max_credits(self) -> int:
+        return self.__max_credits
+
+    @starting_year.setter
+    def starting_year(self, year: int) -> None:
+        if year < 0:
+            raise ValueError("Aloitusvuosi ei voi olla negatiivinen.")
+
+        self.__starting_year = year
+
+    @starting_period.setter
+    def starting_period(self, period: int) -> None:
+        if not 0 < period <= self.periods_per_year:
+            raise ValueError("Virheellinen aloitusperiodi.")
+
+        self.__starting_period = period
+
+    @max_credits.setter
+    def max_credits(self, max_credits: int) -> None:
+        if max_credits < 0:
+            raise ValueError("Negatiivinen opintopisteyläraja ei kelpaa.")
+
+        self.__max_credits = max_credits
+
     def get_course(self, course_id: int) -> Course | None:
         """Palauttaa id:tä vastaavan kurssin.
 
@@ -115,9 +140,10 @@ class PlannerService:
             starting_period (int): Aloitusperiodi.
             max_credits (int): Opintopisteyläraja periodille.
         """
-        self.__max_credits = max_credits
-        self.__starting_year = starting_year
-        self.__starting_period = starting_period
+
+        self.max_credits = max_credits
+        self.starting_year = starting_year
+        self.starting_period = starting_period
 
     def get_schedule(self) -> list[list[Course]]:
         """Jakaa kurssit sopiviin periodeihin.
