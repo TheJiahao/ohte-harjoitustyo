@@ -91,5 +91,5 @@ class CalculationView(View):
         except TimingError as error:
             showerror("Virhe", str(error))
 
-        """ else:
-            showerror("Virhe", "Tarkista, että kurssit eivät ole keskenään riippuvia.") """
+        else:
+            showerror("Virhe", "Ei ole kursseja tai kurssit ovat keskenään riippuvia.")

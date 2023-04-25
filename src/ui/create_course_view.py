@@ -3,6 +3,7 @@ from tkinter.messagebox import askyesno, showerror
 
 from entities.course import Course
 from services import planner_service
+from services.planner_service import TimingError
 from ui.view import View
 
 
@@ -177,7 +178,10 @@ class CreateCourseView(View):
 
         course = Course(name, credits, timing, requirements, self.__current_id)
 
-        planner_service.create_course(course)
+        try:
+            planner_service.create_course(course)
+        except TimingError as error:
+            showerror("Virhe", str(error))
 
         self.__course_variable.set("")
         self.__update_course_list()
