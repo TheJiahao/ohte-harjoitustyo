@@ -1,5 +1,5 @@
 from datetime import date
-from tkinter import IntVar, constants, ttk, TclError
+from tkinter import IntVar, TclError, constants, ttk
 from tkinter.messagebox import showerror
 from typing import Callable
 

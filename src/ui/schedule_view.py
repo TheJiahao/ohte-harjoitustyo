@@ -1,4 +1,4 @@
-from tkinter import ttk, constants
+from tkinter import constants, ttk
 
 from services import planner_service
 from ui.view import View

@@ -1,7 +1,7 @@
 from tkinter import Tk, ttk
 
-from ui.create_course_view import CreateCourseView
 from ui.calculation_view import CalculationView
+from ui.create_course_view import CreateCourseView
 from ui.schedule_view import ScheduleView
 
 
