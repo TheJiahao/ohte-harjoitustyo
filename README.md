@@ -18,13 +18,15 @@ Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/p
     poetry install
     ```
 
-3. Käynnistä sovellus (tyhjä käyttöliittymä):
+3. Käynnistä sovellus:
 
     ```shell
     poetry run invoke start
     ```
 
 ## Invoke-tehtävät
+
+Suorita komennon projektin juurihakemistossa.
 
 ### Testaus
 
