@@ -37,8 +37,7 @@ Jos tällainen aikataulunäkymä osoittautuu liian vaativaksi, niin teen näkym�
 
 - [ ] Kurssitietojen lukeminen `json`-tiedostosta
 - [ ] Aikataulun vieminen `json`-tiedostona
-- [ ] Opintopisteyläraja periodille
+- [x] Opintopisteyläraja periodille
 - [ ] Periodin ja lukuvuoden opintopistemäärän näyttäminen
 - [ ] Kurssien haku verkosta (jos löytyy API, todennäköisesti ei toteudu)
-- [ ] Periodien työmäärän tasapainottaminen
 - [ ] Kesäperiodit
