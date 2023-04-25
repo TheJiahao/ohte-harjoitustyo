@@ -31,3 +31,22 @@ Algoritmin vaiheet:
 4. Toistetaan kunnes kurssilista on käyty läpi.
 
 [^tirakirja]: Antti Laaksonen, *Tietorakenteet ja algoritmit*, 2022. https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/
+
+## Toiminnallisuudet
+
+### Kurssin tallentaminen
+
+```mermaid
+sequenceDiagram
+actor User
+participant UI
+participant PlannerService
+participant CourseRepository
+
+User ->> UI: click "save" button
+User ->> User: create "course"
+UI ->> PlannerService: create_course(course)
+PlannerService ->> CourseRepository: create(course)
+```
+
+### Aikataulun laskeminen
