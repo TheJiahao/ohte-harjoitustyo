@@ -1,7 +1,7 @@
 import unittest
 
 from entities.course import Course
-from services.planner_service import PlannerService
+from services.planner_service import PlannerService, TimingError
 
 
 class FakeCourseRepository:
@@ -40,7 +40,7 @@ class FakeCourseRepository:
 class TestPlannerService(unittest.TestCase):
     def setUp(self) -> None:
         self.course_ohpe = Course("OhPe", 5, {1, 2, 3, 4}, course_id=1)
-        self.course_ohja = Course("OhJa", 5)
+        self.course_ohja = Course("OhJa", 5, {2})
         self.planner_service = PlannerService(course_repository=FakeCourseRepository())
 
         self.planner_service.delete_all_courses()
@@ -68,6 +68,25 @@ class TestPlannerService(unittest.TestCase):
 
         return True
 
+    def test_setting_negative_starting_year_raises_error(self):
+        with self.assertRaises(ValueError):
+            self.planner_service.starting_year = -1
+
+    def test_setting_negative_starting_period_raises_error(self):
+        with self.assertRaises(ValueError):
+            self.planner_service.starting_period = -1
+
+    def test_setting_period_greater_than_periods_per_year_raises_error(self):
+        with self.assertRaises(ValueError):
+            self.planner_service.starting_period = 100
+
+        with self.assertRaises(ValueError):
+            self.planner_service.starting_period = 5
+
+    def test_setting_negative_max_credits_raises_error(self):
+        with self.assertRaises(ValueError):
+            self.planner_service.max_credits = -10
+
     def test_create_course_with_non_existing_course(self):
         self.planner_service.create_course(self.course_ohpe)
         self.assertEqual(self.planner_service.get_course(1), self.course_ohpe)
@@ -79,6 +98,24 @@ class TestPlannerService(unittest.TestCase):
         self.planner_service.create_course(course_ohpe_edited)
 
         self.assertEqual(self.planner_service.get_course(1), course_ohpe_edited)
+
+    def test_create_course_raises_error_when_courses_have_invalid_timing(self):
+        course_ohpe = Course("Ohpe", 5)
+        course_ohja = Course("Ohja", 5, {5}, {1})
+        course_jym = Course("Jym", 5, {-100})
+        course_ohte = Course("Jym", 5, {-10, 20})
+
+        with self.assertRaises(TimingError):
+            self.planner_service.create_course(course_ohpe)
+
+        with self.assertRaises(TimingError):
+            self.planner_service.create_course(course_ohja)
+
+        with self.assertRaises(TimingError):
+            self.planner_service.create_course(course_jym)
+
+        with self.assertRaises(TimingError):
+            self.planner_service.create_course(course_ohte)
 
     def test_get_course_returns_course_with_existing_course(self):
         self.planner_service.create_course(self.course_ohja)
@@ -110,8 +147,8 @@ class TestPlannerService(unittest.TestCase):
 
     def test_delete_all_courses(self):
         self.planner_service.create_course(self.course_ohpe)
-        self.planner_service.create_course(Course("Test1", 5))
-        self.planner_service.create_course(Course("Test2", 100))
+        self.planner_service.create_course(Course("Test1", 5, {1}))
+        self.planner_service.create_course(Course("Test2", 100, {2}))
 
         self.planner_service.delete_all_courses()
 
@@ -158,3 +195,10 @@ class TestPlannerService(unittest.TestCase):
         schedule = self.planner_service.get_schedule()
 
         self.assertTrue(self.validate_schedule(schedule))
+
+    def test_set(self):
+        self.planner_service.set(2000, 3, 15)
+
+        self.assertEqual(self.planner_service.starting_year, 2000)
+        self.assertEqual(self.planner_service.starting_period, 3)
+        self.assertEqual(self.planner_service.max_credits, 15)
