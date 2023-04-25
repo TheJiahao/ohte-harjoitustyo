@@ -31,7 +31,7 @@ Jos tällainen aikataulunäkymä osoittautuu liian vaativaksi, niin teen näkym�
 - [x] Lisättyjen kurssien muokkaus ja selaaminen
 - [x] Lisättyjen kurssien poistaminen
 - [x] Kurssitietojen säilyttäminen tietokannassa
-- [ ] Aikataulu topologisessa järjestyksessä (esitietovaatimukset täyttyvät ennen kurssia)
+- [x] Aikataulu topologisessa järjestyksessä (esitietovaatimukset täyttyvät ennen kurssia)
 
 ### Jatkokehitysideoita
 

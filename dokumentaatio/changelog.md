@@ -15,3 +15,8 @@
 
 - Lisätty alustava käyttöliittymä, jolla voi lisätä, muokata ja poistaa kursseja
 - Lisätty sovelluslogiikasta vastaava `PlannerService`-luokka
+
+## Viikko 5
+
+- Lisätty aikataulutusalgoritmi `PlannerService`-luokkaan
+- Lisätty alustava laskuri- ja aikataulunäkymä
