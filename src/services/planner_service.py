@@ -95,7 +95,13 @@ class PlannerService:
 
         Args:
             course (Course): Lisättävä kurssi.
+
+        Raises:
+            TimingError: Kurssilla ei ole ajoitusta.
         """
+
+        if not course.timing.intersection(range(1, self.__periods_per_year + 1)):
+            raise TimingError(f"Kurssilla '{course}' ei ole ajoitusta.")
 
         self.__course_repository.create(course)
 
@@ -148,10 +154,6 @@ class PlannerService:
     def get_schedule(self) -> list[list[Course]]:
         """Jakaa kurssit sopiviin periodeihin.
 
-        Raises:
-            TimingError:
-                Kurssin ajoitus ei kelpaa eli on joko tyhjä tai ei sisällä sopivia periodeja.
-
         Returns:
             list[list[Course]]:
                 Kurssit jaettuna sopiviin periodeihin.
@@ -162,12 +164,8 @@ class PlannerService:
         courses = self.get_courses_in_topological_order()
         result = [[]]
         passed_periods = 0
-        valid_periods = list(range(1, self.__periods_per_year + 1))
 
         for course in courses:
-            if not course.timing.intersection(valid_periods):
-                raise TimingError(f"Kurssilla '{course}' ei ole ajoitusta.")
-
             total_credits = 0
 
             # Edellisen tarkistuksen takia tämä silmukka päättyy varmasti
