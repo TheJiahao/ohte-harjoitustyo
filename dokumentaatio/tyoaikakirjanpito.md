@@ -17,5 +17,5 @@
 |18.4.|1 tunti 30 min|Korjattu kurssien lisäys- ja muokkaustoiminto, lisätty kurssin poistotoiminto|
 |19.4.|4 tuntia|Lisätty testejä `PlannerService`-luokalle, lisätty alustava aikataulutusalgoritmi, refaktoroitu `Course`- ja `CourseRepository`-luokkia|
 |24.4.|3 tuntia|Lisätty alustava laskurinäkymä, refaktoroitu käyttöliittymää ja logiikkaa|
-|25.4.|2 tuntia|Refactoroitu tietokantaan liittyvät koodit samaan luokkaan, lisätty testejä `PlannerService`-luokalle|
-|Yht.|38 tuntia 30 min||
+|25.4.|3 tuntia|Refactoroitu tietokantaan liittyvät koodit samaan luokkaan, lisätty testejä `PlannerService`-luokalle|
+|Yht.|39 tuntia 30 min||

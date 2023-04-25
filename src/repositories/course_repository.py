@@ -23,9 +23,6 @@ class CourseRepository:
 
         Args:
             course (Course): Tallennettava tai muokattava kurssi.
-
-        Returns:
-            Course: Kurssi uudella tietokannassa käytetyllä id:llä.
         """
 
         self.__cursor = self.__connection.cursor()

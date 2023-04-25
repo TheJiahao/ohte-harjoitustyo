@@ -168,7 +168,6 @@ class PlannerService:
         for course in courses:
             total_credits = 0
 
-            # Edellisen tarkistuksen takia tämä silmukka päättyy varmasti
             while (
                 passed_periods + self.__starting_period % self.__periods_per_year
                 not in course.timing
