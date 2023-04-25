@@ -26,3 +26,8 @@ def format(ctx):
 @task
 def lint(ctx):
     ctx.run("pylint src", pty=True)
+
+
+@task
+def build(ctx):
+    ctx.run("python3 src/build.py", pty=True)
