@@ -26,7 +26,7 @@ Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/p
 
 ## Invoke-tehtävät
 
-Suorita komennon projektin juurihakemistossa.
+Suorita komennot projektin juurihakemistossa.
 
 ### Testaus
 
