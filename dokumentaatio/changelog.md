@@ -20,3 +20,5 @@
 
 - Lisätty aikataulutusalgoritmi `PlannerService`-luokkaan
 - Lisätty alustava laskuri- ja aikataulunäkymä
+- Lisätty testejä `PlannerService`-luokalle
+- Siirretty tietokantayhteyteen liittyvät koodi `Database`-luokkaan
