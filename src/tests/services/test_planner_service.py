@@ -1,7 +1,7 @@
 import unittest
 
 from entities.course import Course
-from services.planner_service import PlannerService, TimingError
+from services.planner_service import CycleError, PlannerService, TimingError
 
 
 class FakeCourseRepository:
@@ -60,6 +60,8 @@ class TestPlannerService(unittest.TestCase):
         seen = set()
 
         for period in schedule:
+            seen = seen.union(map(lambda x: x.id, period))
+
             for course in period:
                 if not course.requirements.issubset(seen):
                     return False
@@ -154,29 +156,6 @@ class TestPlannerService(unittest.TestCase):
 
         self.assertEqual(self.planner_service.get_all_courses(), [])
 
-    def test_get_courses_in_topological_order(self):
-        # Testattavat kurssit verkkona:
-        # B -> C -> E
-        # ^    ^    ^
-        # |    |  /
-        # A -> D
-
-        a = Course("A", 10, {1, 2, 3}, course_id=1)
-        b = Course("B", 10, {1, 2, 3}, {1}, course_id=2)
-        c = Course("C", 10, {1, 2, 3}, {2, 4}, course_id=3)
-        d = Course("D", 10, {1, 2, 3}, {1}, course_id=4)
-        e = Course("E", 10, {1, 2, 3}, {3, 4}, course_id=5)
-
-        self.planner_service.create_course(a)
-        self.planner_service.create_course(b)
-        self.planner_service.create_course(c)
-        self.planner_service.create_course(d)
-        self.planner_service.create_course(e)
-
-        courses = self.planner_service.get_courses_in_topological_order()
-
-        self.assertTrue(self.validate_topological_order(courses))
-
     def test_get_schedule(self):
         course_ohpe = Course("Ohpe", 5, {1, 3}, course_id=1)
         course_ohja = Course("Ohja", 5, {2, 4}, {1}, course_id=2)
@@ -195,6 +174,20 @@ class TestPlannerService(unittest.TestCase):
         schedule = self.planner_service.get_schedule()
 
         self.assertTrue(self.validate_schedule(schedule))
+
+    def test_get_schedule_raises_error_with_cycle_in_graph(self):
+        a = Course("a", 5, {1}, {2}, 1)
+        b = Course("b", 5, {2}, {3}, 2)
+        c = Course("c", 5, {3}, {1}, 3)
+        d = Course("d", 5, {4}, {1}, 4)
+
+        self.planner_service.create_course(a)
+        self.planner_service.create_course(b)
+        self.planner_service.create_course(c)
+        self.planner_service.create_course(d)
+
+        with self.assertRaises(CycleError):
+            self.planner_service.get_schedule()
 
     def test_set_parameters(self):
         self.planner_service.set_parameters(2000, 3, 15)

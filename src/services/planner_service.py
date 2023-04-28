@@ -1,4 +1,4 @@
-from graphlib import TopologicalSorter
+from heapq import heappop, heappush, heapify
 
 from entities.course import Course
 from repositories import course_repository as default_course_repository
@@ -6,6 +6,10 @@ from repositories.course_repository import CourseRepository
 
 
 class TimingError(Exception):
+    pass
+
+
+class CycleError(Exception):
     pass
 
 
@@ -32,6 +36,13 @@ class PlannerService:
         self.__starting_year: int = 0
         self.__starting_period: int = 1
         self.__max_credits: int = 15
+
+        self.__courses: dict[int, Course] = {
+            course.id: course for course in self.get_all_courses()
+        }
+        self.__graph: dict[int, list[int]] = {}
+        self.__in_degree = {}
+        self.__heap: list[tuple[int, int]] = []
 
     @property
     def periods_per_year(self) -> int:
@@ -119,26 +130,29 @@ class PlannerService:
 
         self.__course_repository.delete_all()
 
-    def get_courses_in_topological_order(self) -> list[Course]:
-        """Palauttaa kurssit topologisessa järjestyksessä.
-        Jos jokin esitietovaatimuskurssi ei ole olemassa (esimerkiksi poiston takia),
-        niin se jätetään huomioimatta.
+    def get_graph(self) -> dict[int, list[int]]:
+        """Palauttaa suunnatun verkon kurssien riippuviksista.
 
         Returns:
-            list[Course]: Kurssit topologisessa järjestyksessä.
+            dict[int, list[int]]: Suunnattu verkko kurssien riippuvuuksista.
         """
 
-        dependencies_dict = {
-            course.id: course.requirements for course in self.get_all_courses()
-        }
+        courses = self.get_all_courses()
+        graph = {course.id: [] for course in courses}
 
-        sorter = TopologicalSorter(dependencies_dict)
+        for course in courses:
+            for requirement_id in course.requirements:
+                if requirement_id not in graph:
+                    # Kurssi ei ole olemassa, joten jätetään huomioimatta
+                    continue
 
-        return [
-            course for id in sorter.static_order() if (course := self.get_course(id))
-        ]
+                graph[requirement_id].append(course.id)
 
-    def set_parameters(self, starting_year: int, starting_period: int, max_credits: int) -> None:
+        return graph
+
+    def set_parameters(
+        self, starting_year: int, starting_period: int, max_credits: int
+    ) -> None:
         """Asettaa parametrit aikataulun määrittämistä varten.
 
         Args:
@@ -152,7 +166,7 @@ class PlannerService:
         self.starting_period = starting_period
 
     def get_schedule(self) -> list[list[Course]]:
-        """Jakaa kurssit sopiviin periodeihin.
+        """Jakaa kurssit sopiviin periodeihin. Perustuu Kahnin algoritmiin.
 
         Returns:
             list[list[Course]]:
@@ -161,24 +175,62 @@ class PlannerService:
                 ja kuvaa kuluneiden periodien määrää aloitusperiodista alkaen.
         """
 
-        courses = self.get_courses_in_topological_order()
         result = [[]]
-        passed_periods = 0
+        self.__prepare_get_schedule()
 
-        for course in courses:
-            total_credits = 0
+        i = 0
+        course_counter = 0
 
-            while (
-                passed_periods + self.__starting_period % self.__periods_per_year
-                not in course.timing
-                or total_credits > self.__max_credits
-            ):
-                total_credits = 0
-                passed_periods += 1
+        while self.__heap:
+            current_period = self.starting_period + i % self.periods_per_year
+            min_timing, course_id = heappop(self.__heap)
+            course = self.__courses[course_id]
+
+            while current_period != min_timing % self.periods_per_year:
+                # Tällä periodille ei ole tarjolla kursseja
+                i += 1
+                current_period = (self.starting_period + i) % self.periods_per_year
+
                 result.append([])
 
-            total_credits += course.credits
+            if current_period not in map(
+                lambda x: x % self.periods_per_year, course.timing
+            ):
+                # Kurssi suoritetaan toisella periodilla tai seuraavalla vuodella
+                course.timing.remove(min_timing)
+                course.timing.add(min_timing + self.periods_per_year)
 
-            result[passed_periods].append(course)
+                heappush(self.__heap, (min(course.timing), course_id))
+
+                continue
+
+            self.__update_neighbors(course_id)
+
+            result[i].append(course)
+            course_counter += 1
+
+        if course_counter != len(self.__courses):
+            raise CycleError("Kurssit ovat keskenään riippuvia.")
 
         return result
+
+    def __prepare_get_schedule(self) -> None:
+        self.__courses = {course.id: course for course in self.get_all_courses()}
+        self.__graph = self.get_graph()
+        self.__in_degree = {
+            id: len(course.requirements) for id, course in self.__courses.items()
+        }
+        self.__heap: list[tuple[int, int]] = [
+            (min(course.timing), course.id)
+            for course in self.__courses.values()
+            if self.__in_degree[course.id] == 0
+        ]
+        heapify(self.__heap)
+
+    def __update_neighbors(self, course_id: int) -> None:
+        for neighbor_id in self.__graph[course_id]:
+            self.__in_degree[neighbor_id] -= 1
+
+            if self.__in_degree[neighbor_id] == 0:
+                neighbor = self.__courses[neighbor_id]
+                heappush(self.__heap, (min(neighbor.timing), neighbor_id))
