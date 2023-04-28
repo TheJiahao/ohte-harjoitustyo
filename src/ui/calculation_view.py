@@ -4,7 +4,7 @@ from tkinter.messagebox import showerror
 from typing import Callable
 
 from services import planner_service
-from services.planner_service import TimingError, CycleError
+from services.planner_service import TimingError, CycleError, MaxCreditError
 from ui.view import View
 
 
@@ -88,7 +88,7 @@ class CalculationView(View):
 
             self.__handle_show_schedule_view()
 
-        except (TimingError, CycleError) as error:
+        except (TimingError, CycleError, MaxCreditError) as error:
             showerror("Virhe", str(error))
 
         except TclError:
