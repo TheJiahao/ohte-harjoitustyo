@@ -199,7 +199,21 @@ class TestPlannerService(unittest.TestCase):
 
         schedule = self.planner_service.get_schedule()
 
-        self.assertEqual(schedule, [[a], [], [], [], [b]])
+        self.assertEqual(schedule, [[a], [b]])
+
+    def test_get_schedule_can_delay_course_multiple_times(self):
+        a = Course("Ohpe", 5, {1, 3}, course_id=1)
+        b = Course("Ohja", 5, {1, 2}, {1}, course_id=2)
+        c = Course("Ohte", 5, {1, 2, 3}, {2}, course_id=3)
+
+        self.planner_service.create_course(a)
+        self.planner_service.create_course(b)
+        self.planner_service.create_course(c)
+        self.planner_service.set_parameters(2023, 1, 5)
+
+        schedule = self.planner_service.get_schedule()
+
+        self.assertEqual(schedule, [[a], [b], [c]])
 
     def test_set_parameters(self):
         self.planner_service.set_parameters(2000, 3, 15)

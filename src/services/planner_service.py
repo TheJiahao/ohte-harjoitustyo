@@ -200,9 +200,7 @@ class PlannerService:
 
                 i += 1
                 result.append([])
-                self.__delay_course_timing(course, 0)
-
-                continue
+                remaining_credits = self.max_credits
 
             if (new_counter := self.__update_period_counter(course, i, result)) > i:
                 i = new_counter
@@ -214,6 +212,7 @@ class PlannerService:
 
             self.__update_neighbors(course.id)
             result[i].append(course)
+
             remaining_credits -= course.credits
             course_counter += 1
 
@@ -225,15 +224,10 @@ class PlannerService:
     def __update_period_counter(
         self, course: Course, i: int, result: list[list[int]]
     ) -> int:
-        current_period = (self.starting_period + i) % self.periods_per_year
+        valid_periods = [period % self.periods_per_year for period in course.timing]
 
-        min_timing = min(course.timing)
-
-        while current_period != min_timing % self.periods_per_year:
+        while (self.starting_period + i) % self.periods_per_year not in valid_periods:
             i += 1
-            current_period += 1
-            current_period %= self.periods_per_year
-
             result.append([])
 
         return i
@@ -254,8 +248,8 @@ class PlannerService:
         if course.credits <= remaining_credits:
             return False
 
-        course.timing.remove(min_timing)
-        course.timing.add(min_timing + self.periods_per_year)
+        course.remove_period(min_timing)
+        course.add_period(min_timing + self.periods_per_year)
 
         heappush(self.__heap, (min(course.timing), course.id))
 
