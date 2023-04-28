@@ -4,7 +4,7 @@ from tkinter.messagebox import showerror
 from typing import Callable
 
 from services import planner_service
-from services.planner_service import TimingError
+from services.planner_service import TimingError, CycleError
 from ui.view import View
 
 
@@ -88,8 +88,8 @@ class CalculationView(View):
 
             self.__handle_show_schedule_view()
 
-        except TimingError as error:
+        except (TimingError, CycleError) as error:
             showerror("Virhe", str(error))
 
-        else:
-            showerror("Virhe", "Ei ole kursseja tai kurssit ovat keskenään riippuvia.")
+        except TclError:
+            showerror("Virhe", "Tarkista kurssit.")
