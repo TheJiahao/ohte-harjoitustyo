@@ -19,36 +19,11 @@ classDiagram
 
 ## Algoritmi
 
-Sovelluksen toiminta perustuu suunnatun verkon topologiseen järjestykseen [^tirakirja].
+Sovelluksen toiminta perustuu suunnatun verkon topologiseen järjestykseen  ja Kahnin algoritmiin [^tirakirja][^kahn].
 Lisäksi oletetaan, että jos samalla periodilla on tarjolla kurssi ja sen esitietokurssi, niin ne voidaan suorittaa rinnakkain.
 
 Yksinkertaisuuden vuoksi oletetaan, että `result`-taulukossa on valmiiksi jokaista periodia varten tyhjä taulukko.
 Lisäksi oletetaan, että jokainen kurssi on tarjolla jollakin periodilla.
-Lähtökohtana on lista kursseista topologisessa järjestyksessä, minkä saa [graphlib](https://docs.python.org/3/library/graphlib.html)-kirjaston avulla.
-Algoritmin toimintaa on esitetty seuraavassa pseudokoodissa.
-
-```python
-courses = get_courses_in_topological_order()
-result = []
-i = 0
-
-for course in courses:
-    total_credits = 0
-
-    while (
-        i + starting_period % periods_per_year not in course.timing
-        or total_credits > max_credits
-    ):
-        # Kurssia ei ole tällä periodilla tarjolla, joten seuraavaan periodiin
-        total_credits = 0
-        i += 1
-
-    total_credits += course.credits
-
-    result[i].append(course)
-
-return result
-```
 
 ## Toiminnallisuudet
 
@@ -134,3 +109,4 @@ UI -->> User: show schedule
 `TopologicalSorter` on standardikirjastoon kuuluvan [graphlib](https://docs.python.org/3/library/graphlib.html)-kirjaston tarjoama.
 
 [^tirakirja]: Antti Laaksonen, *Tietorakenteet ja algoritmit*, 2022. https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/
+[^kahn]: Geeksforgeeks, *Kahn’s algorithm for Topological Sorting*. https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/, luettu 28.4.2023.
