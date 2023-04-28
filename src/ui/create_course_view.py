@@ -51,14 +51,20 @@ class CreateCourseView(View):
             text="Tallenna",
             command=self.__handle_save,
         )
-        save_button.grid(row=7, column=1, sticky=constants.W + constants.S)
-
         delete_button = ttk.Button(
             master=self._frame,
             text="Poista",
             command=self.__handle_delete,
         )
+        clear_button = ttk.Button(
+            master=self._frame,
+            text="Tyhjennä",
+            command=self.__handle_clear,
+        )
+
+        save_button.grid(row=7, column=1, sticky=constants.W + constants.S)
         delete_button.grid(row=7, column=2, sticky=constants.E + constants.S)
+        clear_button.grid(row=8, column=2, sticky=constants.E + constants.S)
 
     def __initialize_course_field(self) -> None:
         course_label = ttk.Label(master=self._frame, text="Selaa")
@@ -130,7 +136,8 @@ class CreateCourseView(View):
     def __fill_course_data(self, event) -> None:
         """Täyttää valitun kurssin tiedot."""
 
-        self.__clear_data()
+        course_str = self.__handle_clear()
+        self.__course_variable.set(course_str)
 
         self.__current_id = self.__extract_id(self.__course_variable)
         course = planner_service.get_course(self.__current_id)
@@ -149,9 +156,11 @@ class CreateCourseView(View):
             requirement = planner_service.get_course(requirement_id)
             self.__handle_add_requirement(requirement)
 
-    def __clear_data(self) -> None:
-        """Tyhjentää täytetyt tiedot, paitsi tällä hetkellä valitun kurssin."""
+    def __handle_clear(self) -> str:
+        """Tyhjentää täytetyt tiedot."""
 
+        selected_course = self.__course_variable.get()
+        self.__course_variable.set("")
         self.__current_id = -1
         self.__name_variable.set("")
         self.__credits_variable.set(0)
@@ -163,6 +172,8 @@ class CreateCourseView(View):
 
         for row in self.__requirement_frame.winfo_children():
             row.destroy()
+
+        return selected_course
 
     def __handle_save(self) -> None:
         """Tallentaa kurssin tiedot."""
@@ -183,7 +194,7 @@ class CreateCourseView(View):
 
             self.__course_variable.set("")
             self.__update_course_list()
-            self.__clear_data()
+            self.__handle_clear()
         except TimingError as error:
             showerror("Virhe", str(error))
 
@@ -199,7 +210,7 @@ class CreateCourseView(View):
 
         self.__course_variable.set("")
         self.__update_course_list()
-        self.__clear_data()
+        self.__handle_clear()
 
     def __handle_add_requirement(self, course: Course | None = None) -> None:
         """Lisää esitietovaatimusrivin.
