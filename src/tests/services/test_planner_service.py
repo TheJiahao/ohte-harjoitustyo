@@ -189,9 +189,47 @@ class TestPlannerService(unittest.TestCase):
         with self.assertRaises(CycleError):
             self.planner_service.get_schedule()
 
+    def test_get_schedule_delays_course_when_credits_exceed(self):
+        a = Course("Ohpe", 5, {1, 3}, course_id=1)
+        b = Course("Ohja", 5, {1, 2}, {1}, course_id=2)
+
+        self.planner_service.create_course(a)
+        self.planner_service.create_course(b)
+        self.planner_service.set_parameters(2023, 1, 5)
+
+        schedule = self.planner_service.get_schedule()
+
+        self.assertEqual(schedule, [[a], [], [], [], [b]])
+
     def test_set_parameters(self):
         self.planner_service.set_parameters(2000, 3, 15)
 
         self.assertEqual(self.planner_service.starting_year, 2000)
         self.assertEqual(self.planner_service.starting_period, 3)
         self.assertEqual(self.planner_service.max_credits, 15)
+
+    def test_get_graph(self):
+        course_ohpe = Course("Ohpe", 5, {1, 3}, course_id=1)
+        course_ohja = Course("Ohja", 5, {2, 4}, {1}, course_id=2)
+        course_ohte = Course("Ohte", 5, {2, 4}, {2}, course_id=3)
+
+        self.planner_service.create_course(course_ohpe)
+        self.planner_service.create_course(course_ohja)
+        self.planner_service.create_course(course_ohte)
+
+        graph = self.planner_service.get_graph()
+
+        self.assertEqual(graph[1], [2])
+        self.assertEqual(graph[2], [3])
+        self.assertEqual(graph[3], [])
+
+    def test_get_graph_ignores_non_existent_course(self):
+        course_ohpe = Course("Ohpe", 5, {1, 3}, course_id=1)
+        course_ohja = Course("Ohja", 5, {2, 4}, {1, 10}, course_id=2)
+
+        self.planner_service.create_course(course_ohpe)
+        self.planner_service.create_course(course_ohja)
+
+        graph = self.planner_service.get_graph()
+
+        self.assertNotIn(10, graph)

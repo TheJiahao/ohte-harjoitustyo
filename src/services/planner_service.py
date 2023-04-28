@@ -186,27 +186,35 @@ class PlannerService:
         """
 
         result = [[]]
+        delayed_courses = set()
         self.__prepare_get_schedule()
         course_counter = 0
+        remaining_credits = self.max_credits
         i = 0
 
         while self.__heap:
-            current_period = self.starting_period + i % self.periods_per_year
-            min_timing, course_id = heappop(self.__heap)
-            course = self.__courses[course_id]
+            course = self.__courses[heappop(self.__heap)[1]]
 
-            # Etsii seuraavan periodin, jolle on kursseja tarjolla.
-            while current_period != min_timing % self.periods_per_year:
+            if course.id in delayed_courses:
+                delayed_courses.remove(course.id)
+
                 i += 1
-                current_period = (self.starting_period + i) % self.periods_per_year
-
                 result.append([])
+                self.__delay_course_timing(course, 0)
 
-            if self.__delay_course_timing(course, current_period):
                 continue
 
-            self.__update_neighbors(course_id)
+            if (new_counter := self.__update_period_counter(course, i, result)) > i:
+                i = new_counter
+                remaining_credits = self.max_credits
+
+            if self.__delay_course_timing(course, remaining_credits):
+                delayed_courses.add(course.id)
+                continue
+
+            self.__update_neighbors(course.id)
             result[i].append(course)
+            remaining_credits -= course.credits
             course_counter += 1
 
         if course_counter != len(self.__courses):
@@ -214,8 +222,24 @@ class PlannerService:
 
         return result
 
-    def __delay_course_timing(self, course: Course, current_period: int) -> bool:
-        """Siirtää kurssin ajoituksen myöhempään, jos kurssia ei ole saatavilla.
+    def __update_period_counter(
+        self, course: Course, i: int, result: list[list[int]]
+    ) -> int:
+        current_period = (self.starting_period + i) % self.periods_per_year
+
+        min_timing = min(course.timing)
+
+        while current_period != min_timing % self.periods_per_year:
+            i += 1
+            current_period += 1
+            current_period %= self.periods_per_year
+
+            result.append([])
+
+        return i
+
+    def __delay_course_timing(self, course: Course, remaining_credits: int) -> bool:
+        """Päättää siirretäänkö kurssi myöhempään.
 
         Args:
             course (Course): Kurssi.
@@ -226,11 +250,8 @@ class PlannerService:
         """
 
         min_timing = min(course.timing)
-        available_periods = map(
-            lambda period: period % self.periods_per_year, course.timing
-        )
 
-        if current_period in available_periods:
+        if course.credits <= remaining_credits:
             return False
 
         course.timing.remove(min_timing)
