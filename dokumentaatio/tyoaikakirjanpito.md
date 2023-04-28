@@ -18,5 +18,5 @@
 |19.4.|4 tuntia|Lisätty testejä `PlannerService`-luokalle, lisätty alustava aikataulutusalgoritmi, refaktoroitu `Course`- ja `CourseRepository`-luokkia|
 |24.4.|3 tuntia|Lisätty alustava laskurinäkymä, refaktoroitu käyttöliittymää ja logiikkaa|
 |25.4.|3 tuntia|Refactoroitu tietokantaan liittyvät koodit samaan luokkaan, lisätty testejä `PlannerService`-luokalle|
-|28.4.|2 tuntia 30 min|Yritetty parantaa aikataulutusalgoritmia|
-|Yht.|39 tuntia 30 min||
+|28.4.|6 tuntia 30 min|Yritetty parantaa aikataulutusalgoritmia|
+|Yht.|36 tuntia 0 min||
