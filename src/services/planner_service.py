@@ -165,10 +165,11 @@ class PlannerService:
             max_credits (int): Opintopisteyläraja periodille.
         """
 
-        if max_credits < max(self.get_all_courses(), key=lambda x: x.credits).credits:
-            raise MaxCreditError(
-                "Opintopisteyläraja on pienempi kuin suurin kurssin laajuus."
-            )
+        for course in self.get_all_courses():
+            if course.credits < max_credits:
+                raise MaxCreditError(
+                    "Opintopisteyläraja on pienempi kuin suurin kurssin laajuus."
+                )
 
         self.max_credits = max_credits
         self.starting_year = starting_year
