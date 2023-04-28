@@ -41,3 +41,5 @@ Jos tällainen aikataulunäkymä osoittautuu liian vaativaksi, niin teen näkym�
 - [ ] Periodin ja lukuvuoden opintopistemäärän näyttäminen
 - [ ] Kurssien haku verkosta (jos löytyy API, todennäköisesti ei toteudu)
 - [ ] Kesäperiodit
+- [x] Parannettu aikataulutusalgoritmi, mahdollisimman vähän tyhjiä periodeja aikataulussa
+- [ ] Syötteiden kattava tarkistus ja virheviestit
