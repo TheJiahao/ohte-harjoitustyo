@@ -1,7 +1,7 @@
 import unittest
 
 from entities.course import Course
-from services.planner_service import CycleError, PlannerService, TimingError
+from services.planner_service import *
 
 
 class FakeCourseRepository:
@@ -207,6 +207,12 @@ class TestPlannerService(unittest.TestCase):
         self.assertEqual(self.planner_service.starting_year, 2000)
         self.assertEqual(self.planner_service.starting_period, 3)
         self.assertEqual(self.planner_service.max_credits, 15)
+
+    def test_set_parameters_raises_error_with_too_low_limit(self):
+        self.planner_service.create_course(Course("test", 5, {1}))
+
+        with self.assertRaises(MaxCreditError):
+            self.planner_service.set_parameters(2000, 2, 1)
 
     def test_get_graph(self):
         course_ohpe = Course("Ohpe", 5, {1, 3}, course_id=1)

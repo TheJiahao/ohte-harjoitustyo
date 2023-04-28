@@ -1,4 +1,4 @@
-from heapq import heappop, heappush, heapify
+from heapq import heapify, heappop, heappush
 
 from entities.course import Course
 from repositories import course_repository as default_course_repository
@@ -166,7 +166,7 @@ class PlannerService:
         """
 
         for course in self.get_all_courses():
-            if course.credits < max_credits:
+            if course.credits > max_credits:
                 raise MaxCreditError(
                     "Opintopisteyläraja on pienempi kuin suurin kurssin laajuus."
                 )
