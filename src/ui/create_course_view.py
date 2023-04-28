@@ -180,12 +180,12 @@ class CreateCourseView(View):
 
         try:
             planner_service.create_course(course)
+
+            self.__course_variable.set("")
+            self.__update_course_list()
+            self.__clear_data()
         except TimingError as error:
             showerror("Virhe", str(error))
-
-        self.__course_variable.set("")
-        self.__update_course_list()
-        self.__clear_data()
 
     def __handle_delete(self) -> None:
         """Poistaa kurssin, vaatii käyttäjältä varmistuksen."""
