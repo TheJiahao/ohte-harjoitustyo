@@ -41,7 +41,7 @@ class PlannerService:
             course.id: course for course in self.get_all_courses()
         }
         self.__graph: dict[int, list[int]] = {}
-        self.__in_degree = {}
+        self.__in_degree: dict[int, int] = {}
         self.__heap: list[tuple[int, int]] = []
 
     @property
@@ -177,35 +177,25 @@ class PlannerService:
 
         result = [[]]
         self.__prepare_get_schedule()
-
-        i = 0
         course_counter = 0
+        i = 0
 
         while self.__heap:
             current_period = self.starting_period + i % self.periods_per_year
             min_timing, course_id = heappop(self.__heap)
             course = self.__courses[course_id]
 
+            # Etsii seuraavan periodin, jolle on kursseja tarjolla.
             while current_period != min_timing % self.periods_per_year:
-                # Tällä periodille ei ole tarjolla kursseja
                 i += 1
                 current_period = (self.starting_period + i) % self.periods_per_year
 
                 result.append([])
 
-            if current_period not in map(
-                lambda x: x % self.periods_per_year, course.timing
-            ):
-                # Kurssi suoritetaan toisella periodilla tai seuraavalla vuodella
-                course.timing.remove(min_timing)
-                course.timing.add(min_timing + self.periods_per_year)
-
-                heappush(self.__heap, (min(course.timing), course_id))
-
+            if self.__delay_course_timing(course, current_period):
                 continue
 
             self.__update_neighbors(course_id)
-
             result[i].append(course)
             course_counter += 1
 
@@ -214,12 +204,42 @@ class PlannerService:
 
         return result
 
+    def __delay_course_timing(self, course: Course, current_period: int) -> bool:
+        """Siirtää kurssin ajoituksen myöhempään, jos kurssia ei ole saatavilla.
+
+        Args:
+            course (Course): Kurssi.
+            current_period (int): Tarkasteltava periodi.
+
+        Returns:
+            bool: Kuvaa sitä, että siirretäänkö kurssi myöhempään.
+        """
+
+        min_timing = min(course.timing)
+        available_periods = map(
+            lambda period: period % self.periods_per_year, course.timing
+        )
+
+        if current_period in available_periods:
+            return False
+
+        course.timing.remove(min_timing)
+        course.timing.add(min_timing + self.periods_per_year)
+
+        heappush(self.__heap, (min(course.timing), course.id))
+
+        return True
+
     def __prepare_get_schedule(self) -> None:
+        """Alustaa topologisen järjestyksen laskuun tarvittavat muuttujat."""
+
         self.__courses = {course.id: course for course in self.get_all_courses()}
         self.__graph = self.get_graph()
+
         self.__in_degree = {
             id: len(course.requirements) for id, course in self.__courses.items()
         }
+
         self.__heap: list[tuple[int, int]] = [
             (min(course.timing), course.id)
             for course in self.__courses.values()
@@ -228,6 +248,13 @@ class PlannerService:
         heapify(self.__heap)
 
     def __update_neighbors(self, course_id: int) -> None:
+        """Päivittää kurssin naapureiden täyttämättömien esitietovaatimuksien määrän.
+        Lisäksi siirtää suoritettavat kelpaavat kurssit kekoon.
+
+        Args:
+            course_id (int): Kurssi, jonka naapurit päivitetään.
+        """
+
         for neighbor_id in self.__graph[course_id]:
             self.__in_degree[neighbor_id] -= 1
 
