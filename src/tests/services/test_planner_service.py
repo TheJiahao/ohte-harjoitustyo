@@ -196,8 +196,8 @@ class TestPlannerService(unittest.TestCase):
 
         self.assertTrue(self.validate_schedule(schedule))
 
-    def test_set(self):
-        self.planner_service.set(2000, 3, 15)
+    def test_set_parameters(self):
+        self.planner_service.set_parameters(2000, 3, 15)
 
         self.assertEqual(self.planner_service.starting_year, 2000)
         self.assertEqual(self.planner_service.starting_period, 3)

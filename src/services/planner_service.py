@@ -138,7 +138,7 @@ class PlannerService:
             course for id in sorter.static_order() if (course := self.get_course(id))
         ]
 
-    def set(self, starting_year: int, starting_period: int, max_credits: int) -> None:
+    def set_parameters(self, starting_year: int, starting_period: int, max_credits: int) -> None:
         """Asettaa parametrit aikataulun määrittämistä varten.
 
         Args:
