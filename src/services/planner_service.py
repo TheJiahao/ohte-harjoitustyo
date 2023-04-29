@@ -35,8 +35,9 @@ class PlannerService:
                 Oletukseltaan default_course_repository.
         """
 
-        self.__periods_per_year: int = periods
+
         self.__course_repository: CourseRepository = course_repository
+        self.__periods_per_year: int = periods
         self.__starting_year: int = 0
         self.__starting_period: int = 1
         self.__max_credits: int = 15
@@ -175,17 +176,17 @@ class PlannerService:
         self.starting_year = starting_year
         self.starting_period = starting_period
 
-    def get_schedule(self) -> list[list[Course]]:
-        """Jakaa kurssit sopiviin periodeihin. Perustuu Kahnin algoritmiin.
+    def __generate_schedule(self) -> dict[int, list[Course]]:
+        """Luo aikataulun.
+
+        Raises:
+            CycleError: Kurssit ovat keskenään riippuvia.
 
         Returns:
-            list[list[Course]]:
-                Kurssit jaettuna sopiviin periodeihin.
-                Periodien indeksöinti alkaa nollasta,
-                ja kuvaa kuluneiden periodien määrää aloitusperiodista alkaen.
+            dict[int, list[Course]]: Aikataulu ilman tyhjiä periodeja.
         """
 
-        result = [[]]
+        result = {}
         delayed_courses = set()
         self.__prepare_get_schedule()
         course_counter = 0
@@ -195,23 +196,19 @@ class PlannerService:
         while self.__heap:
             course = self.__courses[heappop(self.__heap)[1]]
 
-            if course.id in delayed_courses:
-                i += 1
-                result.append([])
-                delayed_courses.clear()
-                remaining_credits = self.max_credits
+            i, remaining_credits = self.__move_period(
+                course, delayed_courses, i, remaining_credits
+            )
 
-            if (new_counter := self.__update_period_counter(course, i, result)) > i:
-                i = new_counter
-                remaining_credits = self.max_credits
-
-            if self.__delay_course_timing(course, remaining_credits):
-                delayed_courses.add(course.id)
+            if self.__delay_course_timing(course, remaining_credits, delayed_courses):
                 continue
 
             self.__update_neighbors(course.id)
-            result[i].append(course)
 
+            if i not in result:
+                result[i] = []
+
+            result[i].append(course)
             remaining_credits -= course.credits
             course_counter += 1
 
@@ -220,18 +217,52 @@ class PlannerService:
 
         return result
 
-    def __update_period_counter(
-        self, course: Course, i: int, result: list[list[int]]
-    ) -> int:
+    def get_schedule(self) -> list[list[Course]]:
+        """Palauttaa aikataulun, perustuu Kahnin algoritmiin.
+
+        Returns:
+            list[list[Course]]:
+                Kurssit jaettuna sopiviin periodeihin.
+                Periodien indeksöinti alkaa nollasta,
+                ja kuvaa kuluneiden periodien määrää aloitusperiodista alkaen.
+        """
+
+        initial_schedule = self.__generate_schedule()
+
+        max_period = max(initial_schedule.keys())
+
+        return [initial_schedule.get(i, []) for i in range(max_period + 1)]
+
+    def __move_period(
+        self, course: Course, delayed_courses: set[int], i: int, remaining_credits: int
+    ) -> tuple[int, int]:
+        """Palauttaa seuraavan kelpaavan periodin ja uuden opintopisterajan.
+
+        Args:
+            course (Course): Kurssi, joka halutaan sijoittaa periodille.
+            delayed_courses (set[int]): Kurssit, jotka on merkattu myöhempään periodiin.
+            i (int): Periodilaskuri.
+            remaining_credits (int): Tämänhetkinen opintopisteraja.
+
+        Returns:
+            tuple[int, int]: (periodilaskuri, uusi opintopisteraja)
+        """
+
         valid_periods = [period % self.periods_per_year for period in course.timing]
 
-        while (self.starting_period + i) % self.periods_per_year not in valid_periods:
+        while (
+            (self.starting_period + i) % self.periods_per_year not in valid_periods
+            or course.id in delayed_courses
+        ):
             i += 1
-            result.append([])
+            remaining_credits = self.__max_credits
+            delayed_courses.clear()
 
-        return i
+        return (i, remaining_credits)
 
-    def __delay_course_timing(self, course: Course, remaining_credits: int) -> bool:
+    def __delay_course_timing(
+        self, course: Course, remaining_credits: int, delayed_courses: set[int]
+    ) -> bool:
         """Päättää siirretäänkö kurssi myöhempään.
 
         Args:
@@ -242,14 +273,15 @@ class PlannerService:
             bool: Kuvaa sitä, että siirretäänkö kurssi myöhempään.
         """
 
-        min_timing = min(course.timing)
-
         if course.credits <= remaining_credits:
             return False
+
+        min_timing = min(course.timing)
 
         course.remove_period(min_timing)
         course.add_period(min_timing + self.periods_per_year)
 
+        delayed_courses.add(course.id)
         heappush(self.__heap, (min(course.timing), course.id))
 
         return True
