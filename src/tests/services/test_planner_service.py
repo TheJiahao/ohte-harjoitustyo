@@ -1,6 +1,5 @@
 import unittest
 
-from entities.course import Course
 from services.planner_service import *
 
 
@@ -175,46 +174,6 @@ class TestPlannerService(unittest.TestCase):
 
         self.assertTrue(self.validate_schedule(schedule))
 
-    def test_get_schedule_raises_error_with_cycle_in_graph(self):
-        a = Course("a", 5, {1}, {2}, 1)
-        b = Course("b", 5, {2}, {3}, 2)
-        c = Course("c", 5, {3}, {1}, 3)
-        d = Course("d", 5, {4}, {1}, 4)
-
-        self.planner_service.create_course(a)
-        self.planner_service.create_course(b)
-        self.planner_service.create_course(c)
-        self.planner_service.create_course(d)
-
-        with self.assertRaises(CycleError):
-            self.planner_service.get_schedule()
-
-    def test_get_schedule_delays_course_when_credits_exceed(self):
-        a = Course("Ohpe", 5, {1, 3}, course_id=1)
-        b = Course("Ohja", 5, {1, 2}, {1}, course_id=2)
-
-        self.planner_service.create_course(a)
-        self.planner_service.create_course(b)
-        self.planner_service.set_parameters(2023, 1, 5)
-
-        schedule = self.planner_service.get_schedule()
-
-        self.assertEqual(schedule, [[a], [b]])
-
-    def test_get_schedule_can_delay_course_multiple_times(self):
-        a = Course("Ohpe", 5, {1, 3}, course_id=1)
-        b = Course("Ohja", 5, {1, 2}, {1}, course_id=2)
-        c = Course("Ohte", 5, {1, 2, 3}, {2}, course_id=3)
-
-        self.planner_service.create_course(a)
-        self.planner_service.create_course(b)
-        self.planner_service.create_course(c)
-        self.planner_service.set_parameters(2023, 1, 5)
-
-        schedule = self.planner_service.get_schedule()
-
-        self.assertEqual(schedule, [[a], [b], [c]])
-
     def test_set_parameters(self):
         self.planner_service.set_parameters(2000, 3, 15)
 
@@ -227,29 +186,3 @@ class TestPlannerService(unittest.TestCase):
 
         with self.assertRaises(MaxCreditError):
             self.planner_service.set_parameters(2000, 2, 1)
-
-    def test_get_graph(self):
-        course_ohpe = Course("Ohpe", 5, {1, 3}, course_id=1)
-        course_ohja = Course("Ohja", 5, {2, 4}, {1}, course_id=2)
-        course_ohte = Course("Ohte", 5, {2, 4}, {2}, course_id=3)
-
-        self.planner_service.create_course(course_ohpe)
-        self.planner_service.create_course(course_ohja)
-        self.planner_service.create_course(course_ohte)
-
-        graph = self.planner_service.get_graph()
-
-        self.assertEqual(graph[1], [2])
-        self.assertEqual(graph[2], [3])
-        self.assertEqual(graph[3], [])
-
-    def test_get_graph_ignores_non_existent_course(self):
-        course_ohpe = Course("Ohpe", 5, {1, 3}, course_id=1)
-        course_ohja = Course("Ohja", 5, {2, 4}, {1, 10}, course_id=2)
-
-        self.planner_service.create_course(course_ohpe)
-        self.planner_service.create_course(course_ohja)
-
-        graph = self.planner_service.get_graph()
-
-        self.assertNotIn(10, graph)

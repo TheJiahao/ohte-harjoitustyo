@@ -1,15 +1,10 @@
-from heapq import heapify, heappop, heappush
-
 from entities.course import Course
+from entities.scheduler import Scheduler
 from repositories import course_repository as default_course_repository
 from repositories.course_repository import CourseRepository
 
 
 class TimingError(Exception):
-    pass
-
-
-class CycleError(Exception):
     pass
 
 
@@ -35,19 +30,11 @@ class PlannerService:
                 Oletukseltaan default_course_repository.
         """
 
-
         self.__course_repository: CourseRepository = course_repository
         self.__periods_per_year: int = periods
         self.__starting_year: int = 0
         self.__starting_period: int = 1
         self.__max_credits: int = 15
-
-        self.__courses: dict[int, Course] = {
-            course.id: course for course in self.get_all_courses()
-        }
-        self.__graph: dict[int, list[int]] = {}
-        self.__in_degree: dict[int, int] = {}
-        self.__heap: list[tuple[int, int]] = []
 
     @property
     def periods_per_year(self) -> int:
@@ -135,26 +122,6 @@ class PlannerService:
 
         self.__course_repository.delete_all()
 
-    def get_graph(self) -> dict[int, list[int]]:
-        """Palauttaa suunnatun verkon kurssien riippuviksista.
-
-        Returns:
-            dict[int, list[int]]: Suunnattu verkko kurssien riippuvuuksista.
-        """
-
-        courses = self.get_all_courses()
-        graph = {course.id: [] for course in courses}
-
-        for course in courses:
-            for requirement_id in course.requirements:
-                if requirement_id not in graph:
-                    # Kurssi ei ole olemassa, joten jätetään huomioimatta
-                    continue
-
-                graph[requirement_id].append(course.id)
-
-        return graph
-
     def set_parameters(
         self, starting_year: int, starting_period: int, max_credits: int
     ) -> None:
@@ -176,47 +143,6 @@ class PlannerService:
         self.starting_year = starting_year
         self.starting_period = starting_period
 
-    def __generate_schedule(self) -> dict[int, list[Course]]:
-        """Luo aikataulun.
-
-        Raises:
-            CycleError: Kurssit ovat keskenään riippuvia.
-
-        Returns:
-            dict[int, list[Course]]: Aikataulu ilman tyhjiä periodeja.
-        """
-
-        result = {}
-        delayed_courses = set()
-        self.__prepare_get_schedule()
-        course_counter = 0
-        remaining_credits = self.max_credits
-        i = 0
-
-        while self.__heap:
-            course = self.__courses[heappop(self.__heap)[1]]
-
-            i, remaining_credits = self.__move_period(
-                course, delayed_courses, i, remaining_credits
-            )
-
-            if self.__delay_course_timing(course, remaining_credits, delayed_courses):
-                continue
-
-            self.__update_neighbors(course.id)
-
-            if i not in result:
-                result[i] = []
-
-            result[i].append(course)
-            remaining_credits -= course.credits
-            course_counter += 1
-
-        if course_counter != len(self.__courses):
-            raise CycleError("Kurssit ovat keskenään riippuvia.")
-
-        return result
-
     def get_schedule(self) -> list[list[Course]]:
         """Palauttaa aikataulun, perustuu Kahnin algoritmiin.
 
@@ -226,94 +152,11 @@ class PlannerService:
                 Periodien indeksöinti alkaa nollasta,
                 ja kuvaa kuluneiden periodien määrää aloitusperiodista alkaen.
         """
+        scheduler = Scheduler(
+            self.get_all_courses(),
+            self.__starting_period,
+            self.__periods_per_year,
+            self.__max_credits,
+        )
 
-        initial_schedule = self.__generate_schedule()
-
-        max_period = max(initial_schedule.keys())
-
-        return [initial_schedule.get(i, []) for i in range(max_period + 1)]
-
-    def __move_period(
-        self, course: Course, delayed_courses: set[int], i: int, remaining_credits: int
-    ) -> tuple[int, int]:
-        """Palauttaa seuraavan kelpaavan periodin ja uuden opintopisterajan.
-
-        Args:
-            course (Course): Kurssi, joka halutaan sijoittaa periodille.
-            delayed_courses (set[int]): Kurssit, jotka on merkattu myöhempään periodiin.
-            i (int): Periodilaskuri.
-            remaining_credits (int): Tämänhetkinen opintopisteraja.
-
-        Returns:
-            tuple[int, int]: (periodilaskuri, uusi opintopisteraja)
-        """
-
-        valid_periods = [period % self.periods_per_year for period in course.timing]
-
-        while (
-            (self.starting_period + i) % self.periods_per_year not in valid_periods
-            or course.id in delayed_courses
-        ):
-            i += 1
-            remaining_credits = self.__max_credits
-            delayed_courses.clear()
-
-        return (i, remaining_credits)
-
-    def __delay_course_timing(
-        self, course: Course, remaining_credits: int, delayed_courses: set[int]
-    ) -> bool:
-        """Päättää siirretäänkö kurssi myöhempään.
-
-        Args:
-            course (Course): Kurssi.
-            current_period (int): Tarkasteltava periodi.
-
-        Returns:
-            bool: Kuvaa sitä, että siirretäänkö kurssi myöhempään.
-        """
-
-        if course.credits <= remaining_credits:
-            return False
-
-        min_timing = min(course.timing)
-
-        course.remove_period(min_timing)
-        course.add_period(min_timing + self.periods_per_year)
-
-        delayed_courses.add(course.id)
-        heappush(self.__heap, (min(course.timing), course.id))
-
-        return True
-
-    def __prepare_get_schedule(self) -> None:
-        """Alustaa topologisen järjestyksen laskuun tarvittavat muuttujat."""
-
-        self.__courses = {course.id: course for course in self.get_all_courses()}
-        self.__graph = self.get_graph()
-
-        self.__in_degree = {
-            id: len(course.requirements) for id, course in self.__courses.items()
-        }
-
-        self.__heap: list[tuple[int, int]] = [
-            (min(course.timing), course.id)
-            for course in self.__courses.values()
-            if self.__in_degree[course.id] == 0
-        ]
-        heapify(self.__heap)
-
-    def __update_neighbors(self, course_id: int) -> None:
-        """Päivittää kurssin naapureiden täyttämättömien esitietovaatimuksien määrän.
-        Lisäksi siirtää suoritettavat kelpaavat kurssit kekoon.
-
-        Args:
-            course_id (int): Kurssi, jonka naapurit päivitetään.
-        """
-
-        for neighbor_id in self.__graph[course_id]:
-            self.__in_degree[neighbor_id] -= 1
-
-            if self.__in_degree[neighbor_id] == 0:
-                neighbor = self.__courses[neighbor_id]
-                heappush(self.__heap, (min(neighbor.timing), neighbor_id))
+        return scheduler.get_schedule()
