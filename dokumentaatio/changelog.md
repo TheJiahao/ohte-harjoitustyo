@@ -22,3 +22,9 @@
 - Lisätty alustava laskuri- ja aikataulunäkymä
 - Lisätty testejä `PlannerService`-luokalle
 - Siirretty tietokantayhteyteen liittyvät koodi `Database`-luokkaan
+
+## Viikko 6
+
+- Refaktoroitu `PlannerService`, eriytetty aikataulutusalgoritmi
+- Lisätty uusi aikataulutusalgoritmi `Scheduler`-luokkaan
+- Lisätty kurssin luontinäkymään Tyhjennä-nappi, jolla voi tyhjentää syötetyt tiedot
