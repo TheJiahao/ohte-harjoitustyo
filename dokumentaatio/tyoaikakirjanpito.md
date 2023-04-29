@@ -19,5 +19,5 @@
 |24.4.|3 tuntia|Lisätty alustava laskurinäkymä, refaktoroitu käyttöliittymää ja logiikkaa|
 |25.4.|3 tuntia|Refactoroitu tietokantaan liittyvät koodit samaan luokkaan, lisätty testejä `PlannerService`-luokalle|
 |28.4.|8 tuntia|Toteutettu uusi aikataulutusalgoritmi Kahnin algoritmin pohjalta, vähemmän tyhjiä periodeja, lisätty testejä, lisätty Tyhjennä-nappi kurssin luontinäkymään|
-|29.4.|2 tuntia 30 min|Tehty koodikatselmointi, eriytetty aikataulutusalgoritmi omaksi luokaksi|
-|Yht.|52 tuntia 30 min||
+|29.4.|3 tuntia|Tehty koodikatselmointi, eriytetty aikataulutusalgoritmi omaksi luokaksi|
+|Yht.|53 tuntia 0 min||

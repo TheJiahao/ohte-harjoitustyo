@@ -27,7 +27,7 @@ classDiagram
 
 ## Algoritmi
 
-Sovelluksen toiminta perustuu suunnatun verkon topologiseen järjestykseen  ja Kahnin algoritmiin [^tirakirja][^kahn].
+Sovelluksen toiminta perustuu suunnatun verkon topologiseen järjestykseen  ja Kahnin algoritmiin [^tirakirja] [^kahn].
 
 (Tähän tulee algoritmin selitys)
 
@@ -70,6 +70,7 @@ ohte -->> CourseRepository: 1
 CourseRepository ->> CourseRepository: delete(1)
 CourseRepository ->> CourseRepository: write(ohte)
 CourseRepository -->> UI: 
+UI -->> User: clear fields
 ```
 
 ### Olemassaolevan kurssin poistaminen
@@ -87,6 +88,7 @@ User ->> UI: "yes"
 UI ->> PlannerService: delete_course(1)
 PlannerService ->> CourseRepository: delete(1)
 CourseRepository -->> UI: 
+UI -->> User: clear fields
 ```
 
 ### Aikataulun laskeminen
@@ -99,20 +101,19 @@ sequenceDiagram
 actor User
 
 User ->> UI: click "calculate" button
-UI ->> PlannerService: set(starting_year, starting_period, max_credits)
+UI ->> PlannerService: set(year, period, max_credits)
 PlannerService -->> UI: 
 UI ->> UI: handle_show_schedule_view()
 UI ->> PlannerService: get_schedule()
-PlannerService ->> PlannerService: get_courses_in_topological_order()
 PlannerService ->> PlannerService: get_all_courses()
-PlannerService ->> TopologicalSorter: static_order()
-TopologicalSorter -->> PlannerService: sorted_courses
+PlannerService ->> scheduler: Scheduler(courses, starting_period, periods_per_year, max_credits)
+scheduler -->> PlannerService: scheduler
+PlannerService ->> scheduler: get_schedule()
+scheduler -->> PlannerService: schedule
 
 PlannerService -->> UI: schedule
 UI -->> User: show schedule
 ```
-
-`TopologicalSorter` on standardikirjastoon kuuluvan [graphlib](https://docs.python.org/3/library/graphlib.html)-kirjaston tarjoama.
 
 [^tirakirja]: Antti Laaksonen, *Tietorakenteet ja algoritmit*, 2022. https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/
 [^kahn]: Geeksforgeeks, *Kahn’s algorithm for Topological Sorting*. https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/, luettu 28.4.2023.
