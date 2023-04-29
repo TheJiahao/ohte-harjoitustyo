@@ -8,6 +8,8 @@ class CycleError(Exception):
 
 
 class Scheduler:
+    """Luokka, joka vastaa kurssien aikataulutuksesta."""
+
     def __init__(
         self,
         courses: list[Course],
@@ -15,6 +17,18 @@ class Scheduler:
         periods_per_year: int = 4,
         max_credits: int = 15,
     ) -> None:
+        """Luokan konstruktori.
+
+        Args:
+            courses (list[Course]):
+                Aikatauluun lisättävät kurssit.
+            starting_period (int, optional):
+                Aloitusperiodi. Oletukseltaan 1.
+            periods_per_year (int, optional):
+                Vuoden periodien määrä. Oletukseltaan 4.
+            max_credits (int, optional):
+                Opintopisteyläraja periodeille. Oletukseltaan 15.
+        """
         self.__periods_per_year: int = periods_per_year
         self.__starting_period: int = starting_period
         self.__max_credits: int = max_credits
@@ -35,7 +49,7 @@ class Scheduler:
         self.__graph: dict[int, list[int]] = self.__get_graph()
 
     def get_schedule(self) -> list[list[Course]]:
-        """Palauttaa aikataulun, perustuu Kahnin algoritmiin.
+        """Palauttaa aikataulun.
 
         Returns:
             list[list[Course]]:
