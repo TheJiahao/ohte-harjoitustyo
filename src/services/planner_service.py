@@ -196,10 +196,9 @@ class PlannerService:
             course = self.__courses[heappop(self.__heap)[1]]
 
             if course.id in delayed_courses:
-                delayed_courses.remove(course.id)
-
                 i += 1
                 result.append([])
+                delayed_courses.clear()
                 remaining_credits = self.max_credits
 
             if (new_counter := self.__update_period_counter(course, i, result)) > i:
