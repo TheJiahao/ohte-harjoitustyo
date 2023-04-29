@@ -41,5 +41,5 @@ class ScheduleView(View):
             current_period += 1
 
             if current_period > planner_service.periods_per_year:
-                current_period = 0
+                current_period = 1
                 current_year += 1
