@@ -2,6 +2,7 @@ import unittest
 
 from entities.course import Course
 from entities.scheduler import *
+from copy import deepcopy
 
 
 class TestScheduler(unittest.TestCase):
@@ -39,4 +40,20 @@ class TestScheduler(unittest.TestCase):
 
         schedule = scheduler.get_schedule()
 
-        self.assertEqual(schedule, [[a], [b], [c]])
+        self.assertEqual(schedule[0], [a])
+        self.assertEqual(schedule[1], [b])
+        self.assertEqual(schedule[2], [c])
+
+    def test_get_schedule_course_placed_in_first_available_period(self):
+        a = Course("a", 1, {2}, course_id=1)
+        b = Course("b", 1, {1}, {1}, course_id=2)
+        c = Course("c", 1, {3}, course_id=3)
+
+        courses = [a, b, c]
+        scheduler = Scheduler(courses)
+
+        schedule = scheduler.get_schedule()
+
+        self.assertEqual(schedule[1], [a])
+        self.assertEqual(schedule[2], [c])
+        self.assertEqual(schedule[4], [b])

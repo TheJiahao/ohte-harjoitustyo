@@ -92,7 +92,12 @@ class Scheduler:
                 course, delayed_courses, i, remaining_credits
             )
 
-            if self.__delay_course_timing(course, remaining_credits, delayed_courses):
+            if self.__delay_course_timing(
+                course,
+                remaining_credits,
+                delayed_courses,
+                (self.__starting_period + i) % self.__periods_per_year,
+            ):
                 continue
 
             self.__update_neighbors(course.id)
@@ -124,12 +129,7 @@ class Scheduler:
             tuple[int, int]: (periodilaskuri, uusi opintopisteraja)
         """
 
-        valid_periods = [period % self.__periods_per_year for period in course.timing]
-
-        while (
-            (self.__starting_period + i) % self.__periods_per_year not in valid_periods
-            or course.id in delayed_courses
-        ):
+        if course.id in delayed_courses:
             i += 1
             remaining_credits = self.__max_credits
             delayed_courses.clear()
@@ -137,7 +137,11 @@ class Scheduler:
         return (i, remaining_credits)
 
     def __delay_course_timing(
-        self, course: Course, remaining_credits: int, delayed_courses: set[int]
+        self,
+        course: Course,
+        remaining_credits: int,
+        delayed_courses: set[int],
+        current_period: int,
     ) -> bool:
         """Päättää siirretäänkö kurssi myöhempään.
 
@@ -149,7 +153,9 @@ class Scheduler:
             bool: Kuvaa sitä, että siirretäänkö kurssi myöhempään.
         """
 
-        if course.credits <= remaining_credits:
+        valid_periods = map(lambda x: x % self.__periods_per_year, course.timing)
+
+        if course.credits <= remaining_credits and current_period in valid_periods:
             return False
 
         min_timing = min(course.timing)
