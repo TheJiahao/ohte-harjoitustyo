@@ -3,11 +3,15 @@
 ## Sovelluslogiikka
 
 Sovelluksen ainoa oma tietorakenne on `Course`-luokka, joka kuvaa kurssia.
+Lisäksi sovelluksessa on aikataulutuksesta vastaava `Scheduler`-luokka ja sovelluslogiikasta vastaava `PlannerService`-luokka.
+Luokkien riippuvuudet on esitetty seuraavassa luokkakaaviossa.
 
 ```mermaid
 classDiagram
     PlannerService ..> Course
-    
+    PlannerService ..> Scheduler
+    Scheduler -- "*" Course
+
     class Course {
         -name
         -credits
@@ -15,15 +19,17 @@ classDiagram
         -requirements
         -id
     }
+
+    class Scheduler {
+        +get_schedule()
+    }
 ```
 
 ## Algoritmi
 
 Sovelluksen toiminta perustuu suunnatun verkon topologiseen järjestykseen  ja Kahnin algoritmiin [^tirakirja][^kahn].
-Lisäksi oletetaan, että jos samalla periodilla on tarjolla kurssi ja sen esitietokurssi, niin ne voidaan suorittaa rinnakkain.
 
-Yksinkertaisuuden vuoksi oletetaan, että `result`-taulukossa on valmiiksi jokaista periodia varten tyhjä taulukko.
-Lisäksi oletetaan, että jokainen kurssi on tarjolla jollakin periodilla.
+(Tähän tulee algoritmin selitys)
 
 ## Toiminnallisuudet
 
