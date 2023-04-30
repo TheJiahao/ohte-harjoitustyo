@@ -103,7 +103,10 @@ class PlannerService:
             TimingError: Kurssilla ei ole ajoitusta.
         """
 
-        if not course.timing.intersection(range(1, self.__periods_per_year + 1)):
+        if (
+            not course.timing.issubset(range(1, self.__periods_per_year + 1))
+            or len(course.timing) == 0
+        ):
             raise TimingError(f"Kurssilla '{course}' ei ole ajoitusta.")
 
         self.__course_repository.create(course)
