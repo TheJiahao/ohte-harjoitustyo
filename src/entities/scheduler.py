@@ -37,15 +37,15 @@ class Scheduler:
         self.__in_degrees: dict[int, int] = {
             course.id: len(course.requirements) for course in courses
         }
-        self.__queues: list[list[tuple[int, int]]] = [
+        self.__heaps: list[list[tuple[int, int]]] = [
             [] for i in range(periods_per_year + 1)
         ]
         self.__schedule: dict[int, list[Course]] = {}
 
-        self.__initialize(courses)
+        self.__initialize_heaps(courses)
 
-    def __initialize(self, courses: list[Course]) -> None:
-        """Alustaa jonot.
+    def __initialize_heaps(self, courses: list[Course]) -> None:
+        """Lisää kekoihin keot.
 
         Args:
             courses (list[Course]): Lista kursseista.
@@ -53,51 +53,7 @@ class Scheduler:
 
         for course in courses:
             if self.__in_degrees[course.id] == 0:
-                self.__add_course_to_queue(course)
-
-    def __add_course_to_queue(self, course: Course) -> None:
-        for period in course.timing:
-            queue = self.__queues[period]
-
-            heappush(queue, (course.credits, course.id))
-
-    def get_schedule(self) -> list[list[Course]]:
-        """Palauttaa aikataulun.
-
-        Returns:
-            list[list[Course]]:
-                Kurssit jaettuna sopiviin periodeihin.
-                Periodien indeksöinti alkaa nollasta,
-                ja kuvaa kuluneiden periodien määrää aloitusperiodista alkaen.
-        """
-
-        graph = self.__get_graph()
-
-        self.__check_cycle(graph)
-        self.__generate_schedule(graph)
-
-        max_period = max(self.__schedule.keys())
-
-        return [self.__schedule.get(i, []) for i in range(max_period + 1)]
-
-    def __get_graph(self) -> dict[int, list[int]]:
-        """Palauttaa suunnatun verkon kurssien riippuviksista.
-
-        Returns:
-            dict[int, list[int]]: Suunnattu verkko kurssien riippuvuuksista.
-        """
-
-        courses = self.__courses.values()
-        graph = {course.id: [] for course in courses}
-
-        for course in courses:
-            for requirement_id in course.requirements:
-                if requirement_id not in graph:
-                    continue
-
-                graph[requirement_id].append(course.id)
-
-        return graph
+                self.__add_course_to_heaps(course)
 
     def __check_cycle(
         self,
@@ -141,10 +97,10 @@ class Scheduler:
         i = 0
         processed = set()
 
-        while self.__check_queues():
+        while self.__check_heaps():
             period = self.__get_period(i)
-            queue = self.__queues[period]
-            course = self.__get_next_course(queue)
+            heap = self.__heaps[period]
+            course = self.__get_next_course(heap)
 
             if not course:
                 i += 1
@@ -157,24 +113,43 @@ class Scheduler:
             if course.credits > remaining_credits:
                 i += 1
                 remaining_credits = self.__max_credits
-                heappush(queue, (course.credits, course.id))
+                heappush(heap, (course.credits, course.id))
                 continue
 
             self.__add_course_to_schedule(graph, course, i, processed)
             remaining_credits -= course.credits
 
-    def __check_queues(self) -> bool:
+    def __check_heaps(self) -> bool:
         """Tarkistaa, ovatko jonot tyhjiä.
 
         Returns:
             bool: True, jos jonot eivät ole tyhjiä. Muulloin False.
         """
 
-        for queue in self.__queues:
-            if queue:
+        for heap in self.__heaps:
+            if heap:
                 return True
 
         return False
+
+    def __get_graph(self) -> dict[int, list[int]]:
+        """Palauttaa suunnatun verkon kurssien riippuviksista.
+
+        Returns:
+            dict[int, list[int]]: Suunnattu verkko kurssien riippuvuuksista.
+        """
+
+        courses = self.__courses.values()
+        graph = {course.id: [] for course in courses}
+
+        for course in courses:
+            for requirement_id in course.requirements:
+                if requirement_id not in graph:
+                    continue
+
+                graph[requirement_id].append(course.id)
+
+        return graph
 
     def __get_period(self, i: int) -> int:
         period = (self.__starting_period + i) % self.__periods_per_year
@@ -184,12 +159,24 @@ class Scheduler:
 
         return period
 
-    def __get_next_course(self, queue) -> Course | None:
-        if queue:
-            course_id = heappop(queue)[1]
+    def __get_next_course(self, heap) -> Course | None:
+        if heap:
+            course_id = heappop(heap)[1]
             return self.__courses[course_id]
 
         return None
+
+    def __add_course_to_heaps(self, course: Course) -> None:
+        """Lisää kurssin ajoitusta vastaaviin kekoihin.
+
+        Args:
+            course (Course): Lisättävä kurssi.
+        """
+
+        for period in course.timing:
+            heap = self.__heaps[period]
+
+            heappush(heap, (course.credits, course.id))
 
     def __add_course_to_schedule(
         self, graph: dict[int, list[int]], course: Course, i: int, processed: set[int]
@@ -205,10 +192,29 @@ class Scheduler:
 
             if self.__in_degrees[neighbor_id] == 0:
                 neighbor = self.__courses[neighbor_id]
-                self.__add_course_to_queue(neighbor)
+                self.__add_course_to_heaps(neighbor)
 
         if i not in self.__schedule:
             self.__schedule[i] = []
 
         self.__schedule[i].append(course)
         processed.add(course.id)
+
+    def get_schedule(self) -> list[list[Course]]:
+        """Palauttaa aikataulun.
+
+        Returns:
+            list[list[Course]]:
+                Kurssit jaettuna sopiviin periodeihin.
+                Periodien indeksöinti alkaa nollasta,
+                ja kuvaa kuluneiden periodien määrää aloitusperiodista alkaen.
+        """
+
+        graph = self.__get_graph()
+
+        self.__check_cycle(graph)
+        self.__generate_schedule(graph)
+
+        max_period = max(self.__schedule.keys())
+
+        return [self.__schedule.get(i, []) for i in range(max_period + 1)]
