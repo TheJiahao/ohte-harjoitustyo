@@ -1,6 +1,6 @@
 # Study-planner
 
-[Uusin release](https://github.com/TheJiahao/ohte-harjoitustyo/releases/tag/viikko5)
+[Uusin release](https://github.com/TheJiahao/ohte-harjoitustyo/releases/tag/viikko6)
 
 Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/periodi, opintojen kesto) perusteella.
 
