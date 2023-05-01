@@ -8,7 +8,7 @@ from ui.view import View
 
 
 class CreateCourseView(View):
-    """Luokka, joka vastaa kurssin luomisnäkymästä."""
+    """Kurssin luomisesta vastaava näkymä."""
 
     def __init__(
         self,

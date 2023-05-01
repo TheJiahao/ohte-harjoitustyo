@@ -152,6 +152,15 @@ class Scheduler:
         return graph
 
     def __get_period(self, i: int) -> int:
+        """Palauttaa laskuria vastaavan periodin.
+
+        Args:
+            i (int): Periodilaskuri
+
+        Returns:
+            int: Periodi väliltä (1, periods_per_year)
+        """
+
         period = (self.__starting_period + i) % self.__periods_per_year
 
         if period == 0:
@@ -159,7 +168,16 @@ class Scheduler:
 
         return period
 
-    def __get_next_course(self, heap) -> Course | None:
+    def __get_next_course(self, heap: list[tuple[int, int]]) -> Course | None:
+        """Palauttaa seuraavan kurssin keosta.
+
+        Args:
+            heap (list[tuple[int, int]]): Keko, josta haetaan seuraava kurssi.
+
+        Returns:
+            Course | None: Seuraava kurssi tai None, jos keko on tyhjä.
+        """
+
         if heap:
             course_id = heappop(heap)[1]
             return self.__courses[course_id]

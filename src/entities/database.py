@@ -56,7 +56,7 @@ class Database:
 
         self.connection.commit()
 
-    def initialize(self):
+    def initialize(self) -> None:
         """Alustaa tietokannan."""
 
         self.drop_tables()

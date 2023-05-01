@@ -26,5 +26,5 @@
 ## Viikko 6
 
 - Refaktoroitu `PlannerService`, eriytetty aikataulutusalgoritmi
-- Lisätty uusi aikataulutusalgoritmi `Scheduler`-luokkaan
+- Lisätty uusi Kahnin algoritmiin perustuva aikataulutusalgoritmi `Scheduler`-luokkaan
 - Lisätty kurssin luontinäkymään Tyhjennä-nappi, jolla voi tyhjentää syötetyt tiedot

@@ -10,6 +10,8 @@ from ui.view import View
 
 
 class CalculationView(View):
+    """Laskurista vastaava näkymä."""
+
     def __init__(self, root: ttk.Widget, handle_show_schedule_view: Callable) -> None:
         super().__init__(root)
 

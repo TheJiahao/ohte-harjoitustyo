@@ -51,6 +51,12 @@ class CourseRepository:
         self.__write_requirements(course)
 
     def __write_timing(self, course: Course) -> None:
+        """Tallentaa kurssin ajoituksen tietokantaan.
+
+        Args:
+            course (Course): Kurssi, jonka ajoitus tallennetaan.
+        """
+
         cursor = self.__connection.cursor()
 
         for period in course.timing:
@@ -62,6 +68,12 @@ class CourseRepository:
         self.__connection.commit()
 
     def __write_requirements(self, course: Course) -> None:
+        """Tallentaa kurssin esitietovaatimukset tietokantaan.
+
+        Args:
+            course (Course): Kurssi, jonka esitietovaatimukset tallennetaan.
+        """
+
         cursor = self.__connection.cursor()
 
         for requirement_id in course.requirements:

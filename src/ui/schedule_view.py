@@ -5,6 +5,8 @@ from ui.view import View
 
 
 class ScheduleView(View):
+    """Aikataulusta vastaava näkymä."""
+
     def __init__(self, root: ttk.Widget) -> None:
         super().__init__(root)
 

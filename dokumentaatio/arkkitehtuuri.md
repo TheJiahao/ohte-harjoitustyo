@@ -29,7 +29,60 @@ classDiagram
 
 Sovelluksen toiminta perustuu suunnatun verkon topologiseen järjestykseen  ja Kahnin algoritmiin [^tirakirja] [^kahn].
 
-(Tähän tulee algoritmin selitys)
+Algoritmi tarvitsee Kahnin algoritmin tavoin tiedon jokaisen solmusta ulospäin menevistä kaarista sekä jokaisen solmulle tulevien kaarien määrän (in-degree).
+Kuitenkin Kahnin algoritmista poiketen algoritmi ylläpitää jokaiselle periodille kelpaavista kursseista kekoa, jossa kurssit on opintopisteiden perusteella suuruusjärjestyksessä.
+Aina kun kurssiin tulevien kaarien määrä laskee nollaan eli esitiedot täyttyvät, niin se lisätään kekoihin.
+Koska sama kurssi voi olla usealla periodilla tarjolla, niin pidetään myös kirjaa jo käsitellyistä kursseista.
+
+Keko on valittu opintopisterajoitusta varten.
+Jos kurssi, jolla on pienin opintopistemäärä, ei mahdu periodille, niin ei muutkaan mahdu.
+Tästä seuraa myös, että algoritmi täyttää aikataulun ensisijaisesti kursseilla, joiden opintopistemäärä on pienin.
+
+Algoritmin pseudokoodi:
+
+```python
+remaining_credits = max_credits
+i = 0
+processed = set()
+
+while queues_not_empty():
+    period = get_period(i) # Laskee periodin
+    heap = heaps[period]
+    
+    if queue.empty():
+        i += 1
+        remaining_credits = _max_credits
+    
+    course = heap.pop()
+
+    if course.id in processed:
+        continue
+
+    if course.credits > remaining_credits:
+        i += 1
+        remaining_credits = max_credits
+        heap.push(course)
+        continue
+
+    # Päivitetään naapureiden tilat
+    for neighbor in get_neighbors(course):
+        in_degree[neighbor] -= 1
+
+        if in_degree[neighbor] == 0:
+            for period in neighbor.timing:
+                heap = heaps[period]
+
+                heap.push(neighbor)
+
+    schedule[i].add(course)
+    processed.add(course.id)
+    remaining_credits -= course.credits
+```
+
+## Tietojen pysyväistallennus
+
+Sovellus tallentaa vain kurssien tiedot (nimi, opintopisteet, ajoitus, esitiedot) SQL-tietokantaan.
+Tallennuksesta vastaa `CourseRepository`-luokka.
 
 ## Toiminnallisuudet
 
