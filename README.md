@@ -6,6 +6,7 @@ Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/p
 
 ## Dokumentaatio
 
+- [Käyttöohje](dokumentaatio/kaytto-ohje.md)
 - [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
 - [Arkkitehtuurikuvaus](dokumentaatio/arkkitehtuuri.md)
 - [Työaikakirjanpito](dokumentaatio/tyoaikakirjanpito.md)
