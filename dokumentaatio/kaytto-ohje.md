@@ -1,7 +1,5 @@
 # Käyttöohje
 
-# Käyttöohje
-
 ## Asennus
 
 1. Asenna Python `3.11.x` ja [Poetry](https://python-poetry.org/).
