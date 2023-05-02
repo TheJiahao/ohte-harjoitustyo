@@ -1,0 +1,22 @@
+name: Coverage report
+on: [push, workflow_dispatch]
+jobs:
+    run:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Setup Python 3.11
+          uses: actions/setup-python@v4
+          with:
+            python-version: "^3.11"
+        - name: Install Poetry
+          uses: snok/install-poetry@v1
+        - name: Install requirements
+          run: poetry install --no-root
+        - name: Generate coverage report
+          run: poetry run pytest --cov --cov-branch --cov-report xml
+        - name: Upload coverage reports to Codecov
+          uses: codecov/codecov-action@v3
+          with:
+            token: ${{ secrets.CODECOV_TOKEN }}
