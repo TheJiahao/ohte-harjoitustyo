@@ -1,6 +1,8 @@
 # Study-planner
 
-[Uusin release](https://github.com/TheJiahao/ohte-harjoitustyo/releases/tag/viikko6)
+[![codecov](https://codecov.io/github/TheJiahao/ohte-harjoitustyo/branch/main/graph/badge.svg?token=VSQHAACB32)](https://codecov.io/github/TheJiahao/ohte-harjoitustyo)
+
+[Uusin release](https://github.com/TheJiahao/ohte-harjoitustyo/releases/tag/viikko5)
 
 Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/periodi, opintojen kesto) perusteella.
 
@@ -9,6 +11,7 @@ Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/p
 - [Käyttöohje](dokumentaatio/kaytto-ohje.md)
 - [Vaatimusmäärittely](dokumentaatio/vaatimusmaarittely.md)
 - [Arkkitehtuurikuvaus](dokumentaatio/arkkitehtuuri.md)
+- [Testausdokumentti](dokumentaatio/testausdokumentti.md)
 - [Työaikakirjanpito](dokumentaatio/tyoaikakirjanpito.md)
 - [Changelog](dokumentaatio/changelog.md)
 
