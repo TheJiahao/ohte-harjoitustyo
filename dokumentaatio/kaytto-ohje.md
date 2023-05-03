@@ -2,7 +2,7 @@
 
 ## Asennus
 
-1. Asenna Python `3.11.x` ja [Poetry](https://python-poetry.org/).
+1. Asenna Python `3.10.x` ja [Poetry](https://python-poetry.org/).
 2. Klonaa repositorio.
 3. Asenna riippuvuudet:
 
@@ -42,9 +42,11 @@ Täytä tiedot ja paina "Tallenna"-nappia.
 
 Kun kurssit on lisätty, niin painamalla laskurivälilehteä pääsee laskurinäkymään.
 Kun halutut parametrit on syötetty, niin "Laske"-nappia painamalla pääsee aikataulunäkymään.
+
 ![Laskurinäkymä](kuvat/laskurinakyma.png)
 
 ## Aikataulu
 
 Aikataulunäkymässä on kurssit jaettu sopiviin vuosiin ja periodeihin laskurinäkymässä annettujen tietojen perusteella.
+
 ![Aikataulunäkymä](kuvat/aikataulunakyma.png)
