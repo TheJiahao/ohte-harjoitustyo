@@ -196,10 +196,14 @@ class CreateCourseView(View):
             for i, period_variable in enumerate(self.__timing)
             if period_variable.get()
         }
-        requirements = {
-            self.__extract_id(course_variable)
-            for course_variable in self.__requirements
-        }
+        try:
+            requirements = {
+                self.__extract_id(course_variable)
+                for course_variable in self.__requirements
+            }
+        except ValueError:
+            showerror("Virhe", "Tarkista esitietovaatimukset.")
+            return
 
         course = Course(name, credits, timing, requirements, self.__current_id)
 
@@ -256,7 +260,7 @@ class CreateCourseView(View):
         if course:
             requirement_variable.set(str(course))
 
-        delete_button.grid(row=1, column=1, sticky=constants.W, padx=5,pady=2)
+        delete_button.grid(row=1, column=1, sticky=constants.W, padx=5, pady=2)
         requirement_dropdown.grid(row=1, column=2, sticky=constants.W)
         requirement_row.grid(column=1)
 
