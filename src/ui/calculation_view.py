@@ -82,6 +82,8 @@ class CalculationView(View):
         period_spinbox.grid(row=3, column=2, sticky=constants.W)
 
     def __handle_calculate(self) -> None:
+        """Vastaa Laske-napin toiminnasta."""
+
         try:
             max_credits = self.__credits_variable.get()
             starting_year = self.__year_variable.get()
