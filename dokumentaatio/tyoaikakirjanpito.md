@@ -21,5 +21,6 @@
 |28.4.|8 tuntia|Toteutettu uusi aikataulutusalgoritmi Kahnin algoritmin pohjalta, vähemmän tyhjiä periodeja, lisätty testejä, lisätty Tyhjennä-nappi kurssin luontinäkymään|
 |29.4.|4 tuntia|Tehty koodikatselmointi, eriytetty aikataulutusalgoritmi omaksi luokaksi ja korjattu algoritmia|
 |1.5.|2 tuntia 30 min|Hiottu aikataulutusalgoritmia, refaktoroitu `Scheduler`-luokka, kirjoitettu arkkitehtuuridokumenttia|
-|2.5.|30 min|Kirjoitettu testausdokumenttia, asetettu kattavuusraportin automaattinen lataaminen Codecoviin
-|Yht.|57 tuntia 0 min||
+|2.5.|30 min|Kirjoitettu testausdokumenttia, asetettu kattavuusraportin automaattinen lataaminen Codecoviin|
+|5.5.|3 tuntia|Säädetty käyttöliittymää, lisätty periodien määrä ympäristömuuttujaksi|
+|Yht.|56 tuntia 0 min||
