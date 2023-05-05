@@ -63,14 +63,12 @@ class CreateCourseView(View):
         )
 
         save_button.grid(
-            row=7, column=1, sticky=constants.W + constants.S, padx=10, pady=2
+            row=7, column=1, sticky=constants.W + constants.S, padx=10, pady=10
         )
         delete_button.grid(
-            row=7, column=2, sticky=constants.E + constants.S, padx=10, pady=2
+            row=7, column=2, sticky=constants.E + constants.S, padx=10, pady=10
         )
-        clear_button.grid(
-            row=8, column=2, sticky=constants.E + constants.S, padx=10, pady=2
-        )
+        clear_button.grid(row=0, column=1, sticky=constants.NSEW, padx=10, pady=10)
 
     def __initialize_course_field(self) -> None:
         course_label = ttk.Label(master=self._frame, text="Selaa")
@@ -95,7 +93,7 @@ class CreateCourseView(View):
         name_entry = ttk.Entry(master=self._frame, textvariable=self.__name_variable)
 
         name_label.grid(row=2, column=1, sticky=constants.W, padx=10)
-        name_entry.grid(row=2, column=2, sticky=constants.W, pady=2)
+        name_entry.grid(row=2, column=2, columnspan=2, sticky=constants.W, pady=2)
 
     def __initialize_credits_field(self) -> None:
         credits_label = ttk.Label(master=self._frame, text="Laajuus (op)")
@@ -133,6 +131,7 @@ class CreateCourseView(View):
             master=self._frame,
             text="+",
             command=self.__handle_add_requirement,
+            width=2
         )
 
         add_requirement_button.grid(
@@ -255,13 +254,14 @@ class CreateCourseView(View):
             command=lambda: self.__handle_remove_requirement(
                 requirement_variable, requirement_row
             ),
+            width=1
         )
 
         if course:
             requirement_variable.set(str(course))
 
         delete_button.grid(row=1, column=1, sticky=constants.W, padx=5, pady=2)
-        requirement_dropdown.grid(row=1, column=2, sticky=constants.W)
+        requirement_dropdown.grid(row=1, column=2, sticky=constants.W, padx=5)
         requirement_row.grid(column=1)
 
     def __handle_remove_requirement(self, variable: StringVar, row: ttk.Frame) -> None:
