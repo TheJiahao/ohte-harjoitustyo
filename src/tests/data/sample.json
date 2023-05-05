@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "name": "A",
+        "credits": 5,
+        "timing": [
+            2
+        ],
+        "requirements": []
+    },
+    {
+        "id": 2,
+        "name": "B",
+        "credits": 5,
+        "timing": [
+            1,
+            4
+        ],
+        "requirements": [
+            1
+        ]
+    },
+    {
+        "id": 3,
+        "name": "C",
+        "credits": 10,
+        "timing": [
+            3
+        ],
+        "requirements": [
+            1
+        ]
+    }
+]
