@@ -73,7 +73,7 @@ class CalculationView(View):
         period_spinbox = ttk.Spinbox(
             master=self._frame,
             from_=1,
-            to=4,
+            to=planner_service.periods_per_year,
             increment=1,
             width=1,
             textvariable=self.__period_variable,
