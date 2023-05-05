@@ -33,7 +33,9 @@ class CalculationView(View):
             command=self.__handle_calculate,
         )
 
-        calculate_button.grid(row=5, column=1, sticky=constants.S + constants.W)
+        calculate_button.grid(
+            row=5, column=1, sticky=constants.NSEW, columnspan=2, padx=10, pady=5
+        )
 
     def __initialize_credits_field(self) -> None:
         credits_label = ttk.Label(master=self._frame, text="Max op/periodi")
@@ -47,8 +49,8 @@ class CalculationView(View):
             textvariable=self.__credits_variable,
         )
 
-        credits_label.grid(row=1, column=1, sticky=constants.W)
-        credits_spinbox.grid(row=1, column=2, sticky=constants.W)
+        credits_label.grid(row=1, column=1, sticky=constants.W, padx=10)
+        credits_spinbox.grid(row=1, column=2, sticky=constants.W, padx=10, pady=2)
 
     def __initialize_year_field(self) -> None:
         year_label = ttk.Label(master=self._frame, text="Aloitusvuosi")
@@ -62,8 +64,8 @@ class CalculationView(View):
             textvariable=self.__year_variable,
         )
 
-        year_label.grid(row=2, column=1, sticky=constants.W)
-        year_spinbox.grid(row=2, column=2, sticky=constants.W)
+        year_label.grid(row=2, column=1, sticky=constants.W, padx=10)
+        year_spinbox.grid(row=2, column=2, sticky=constants.W, padx=10, pady=2)
 
     def __initialize_period_field(self) -> None:
         period_label = ttk.Label(master=self._frame, text="Aloitusperiodi")
@@ -78,8 +80,8 @@ class CalculationView(View):
             state="readonly",
         )
 
-        period_label.grid(row=3, column=1, sticky=constants.W)
-        period_spinbox.grid(row=3, column=2, sticky=constants.W)
+        period_label.grid(row=3, column=1, sticky=constants.W, padx=10)
+        period_spinbox.grid(row=3, column=2, sticky=constants.W, padx=10, pady=2)
 
     def __handle_calculate(self) -> None:
         """Vastaa Laske-napin toiminnasta."""
