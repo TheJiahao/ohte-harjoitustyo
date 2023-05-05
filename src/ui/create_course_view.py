@@ -62,9 +62,15 @@ class CreateCourseView(View):
             command=self.__handle_clear,
         )
 
-        save_button.grid(row=7, column=1, sticky=constants.W + constants.S)
-        delete_button.grid(row=7, column=2, sticky=constants.E + constants.S)
-        clear_button.grid(row=8, column=2, sticky=constants.E + constants.S)
+        save_button.grid(
+            row=7, column=1, sticky=constants.W + constants.S, padx=10, pady=2
+        )
+        delete_button.grid(
+            row=7, column=2, sticky=constants.E + constants.S, padx=10, pady=2
+        )
+        clear_button.grid(
+            row=8, column=2, sticky=constants.E + constants.S, padx=10, pady=2
+        )
 
     def __initialize_course_field(self) -> None:
         course_label = ttk.Label(master=self._frame, text="Selaa")
@@ -80,16 +86,16 @@ class CreateCourseView(View):
         )
         course_dropdown_list.bind("<<ComboboxSelected>>", self.__fill_course_data)
 
-        course_label.grid(row=1, column=1, sticky=constants.W)
-        course_dropdown_list.grid(row=1, column=2, sticky=constants.W)
+        course_label.grid(row=1, column=1, sticky=constants.W, padx=10)
+        course_dropdown_list.grid(row=1, column=2, sticky=constants.W, pady=2)
 
     def __initialize_name_field(self) -> None:
         name_label = ttk.Label(master=self._frame, text="Nimi")
 
         name_entry = ttk.Entry(master=self._frame, textvariable=self.__name_variable)
 
-        name_label.grid(row=2, column=1, sticky=constants.W)
-        name_entry.grid(row=2, column=2, sticky=constants.W)
+        name_label.grid(row=2, column=1, sticky=constants.W, padx=10)
+        name_entry.grid(row=2, column=2, sticky=constants.W, pady=2)
 
     def __initialize_credits_field(self) -> None:
         credits_label = ttk.Label(master=self._frame, text="Laajuus (op)")
@@ -103,13 +109,13 @@ class CreateCourseView(View):
             textvariable=self.__credits_variable,
         )
 
-        credits_label.grid(row=3, column=1, sticky=constants.W)
-        credits_spinbox.grid(row=3, column=2, sticky=constants.W)
+        credits_label.grid(row=3, column=1, sticky=constants.W, padx=10)
+        credits_spinbox.grid(row=3, column=2, sticky=constants.W, pady=2)
 
     def __initialize_timing_field(self) -> None:
         timing_label = ttk.Label(master=self._frame, text="Ajoitus (periodit)")
 
-        timing_label.grid(row=4, column=1, sticky=constants.W)
+        timing_label.grid(row=4, column=1, sticky=constants.W, padx=10)
 
         for i, period_variable in enumerate(self.__timing):
             button = ttk.Checkbutton(
@@ -118,7 +124,7 @@ class CreateCourseView(View):
 
             button.grid(row=1, column=i)
 
-        self.__timing_frame.grid(row=4, column=2, sticky=constants.W)
+        self.__timing_frame.grid(row=4, column=2, sticky=constants.W, pady=2)
 
     def __initialize_requirement_field(self) -> None:
         requirement_label = ttk.Label(master=self._frame, text="Esitietovaatimukset")
@@ -129,9 +135,13 @@ class CreateCourseView(View):
             command=self.__handle_add_requirement,
         )
 
-        add_requirement_button.grid(row=5, column=2, sticky=constants.E)
-        requirement_label.grid(row=5, column=1, sticky=constants.W)
-        self.__requirement_frame.grid(row=6, column=1, columnspan=2, sticky=constants.W)
+        add_requirement_button.grid(
+            row=5, column=2, sticky=constants.E, padx=10, pady=2
+        )
+        requirement_label.grid(row=5, column=1, sticky=constants.W, padx=10)
+        self.__requirement_frame.grid(
+            row=6, column=1, columnspan=2, sticky=constants.W, padx=10, pady=2
+        )
 
     def __fill_course_data(self, event) -> None:
         """Täyttää valitun kurssin tiedot."""
@@ -246,7 +256,7 @@ class CreateCourseView(View):
         if course:
             requirement_variable.set(str(course))
 
-        delete_button.grid(row=1, column=1, sticky=constants.W)
+        delete_button.grid(row=1, column=1, sticky=constants.W, padx=5,pady=2)
         requirement_dropdown.grid(row=1, column=2, sticky=constants.W)
         requirement_row.grid(column=1)
 
