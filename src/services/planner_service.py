@@ -100,14 +100,18 @@ class PlannerService:
             course (Course): Lisättävä kurssi.
 
         Raises:
+            ValueError: Kurssin nimi on tyhjä.
             TimingError: Kurssilla ei ole ajoitusta.
         """
+
+        if course.name == "":
+            raise ValueError("Kurssin nimi ei voi olla tyhjä.")
 
         if (
             not course.timing.issubset(range(1, self.__periods_per_year + 1))
             or len(course.timing) == 0
         ):
-            raise TimingError(f"Kurssilla '{course}' ei ole ajoitusta.")
+            raise TimingError("Kurssilla ei ole ajoitusta.")
 
         self.__course_repository.create(course)
 

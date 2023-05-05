@@ -120,6 +120,10 @@ class TestPlannerService(unittest.TestCase):
         with self.assertRaises(TimingError):
             self.planner_service.create_course(course_ohte)
 
+    def test_create_course_raises_error_with_empty_name(self):
+        with self.assertRaises(ValueError):
+            self.planner_service.create_course(Course("", 5))
+
     def test_get_course_returns_course_with_existing_course(self):
         self.planner_service.create_course(self.course_ohja)
 

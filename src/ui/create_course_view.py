@@ -199,7 +199,7 @@ class CreateCourseView(View):
             self.__course_variable.set("")
             self.__update_course_list()
             self.__handle_clear()
-        except TimingError as error:
+        except (TimingError, ValueError) as error:
             showerror("Virhe", str(error))
 
     def __handle_delete(self) -> None:
