@@ -17,7 +17,7 @@ class PlannerService:
 
     def __init__(
         self,
-        periods: int = 4,
+        periods: int,
         course_repository: CourseRepository = default_course_repository,
     ) -> None:
         """Luokan konstruktori.

@@ -40,7 +40,9 @@ class TestPlannerService(unittest.TestCase):
     def setUp(self) -> None:
         self.course_ohpe = Course("OhPe", 5, {1, 2, 3, 4}, course_id=1)
         self.course_ohja = Course("OhJa", 5, {2})
-        self.planner_service = PlannerService(course_repository=FakeCourseRepository())
+        self.planner_service = PlannerService(
+            periods=4, course_repository=FakeCourseRepository()
+        )
 
         self.planner_service.delete_all_courses()
 
