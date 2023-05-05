@@ -22,5 +22,5 @@
 |29.4.|4 tuntia|Tehty koodikatselmointi, eriytetty aikataulutusalgoritmi omaksi luokaksi ja korjattu algoritmia|
 |1.5.|2 tuntia 30 min|Hiottu aikataulutusalgoritmia, refaktoroitu `Scheduler`-luokka, kirjoitettu arkkitehtuuridokumenttia|
 |2.5.|30 min|Kirjoitettu testausdokumenttia, asetettu kattavuusraportin automaattinen lataaminen Codecoviin|
-|5.5.|5 tuntia 30 min|Säädetty käyttöliittymää, lisätty periodien määrä ympäristömuuttujaksi|
-|Yht.|62 tuntia 30 min||
+|5.5.|6 tuntia|Säädetty käyttöliittymää, lisätty periodien määrä ympäristömuuttujaksi, lisätty alustava tiedoston käsittelijä|
+|Yht.|63 tuntia 0 min||

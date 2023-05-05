@@ -28,3 +28,8 @@
 - Refaktoroitu `PlannerService`, eriytetty aikataulutusalgoritmi
 - Lisätty uusi Kahnin algoritmiin perustuva aikataulutusalgoritmi `Scheduler`-luokkaan
 - Lisätty kurssin luontinäkymään Tyhjennä-nappi, jolla voi tyhjentää syötetyt tiedot
+
+## Loppupalautus
+
+- Lisätty opintopistemäärät aikatauluun
+- Lisätty alustava tiedoston käsittelijä
