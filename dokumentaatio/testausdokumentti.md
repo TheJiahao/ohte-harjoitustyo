@@ -26,3 +26,8 @@ Testauksessa on käytetty `CourseRepository`-luokan sijaan `FakeCourseRepository
 
 Kurssien tallennuksesta vastaava `CourseRepository`-luokka on testattu [TestCourseRepository](src/tests/repositories/test_course_repository.py)-luokalla.
 Testeissä käytetyn tietokantatiedostin nimi on määritelty `.env.test`-tiedostoon.
+
+## Käyttöliittymä
+
+Käyttöliittymä on testattu käsin.
+Esimerkiksi on kokeiltu antaa tyhjiä syötteitä tai luoda keskenään riippuvia kursseja.
