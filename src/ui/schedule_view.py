@@ -1,5 +1,6 @@
 from tkinter import constants, ttk
 
+from entities.course import Course
 from services import planner_service
 from ui.view import View
 
@@ -22,6 +23,8 @@ class ScheduleView(View):
             self.__tree.delete(item)
 
     def update(self) -> None:
+        """Päivittää aikataulun."""
+
         self.__clear_schedule()
 
         current_period = planner_service.starting_period
@@ -33,15 +36,33 @@ class ScheduleView(View):
                     "", constants.END, str(current_year), text=str(current_year)
                 )
 
-            period_id = self.__tree.insert(
-                str(current_year), constants.END, text=f"Periodi {current_period}"
+            period_id = self.__tree.insert(str(current_year), constants.END)
+            credits_of_period = self.__add_courses(period_id, period)
+            self.__tree.item(
+                period_id, text=f"Periodi {current_period}, {credits_of_period} op"
             )
-
-            for course in period:
-                self.__tree.insert(period_id, constants.END, text=str(course))
 
             current_period += 1
 
             if current_period > planner_service.periods_per_year:
                 current_period = 1
                 current_year += 1
+
+    def __add_courses(self, period_id: str, courses: list[Course]) -> int:
+        """Lisää kurssit annettuun periodiin.
+
+        Args:
+            period_id (str): Periodin id.
+            courses (list[Course]): Lisättävät kurssit.
+
+        Returns:
+            int: Periodin opintopistemäärä.
+        """
+
+        total_credits = 0
+
+        for course in courses:
+            self.__tree.insert(period_id, constants.END, text=str(course))
+            total_credits += course.credits
+
+        return total_credits
