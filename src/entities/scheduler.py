@@ -7,6 +7,10 @@ class CycleError(Exception):
     pass
 
 
+class EmptyGraphError(Exception):
+    pass
+
+
 class Scheduler:
     """Luokka, joka vastaa kurssien aikataulutuksesta."""
 
@@ -55,13 +59,13 @@ class Scheduler:
             if self.__in_degrees[course.id] == 0:
                 self.__add_course_to_heaps(course)
 
-    def __check_cycle(
+    def __check(
         self,
         graph: dict[int, list[int]],
         node: int | None = None,
         states: dict[int, int] | None = None,
     ) -> None:
-        """Tarkistaa syvyyshaulla verkosta syklit.
+        """Tarkistaa, että aikataulu voidaan muodostaa.
 
         Args:
             graph (dict[int, list[int]]): Tarkistettava verkko.
@@ -70,7 +74,11 @@ class Scheduler:
 
         Raises:
             CycleError: Verkossa on sykli.
+            EmptyGraphError: Verkko on tyhjä.
         """
+
+        if not graph:
+            raise EmptyGraphError("Verkko on tyhjä.")
 
         node = node or next(iter(graph.keys()))
         states = states or {node: 0 for node in graph}
@@ -82,7 +90,7 @@ class Scheduler:
             if states[neighbor] == 0:
                 states[neighbor] = 1
 
-                self.__check_cycle(graph, neighbor, states)
+                self.__check(graph, neighbor, states)
 
         states[node] = 2
 
@@ -230,7 +238,7 @@ class Scheduler:
 
         graph = self.__get_graph()
 
-        self.__check_cycle(graph)
+        self.__check(graph)
         self.__generate_schedule(graph)
 
         max_period = max(self.__schedule.keys())
