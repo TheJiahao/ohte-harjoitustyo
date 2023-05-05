@@ -8,7 +8,7 @@ Lisäksi yksikkötestit on [asetettu](../.vscode/settings.json) suoritettavaksi 
 
 ### Testikattavuus
 
-[![codecov](https://codecov.io/github/TheJiahao/ohte-harjoitustyo/branch/main/graph/badge.svg?token=VSQHAACB32)](https://codecov.io/github/TheJiahao/ohte-harjoitustyo)
+[![codecov](https://codecov.io/gh/TheJiahao/study-planner/branch/main/graph/badge.svg?token=VSQHAACB32)](https://codecov.io/gh/TheJiahao/study-planner)
 
 Kattavuusraportti löytyy Codecovista painamalla yllä olevaa kuvaketta.
 `config.py`- ja `build.py`-tiedostoja ei ole testattu yksikkötesteillä.
