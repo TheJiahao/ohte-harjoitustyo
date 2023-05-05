@@ -27,9 +27,9 @@ class CreateCourseView(View):
         self.__course_variable: StringVar = StringVar(value="")
         self.__course_list: list[str] = []
         self.__timing_frame: ttk.Frame = ttk.Frame(master=self._frame)
-        self.__timing: dict[int, BooleanVar] = {
-            i: BooleanVar(value=False) for i in range(1, 5)
-        }
+        self.__timing: list[BooleanVar] = [
+            BooleanVar(value=False) for i in range(planner_service.periods_per_year)
+        ]
 
         self.__requirement_frame: ttk.Frame = ttk.Frame(master=self._frame)
         self.__requirements: list[StringVar] = []
@@ -111,9 +111,9 @@ class CreateCourseView(View):
 
         timing_label.grid(row=4, column=1, sticky=constants.W)
 
-        for i in range(1, 5):
+        for i, period_variable in enumerate(self.__timing):
             button = ttk.Checkbutton(
-                master=self.__timing_frame, text=str(i), variable=self.__timing[i]
+                master=self.__timing_frame, text=str(i + 1), variable=period_variable
             )
 
             button.grid(row=1, column=i)
@@ -150,7 +150,7 @@ class CreateCourseView(View):
         self.__credits_variable.set(course.credits)
 
         for period in course.timing:
-            self.__timing[period].set(True)
+            self.__timing[period - 1].set(True)
 
         for requirement_id in course.requirements:
             requirement = planner_service.get_course(requirement_id)
@@ -165,8 +165,8 @@ class CreateCourseView(View):
         self.__name_variable.set("")
         self.__credits_variable.set(0)
 
-        for i in range(1, 5):
-            self.__timing[i].set(False)
+        for period_variable in self.__timing:
+            period_variable.set(False)
 
         self.__requirements.clear()
 
@@ -181,7 +181,11 @@ class CreateCourseView(View):
         name = self.__name_variable.get()
         credits = self.__credits_variable.get()
 
-        timing = {i for i in range(1, 5) if self.__timing[i].get()}
+        timing = {
+            i + 1
+            for i, period_variable in enumerate(self.__timing)
+            if period_variable.get()
+        }
         requirements = {
             self.__extract_id(course_variable)
             for course_variable in self.__requirements
