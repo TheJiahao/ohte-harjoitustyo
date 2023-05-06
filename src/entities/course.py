@@ -1,12 +1,22 @@
+from copy import copy
+
+
 class Course:
     """Luokka, joka kuvaa kurssia.
 
     Attributes:
-        name (str): Nimi
-        credits (int): Laajuus opintopisteinä
-        timing (set[int]): Periodit, joilla on kurssi on tarjolla.
-        requirements (set[int]): Esitietovaatimuskurssien id:t.
-        id (int): Tunniste.
+        __name (str):
+            Kurssin nimi.
+        __credits (int):
+            Kurssin opintopistemäärä.
+        __timing (set[int]):
+            Kurssin perioditarjonta joukkona.
+            Oletukseltaan tyhjä joukko.
+        __requirements (set[int]):
+            Kurssin esitietovaatimuskurssien id:t joukkona.
+            Oletukseltaan tyhjä joukko.
+        __id (int):
+            Kurssin id. Oletukseltaan -1.
     """
 
     def __init__(
@@ -15,34 +25,28 @@ class Course:
         course_credits: int,
         timing: set[int] | None = None,
         requirements: set[int] | None = None,
-        course_id: int = -1,
+        course_id: int | None = None,
     ) -> None:
         """Luokan konstruktori.
 
         Args:
             name (str):
                 Kurssin nimi.
-            course_credits (int):
+            credits (int):
                 Kurssin opintopistemäärä.
             timing (set[int] | None, optional):
-                Kurssin perioditarjonta. Oletukseltaan None.
+                Kurssin perioditarjonta tauluna. Oletukseltaan None.
             requirements (set[int] | None, optional):
-                Kurssin esitietovaatimuskurssien id:t.
+                Kurssin esitietovaatimuskurssien id:t joukkona.
                 Oletukseltaan None.
             course_id (int | None, optional):
-                Kurssin tunniste. Oletukseltaan None.
-
-        Raises:
-            ValueError: Negatiivinen opintopiste.
+                Kurssin id. Oletukseltaan None.
         """
-        if course_credits < 0:
-            raise ValueError("Negatiivinen opintopiste ei kelpaa.")
-
-        self.name: str = name
-        self.credits: int = course_credits
-        self.timing: set[int] = timing or set()
-        self.requirements: set[int] = requirements or set()
-        self.id: int = course_id
+        self.__name: str = name
+        self.__credits: int = course_credits
+        self.__timing: set[int] = timing or set()
+        self.__requiments: set[int] = requirements or set()
+        self.__id: int = course_id or -1
 
     def __eq__(self, other: "Course") -> bool:
         if isinstance(other, Course):
@@ -57,7 +61,115 @@ class Course:
         return False
 
     def __str__(self) -> str:
-        return f"{self.id}: {self.name}, {self.credits} op"
+        return f"{self.__id}: {self.__name}, {self.__credits} op"
 
     def __repr__(self) -> str:
         return f"Course({self.name}, {self.credits}, {self.timing}, {self.requirements}, {self.id})"
+
+    @property
+    def name(self) -> str:
+        return self.__name
+
+    @property
+    def credits(self) -> int:
+        return self.__credits
+
+    @property
+    def timing(self) -> set[int]:
+        return copy(self.__timing)
+
+    @property
+    def requirements(self) -> set[int]:
+        return copy(self.__requiments)
+
+    @property
+    def id(self) -> int:
+        return self.__id
+
+    @id.setter
+    def id(self, value: int) -> None:
+        """Asettaa id:n kurssille.
+
+        Args:
+            id (int): Asetettava id.
+
+        Raises:
+            ValueError: Ei-positiivinen id.
+        """
+
+        if value <= 0:
+            raise ValueError("Ei-positiivinen id ei kelpaa.")
+
+        self.__id = value
+
+    @credits.setter
+    def credits(self, value: int) -> None:
+        """Asettaa opintopistemäärän kurssille.
+
+        Args:
+            credits (int): Asetettava opintopistemäärä.
+
+        Raises:
+            ValueError: Opintopistemäärä on ei-positiivinen.
+        """
+        if value <= 0:
+            raise ValueError("Ei-positiivinen opintopiste ei kelpaa.")
+
+        self.__credits = value
+
+    @name.setter
+    def name(self, name: str) -> None:
+        """Asettaa uuden nimen kurssille.
+
+        Args:
+            name (str): Asetettava nimi.
+        """
+        self.__name = name
+
+    def add_period(self, period: int) -> None:
+        """Lisää periodin kurssille.
+
+        Args:
+            period (int): Lisättävä periodi.
+
+        Raises:
+            ValueError: Ei-positiivinen periodi.
+        """
+        if period <= 0:
+            raise ValueError(f"Ei-positiivinen periodi {period} ei kelpaa.")
+
+        self.__timing.add(period)
+
+    def remove_period(self, period: int) -> None:
+        """Poistaa periodin kurssilta, jos se on perioditarjonnassa.
+
+        Args:
+            period (int): Poistettava periodi.
+        """
+
+        if period in self.__timing:
+            self.__timing.remove(period)
+
+    def add_requirement(self, course_id: int) -> None:
+        """Lisää esitietokurssin.
+
+        Args:
+            id (int): Lisättävän esitietokurssin id.
+
+        Raises:
+            ValueError: Ei-positiivinen id.
+        """
+        if course_id <= 0:
+            raise ValueError("Ei-positiivinen id ei kelpaa.")
+
+        self.__requiments.add(course_id)
+
+    def remove_requirement(self, course_id: int) -> None:
+        """Poistaa esitietokurssin, jos se on esitietovaatimuksissa.
+
+        Args:
+            id (int): Poistettavan esitietokurssin id.
+        """
+
+        if course_id in self.__requiments:
+            self.__requiments.remove(course_id)
