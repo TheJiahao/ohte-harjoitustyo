@@ -11,7 +11,6 @@ class FakeCourseRepository:
 
     def create(self, course: Course) -> Course:
         if course.id == -1:
-            course.id = self.__next_id
             self.__next_id += 1
 
         else:
