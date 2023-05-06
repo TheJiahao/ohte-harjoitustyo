@@ -48,7 +48,14 @@ class SchedulerService:
         self.initialize(courses or [], starting_period, max_credits)
 
     def __repr__(self) -> str:
-        return f"SchedulerService({self.__courses.values()}, {self.__starting_period}, {self.__periods_per_year}, {self.__max_credits})"
+        return ",".join(
+            [
+                f"SchedulerService({list(self.__courses.values())}",
+                f"{self.__starting_period}",
+                f"{self.__periods_per_year}",
+                f"{self.__max_credits})",
+            ]
+        )
 
     @property
     def max_credits(self) -> int:
