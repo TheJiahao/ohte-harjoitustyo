@@ -9,8 +9,8 @@ Luokkien riippuvuudet on esitetty seuraavassa luokkakaaviossa.
 ```mermaid
 classDiagram
     PlannerService ..> Course
-    PlannerService ..> Scheduler
-    Scheduler -- "*" Course
+    PlannerService -- "1" SchedulerService
+    SchedulerService -- "*" Course
 
     class Course {
         -name
@@ -20,7 +20,7 @@ classDiagram
         -id
     }
 
-    class Scheduler {
+    class SchedulerService {
         +get_schedule()
     }
 ```
