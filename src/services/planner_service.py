@@ -1,8 +1,11 @@
+from config import PERIODS_PER_YEAR
 from entities.course import Course
-from repositories import course_repository as default_course_repository
 from repositories.course_repository import CourseRepository
-from services import scheduler_service as default_scheduler_service
+from repositories.course_repository import (
+    course_repository as default_course_repository,
+)
 from services.scheduler_service import SchedulerService
+from services.scheduler_service import scheduler_service as default_scheduler_service
 
 
 class TimingError(Exception):
@@ -147,3 +150,6 @@ class PlannerService:
         """
 
         return self.__scheduler.get_schedule()
+
+
+planner_service = PlannerService(PERIODS_PER_YEAR)

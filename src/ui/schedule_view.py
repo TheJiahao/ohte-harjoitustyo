@@ -1,7 +1,7 @@
 from tkinter import constants, ttk
 
 from entities.course import Course
-from services import planner_service
+from services.planner_service import planner_service
 from ui.view import View
 
 

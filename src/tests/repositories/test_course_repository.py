@@ -1,7 +1,7 @@
 import unittest
 
 from entities.course import Course
-from repositories import course_repository
+from repositories.course_repository import course_repository
 
 
 class TestCourseRepository(unittest.TestCase):

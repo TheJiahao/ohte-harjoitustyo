@@ -1,4 +1,4 @@
-from lib import database
+from lib.database import database
 
 
 def build() -> None:

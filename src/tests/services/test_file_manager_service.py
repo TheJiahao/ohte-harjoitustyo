@@ -2,7 +2,7 @@ import os
 import unittest
 
 from entities.course import Course
-from services import file_manager_service
+from services.file_manager_service import file_manager_service
 
 
 class TestFileManagerService(unittest.TestCase):

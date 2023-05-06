@@ -2,8 +2,7 @@ from tkinter import BooleanVar, IntVar, StringVar, constants, ttk
 from tkinter.messagebox import askyesno, showerror
 
 from entities.course import Course
-from services import planner_service
-from services.planner_service import TimingError
+from services.planner_service import TimingError, planner_service
 from ui.view import View
 
 

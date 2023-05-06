@@ -23,3 +23,6 @@ class FileManagerService:
 
     def write(self, path: str, courses: list[Course]) -> None:
         pass
+
+
+file_manager_service = FileManagerService()

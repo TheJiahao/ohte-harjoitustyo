@@ -1,7 +1,7 @@
 from sqlite3 import Connection, Cursor
 
 from entities.course import Course
-from lib import database
+from lib.database import database
 
 
 class CourseRepository:
@@ -187,3 +187,6 @@ class CourseRepository:
         ).fetchall()
 
         return {row["period"] for row in timing}
+
+
+course_repository = CourseRepository()

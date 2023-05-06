@@ -299,3 +299,6 @@ class SchedulerService:
 
         self.__schedule[i].append(course)
         processed.add(course.id)
+
+
+scheduler_service = SchedulerService()
