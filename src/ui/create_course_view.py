@@ -128,10 +128,7 @@ class CreateCourseView(View):
         requirement_label = ttk.Label(master=self._frame, text="Esitietovaatimukset")
 
         add_requirement_button = ttk.Button(
-            master=self._frame,
-            text="+",
-            command=self.__handle_add_requirement,
-            width=2
+            master=self._frame, text="+", command=self.__handle_add_requirement, width=2
         )
 
         add_requirement_button.grid(
@@ -195,6 +192,7 @@ class CreateCourseView(View):
             for i, period_variable in enumerate(self.__timing)
             if period_variable.get()
         }
+
         try:
             requirements = {
                 self.__extract_id(course_variable)
@@ -204,9 +202,9 @@ class CreateCourseView(View):
             showerror("Virhe", "Tarkista esitietovaatimukset.")
             return
 
-        course = Course(name, credits, timing, requirements, self.__current_id)
-
         try:
+            course = Course(name, credits, timing, requirements, self.__current_id)
+
             planner_service.create_course(course)
 
             self.__course_variable.set("")
@@ -254,7 +252,7 @@ class CreateCourseView(View):
             command=lambda: self.__handle_remove_requirement(
                 requirement_variable, requirement_row
             ),
-            width=1
+            width=1,
         )
 
         if course:
