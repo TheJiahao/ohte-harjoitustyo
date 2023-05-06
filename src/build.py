@@ -1,4 +1,4 @@
-from entities import database
+from lib import database
 
 
 def build() -> None:
