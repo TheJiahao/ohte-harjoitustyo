@@ -3,7 +3,7 @@ import json
 from entities.course import Course
 
 
-class FileManager:
+class FileManagerService:
     def read(self, path: str) -> list[Course]:
         with open(path, encoding="utf-8") as file:
             file_content = file.read()

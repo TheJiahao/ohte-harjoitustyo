@@ -1,11 +1,11 @@
 import os
 import unittest
 
-from entities import file_manager
 from entities.course import Course
+from services import file_manager_service
 
 
-class TestFileManager(unittest.TestCase):
+class TestFileManagerService(unittest.TestCase):
     def setUp(self):
         dirname = os.path.dirname(__file__)
 
@@ -14,7 +14,7 @@ class TestFileManager(unittest.TestCase):
     def test_read(self):
         file = os.path.join(self.data_directory, "sample.json")
 
-        courses = file_manager.read(file)
+        courses = file_manager_service.read(file)
 
         self.assertEqual(len(courses), 3)
         self.assertEqual(courses[0], Course("A", 5, {2}, course_id=1))

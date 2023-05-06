@@ -3,7 +3,7 @@ from tkinter import IntVar, TclError, constants, ttk
 from tkinter.messagebox import showerror
 from typing import Callable
 
-from entities.scheduler import CycleError, EmptyGraphError
+from services.scheduler_service import CycleError, EmptyGraphError
 from services import planner_service
 from services.planner_service import MaxCreditError, TimingError
 from ui.view import View

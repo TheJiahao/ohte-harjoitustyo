@@ -1,7 +1,7 @@
 from sqlite3 import Connection, Cursor
 
-from entities import database
 from entities.course import Course
+from lib import database
 
 
 class CourseRepository:

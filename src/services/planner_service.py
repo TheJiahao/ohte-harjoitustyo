@@ -1,7 +1,7 @@
 from entities.course import Course
-from entities.scheduler import Scheduler
 from repositories import course_repository as default_course_repository
 from repositories.course_repository import CourseRepository
+from services.scheduler_service import SchedulerService
 
 
 class TimingError(Exception):
@@ -159,7 +159,7 @@ class PlannerService:
                 Periodien indeksöinti alkaa nollasta,
                 ja kuvaa kuluneiden periodien määrää aloitusperiodista alkaen.
         """
-        scheduler = Scheduler(
+        scheduler = SchedulerService(
             self.get_all_courses(),
             self.__starting_period,
             self.__periods_per_year,

@@ -1,10 +1,10 @@
 import unittest
 
 from entities.course import Course
-from entities.scheduler import *
+from services.scheduler_service import *
 
 
-class TestScheduler(unittest.TestCase):
+class TestSchedulerService(unittest.TestCase):
     def test_get_schedule_raises_error_with_cycle_in_graph(self):
         courses = []
 
@@ -13,7 +13,7 @@ class TestScheduler(unittest.TestCase):
         courses.append(Course("c", 5, {3}, {1}, 3))
         courses.append(Course("d", 5, {4}, {1}, 4))
 
-        scheduler = Scheduler(courses)
+        scheduler = SchedulerService(courses)
 
         with self.assertRaises(CycleError):
             scheduler.get_schedule()
@@ -24,7 +24,7 @@ class TestScheduler(unittest.TestCase):
 
         courses = [a, b]
 
-        scheduler = Scheduler(courses, 1, 4, 5)
+        scheduler = SchedulerService(courses, 1, 4, 5)
         schedule = scheduler.get_schedule()
 
         self.assertEqual(schedule, [[a], [b]])
@@ -35,7 +35,7 @@ class TestScheduler(unittest.TestCase):
         c = Course("Ohte", 5, {1, 2, 3}, {2}, course_id=3)
 
         courses = [a, b, c]
-        scheduler = Scheduler(courses, 1, 4, 5)
+        scheduler = SchedulerService(courses, 1, 4, 5)
 
         schedule = scheduler.get_schedule()
 
@@ -49,7 +49,7 @@ class TestScheduler(unittest.TestCase):
         c = Course("c", 1, {3}, course_id=3)
 
         courses = [a, b, c]
-        scheduler = Scheduler(courses)
+        scheduler = SchedulerService(courses)
 
         schedule = scheduler.get_schedule()
 
@@ -62,11 +62,11 @@ class TestScheduler(unittest.TestCase):
         graph2 = {1: [2, 3], 2: [4], 3: [4], 4: []}
         graph3 = {1: [3], 2: [3], 3: []}
 
-        scheduler = Scheduler([])
+        scheduler = SchedulerService([])
 
-        scheduler._Scheduler__check(graph1)
-        scheduler._Scheduler__check(graph2)
-        scheduler._Scheduler__check(graph3)
+        scheduler._SchedulerService__check(graph1)
+        scheduler._SchedulerService__check(graph2)
+        scheduler._SchedulerService__check(graph3)
 
     def test_check_raises_error_with_cyclic_graph(self):
         graph1 = {1: [1]}
@@ -79,31 +79,31 @@ class TestScheduler(unittest.TestCase):
             5: [1, 3, 6],
         }
 
-        scheduler = Scheduler([])
+        scheduler = SchedulerService([])
 
         with self.assertRaises(CycleError):
-            scheduler._Scheduler__check(graph1)
+            scheduler._SchedulerService__check(graph1)
 
         with self.assertRaises(CycleError):
-            scheduler._Scheduler__check(graph2)
+            scheduler._SchedulerService__check(graph2)
 
         with self.assertRaises(CycleError):
-            scheduler._Scheduler__check(graph3)
+            scheduler._SchedulerService__check(graph3)
 
     def test_check_raises_error_with_empty_graph(self):
-        scheduler = Scheduler([])
+        scheduler = SchedulerService([])
 
         graph = {}
 
         with self.assertRaises(EmptyGraphError):
-            scheduler._Scheduler__check(graph)
+            scheduler._SchedulerService__check(graph)
 
     def test_non_existent_requirements_are_ignored(self):
         course1 = Course("Test", 10, {1, 2}, {20, 99}, course_id=1)
         course2 = Course("Test", 10, {1}, {1, 3}, course_id=2)
 
-        scheduler = Scheduler([course1])
+        scheduler = SchedulerService([course1])
 
-        self.assertNotIn(20, scheduler._Scheduler__get_graph().keys())
-        self.assertNotIn(99, scheduler._Scheduler__get_graph().keys())
-        self.assertNotIn(3, scheduler._Scheduler__get_graph().keys())
+        self.assertNotIn(20, scheduler._SchedulerService__get_graph().keys())
+        self.assertNotIn(99, scheduler._SchedulerService__get_graph().keys())
+        self.assertNotIn(3, scheduler._SchedulerService__get_graph().keys())

@@ -11,7 +11,7 @@ class EmptyGraphError(Exception):
     pass
 
 
-class Scheduler:
+class SchedulerService:
     """Luokka, joka vastaa kurssien aikataulutuksesta."""
 
     def __init__(
