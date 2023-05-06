@@ -94,7 +94,7 @@ class CalculationView(View):
 
             self.__handle_show_schedule_view()
 
-        except (TimingError, CycleError, MaxCreditError) as error:
+        except (TimingError, CycleError, MaxCreditError, ValueError) as error:
             showerror("Virhe", str(error))
 
         except (TclError, EmptyGraphError):
