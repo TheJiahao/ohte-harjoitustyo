@@ -33,3 +33,5 @@
 
 - Lisätty opintopistemäärät aikatauluun
 - Lisätty alustava tiedoston käsittelijä
+- Refaktoroitu `Course`-luokka, poistettu turhat metodit ja tehty oliomuuttujista julkisia
+- Lisätty enemmän syötteiden tarkistusta
