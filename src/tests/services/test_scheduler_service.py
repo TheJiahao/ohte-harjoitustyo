@@ -5,6 +5,18 @@ from services.scheduler_service import *
 
 
 class TestSchedulerService(unittest.TestCase):
+    def test_negative_max_credits_raises_error(self):
+        scheduler = SchedulerService([])
+
+        with self.assertRaises(MaxCreditError):
+            scheduler.max_credits = -10
+
+    def test_max_credits_lower_than_minimum_course_credits_raises_error(self):
+        scheduler = SchedulerService([Course("test", 5, {1})])
+
+        with self.assertRaises(MaxCreditError):
+            scheduler.max_credits = 2
+
     def test_get_schedule_raises_error_with_cycle_in_graph(self):
         courses = []
 

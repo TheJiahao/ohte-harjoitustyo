@@ -11,12 +11,16 @@ class EmptyGraphError(Exception):
     pass
 
 
+class MaxCreditError(ValueError):
+    pass
+
+
 class SchedulerService:
     """Luokka, joka vastaa kurssien aikataulutuksesta."""
 
     def __init__(
         self,
-        courses: list[Course],
+        courses: list[Course] | None = None,
         starting_period: int = 1,
         periods_per_year: int = 4,
         max_credits: int = 15,
@@ -36,17 +40,80 @@ class SchedulerService:
         self.__periods_per_year: int = periods_per_year
         self.__starting_period: int = starting_period
         self.__max_credits: int = max_credits
+        self.__courses: dict[int, Course] = {}
+        self.__in_degrees: dict[int, int] = {}
+        self.__heaps: list[list[tuple[int, int]]] = []
+        self.__schedule: dict[int, list[Course]] = {}
+
+        self.initialize(courses or [], starting_period, max_credits)
+
+    def __repr__(self) -> str:
+        return f"SchedulerService({self.__courses.values()}, {self.__starting_period}, {self.__periods_per_year}, {self.__max_credits})"
+
+    @property
+    def max_credits(self) -> int:
+        return self.__max_credits
+
+    @max_credits.setter
+    def max_credits(self, max_credits: int) -> None:
+        if max_credits < 0:
+            raise MaxCreditError("Opintopisteyläraja ei voi olla negatiivinen.")
+
+        for course in self.__courses.values():
+            if course.credits > max_credits:
+                raise MaxCreditError(
+                    "Opintopisteyläraja on pienempi kuin suurin kurssin laajuus."
+                )
+
+        self.__max_credits = max_credits
+
+    def initialize(
+        self,
+        courses: list[Course],
+        starting_period: int,
+        max_credits: int,
+    ) -> None:
+        """Alustaa parametrit.
+
+        Args:
+            courses (list[Course]): Lista kursseista
+            starting_period (int): Aloitusperiodi
+            periods_per_year (int): Periodien määrä vuodessa
+            max_credits (int): Opintopisteyläraja
+        """
+
+        self.starting_period = starting_period
+        self.max_credits = max_credits
         self.__courses: dict[int, Course] = {course.id: course for course in courses}
 
         self.__in_degrees: dict[int, int] = {
             course.id: len(course.requirements) for course in courses
         }
         self.__heaps: list[list[tuple[int, int]]] = [
-            [] for i in range(periods_per_year + 1)
+            [] for i in range(self.__periods_per_year + 1)
         ]
         self.__schedule: dict[int, list[Course]] = {}
 
         self.__initialize_heaps(courses)
+
+    def get_schedule(self) -> list[list[Course]]:
+        """Palauttaa aikataulun.
+
+        Returns:
+            list[list[Course]]:
+                Kurssit jaettuna sopiviin periodeihin.
+                Periodien indeksöinti alkaa nollasta,
+                ja kuvaa kuluneiden periodien määrää aloitusperiodista alkaen.
+        """
+
+        graph = self.__get_graph()
+
+        self.__check(graph)
+        self.__generate_schedule(graph)
+
+        max_period = max(self.__schedule.keys())
+
+        return [self.__schedule.get(i, []) for i in range(max_period + 1)]
 
     def __initialize_heaps(self, courses: list[Course]) -> None:
         """Lisää kekoihin keot.
@@ -225,22 +292,3 @@ class SchedulerService:
 
         self.__schedule[i].append(course)
         processed.add(course.id)
-
-    def get_schedule(self) -> list[list[Course]]:
-        """Palauttaa aikataulun.
-
-        Returns:
-            list[list[Course]]:
-                Kurssit jaettuna sopiviin periodeihin.
-                Periodien indeksöinti alkaa nollasta,
-                ja kuvaa kuluneiden periodien määrää aloitusperiodista alkaen.
-        """
-
-        graph = self.__get_graph()
-
-        self.__check(graph)
-        self.__generate_schedule(graph)
-
-        max_period = max(self.__schedule.keys())
-
-        return [self.__schedule.get(i, []) for i in range(max_period + 1)]

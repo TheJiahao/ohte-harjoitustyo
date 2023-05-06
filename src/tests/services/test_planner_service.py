@@ -1,6 +1,7 @@
 import unittest
 
 from services.planner_service import *
+from services.scheduler_service import *
 
 
 class FakeCourseRepository:
@@ -41,7 +42,9 @@ class TestPlannerService(unittest.TestCase):
         self.course_ohpe = Course("OhPe", 5, {1, 2, 3, 4}, course_id=1)
         self.course_ohja = Course("OhJa", 5, {2})
         self.planner_service = PlannerService(
-            periods=4, course_repository=FakeCourseRepository()
+            periods_per_year=4,
+            course_repository=FakeCourseRepository(),
+            scheduler_service=SchedulerService([]),
         )
 
         self.planner_service.delete_all_courses()
@@ -85,10 +88,6 @@ class TestPlannerService(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             self.planner_service.starting_period = 5
-
-    def test_setting_negative_max_credits_raises_error(self):
-        with self.assertRaises(ValueError):
-            self.planner_service.max_credits = -10
 
     def test_create_course_with_non_existing_course(self):
         self.planner_service.create_course(self.course_ohpe)
@@ -176,19 +175,17 @@ class TestPlannerService(unittest.TestCase):
         self.planner_service.create_course(course_tira)
         self.planner_service.create_course(course_tilpe)
 
+        self.planner_service.initialize(0, 1, 15)
         schedule = self.planner_service.get_schedule()
 
         self.assertTrue(self.validate_schedule(schedule))
 
-    def test_set_parameters(self):
-        self.planner_service.set_parameters(2000, 3, 15)
+    def test_initialize(self):
+        scheduler = SchedulerService([])
+        planner = PlannerService(4, scheduler, FakeCourseRepository())
 
-        self.assertEqual(self.planner_service.starting_year, 2000)
-        self.assertEqual(self.planner_service.starting_period, 3)
-        self.assertEqual(self.planner_service.max_credits, 15)
+        planner.initialize(2000, 3, 100)
 
-    def test_set_parameters_raises_error_with_too_low_limit(self):
-        self.planner_service.create_course(Course("test", 5, {1}))
-
-        with self.assertRaises(MaxCreditError):
-            self.planner_service.set_parameters(2000, 2, 1)
+        self.assertEqual(planner.starting_year, 2000)
+        self.assertEqual(planner.starting_period, 3)
+        self.assertEqual(scheduler.max_credits, 100)

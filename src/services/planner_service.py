@@ -1,14 +1,11 @@
 from entities.course import Course
 from repositories import course_repository as default_course_repository
 from repositories.course_repository import CourseRepository
+from services import scheduler_service as default_scheduler_service
 from services.scheduler_service import SchedulerService
 
 
 class TimingError(Exception):
-    pass
-
-
-class MaxCreditError(Exception):
     pass
 
 
@@ -17,7 +14,8 @@ class PlannerService:
 
     def __init__(
         self,
-        periods: int,
+        periods_per_year: int,
+        scheduler_service: SchedulerService = default_scheduler_service,
         course_repository: CourseRepository = default_course_repository,
     ) -> None:
         """Luokan konstruktori.
@@ -31,10 +29,9 @@ class PlannerService:
         """
 
         self.__course_repository: CourseRepository = course_repository
-        self.__periods_per_year: int = periods
+        self.__scheduler: SchedulerService = scheduler_service
+        self.__periods_per_year: int = periods_per_year
         self.__starting_year: int = 0
-        self.__starting_period: int = 1
-        self.__max_credits: int = 15
 
     @property
     def periods_per_year(self) -> int:
@@ -47,10 +44,6 @@ class PlannerService:
     @property
     def starting_period(self) -> int:
         return self.__starting_period
-
-    @property
-    def max_credits(self) -> int:
-        return self.__max_credits
 
     @starting_year.setter
     def starting_year(self, year: int) -> None:
@@ -66,12 +59,26 @@ class PlannerService:
 
         self.__starting_period = period
 
-    @max_credits.setter
-    def max_credits(self, max_credits: int) -> None:
-        if max_credits < 0:
-            raise ValueError("Negatiivinen opintopisteyläraja ei kelpaa.")
+    def initialize(
+        self,
+        starting_year: int,
+        starting_period: int,
+        max_credits: int,
+    ) -> None:
+        """Alustaa parametrit.
 
-        self.__max_credits = max_credits
+        Args:
+            starting_year (int): Aloitusvuosi.
+            starting_period (int): Aloitusperiodi.
+            max_credits (int): Opintopisteyläraja periodille.
+        """
+
+        self.starting_year = starting_year
+        self.starting_period = starting_period
+
+        self.__scheduler.initialize(
+            self.get_all_courses(), self.starting_period, max_credits
+        )
 
     def get_course(self, course_id: int) -> Course | None:
         """Palauttaa id:tä vastaavan kurssin.
@@ -129,29 +136,8 @@ class PlannerService:
 
         self.__course_repository.delete_all()
 
-    def set_parameters(
-        self, starting_year: int, starting_period: int, max_credits: int
-    ) -> None:
-        """Asettaa parametrit aikataulun määrittämistä varten.
-
-        Args:
-            starting_year (int): Aloitusvuosi.
-            starting_period (int): Aloitusperiodi.
-            max_credits (int): Opintopisteyläraja periodille.
-        """
-
-        for course in self.get_all_courses():
-            if course.credits > max_credits:
-                raise MaxCreditError(
-                    "Opintopisteyläraja on pienempi kuin suurin kurssin laajuus."
-                )
-
-        self.max_credits = max_credits
-        self.starting_year = starting_year
-        self.starting_period = starting_period
-
     def get_schedule(self) -> list[list[Course]]:
-        """Palauttaa aikataulun, perustuu Kahnin algoritmiin.
+        """Palauttaa aikataulun.
 
         Returns:
             list[list[Course]]:
@@ -159,11 +145,5 @@ class PlannerService:
                 Periodien indeksöinti alkaa nollasta,
                 ja kuvaa kuluneiden periodien määrää aloitusperiodista alkaen.
         """
-        scheduler = SchedulerService(
-            self.get_all_courses(),
-            self.__starting_period,
-            self.__periods_per_year,
-            self.__max_credits,
-        )
 
-        return scheduler.get_schedule()
+        return self.__scheduler.get_schedule()

@@ -91,7 +91,7 @@ class CalculationView(View):
             starting_year = self.__year_variable.get()
             starting_period = self.__period_variable.get()
 
-            planner_service.set_parameters(starting_year, starting_period, max_credits)
+            planner_service.initialize(starting_year, starting_period, max_credits)
 
             self.__handle_show_schedule_view()
 
