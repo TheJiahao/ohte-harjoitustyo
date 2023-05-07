@@ -12,19 +12,11 @@
 
 ## Käynnistys
 
-Ennen ensimmäistä käynnistystä, suorita seuraavat toimenpiteet.
+Ennen ensimmäistä käynnistystä, asenna riippuvuudet:
 
-1. Asenna riippuvuudet:
-
-    ```shell
-    poetry install
-    ```
-
-2. Alusta tietokanta
-
-    ```shell
-    poetry run invoke build
-    ```
+```shell
+poetry install
+```
 
 Kun edelliset toimenpiteet on suoritettu ainakin kerran, sovellus käynnistyy komennolla:
 

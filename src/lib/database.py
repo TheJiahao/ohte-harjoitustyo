@@ -1,3 +1,4 @@
+import os
 from sqlite3 import Connection, Cursor, Row, connect
 
 from config import DATABASE_FILE_PATH
@@ -11,6 +12,9 @@ class Database:
         self.connection.row_factory = Row
 
         self.cursor: Cursor = self.connection.cursor()
+
+        if os.path.getsize(DATABASE_FILE_PATH) == 0:
+            self.initialize()
 
     def create_tables(self) -> None:
         """Luo tietokantaan taulut."""
