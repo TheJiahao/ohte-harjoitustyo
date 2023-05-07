@@ -261,10 +261,12 @@ CourseRepository -->> User:
 
 ## Puutteet
 
-- Sovellus ei osaa käsitellä kursseja, jotka kestävät useita periodeja.
+- Usean periodin kestäviä kursseja
   - Workaround: Merkkaa kurssin ajoituksiin ne periodit, joihin ne päättyvät.
-- Sovellus ei pysty merkkaamaan kursseja suoritetuksi.
+- Kursseja ei voi merkkata suoritetuksi
   - Workaround: Merkkaa kurssin laajuudeksi 0 op ja ajoitukseksi mikä tahansa periodi, tällöin kurssi laitetaan alkuun.
+- Vaihtoehtoiset esitietovaatimukset
+  - Workaround: Merkkaa esitietovaatimuksiin ne kurssit, jotka haluat suorittaa.
 
 [^tirakirja]: Antti Laaksonen, *Tietorakenteet ja algoritmit*, 2022. https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/
 [^kahn]: Geeksforgeeks, *Kahn’s algorithm for Topological Sorting*. https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/, luettu 28.4.2023.
