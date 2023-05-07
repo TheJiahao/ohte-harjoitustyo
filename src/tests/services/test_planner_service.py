@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from services.planner_service import *
@@ -47,6 +48,10 @@ class TestPlannerService(unittest.TestCase):
         )
 
         self.planner_service.delete_all_courses()
+
+        dirname = os.path.dirname(__file__)
+
+        self.data_directory = os.path.join(dirname, "..", "data")
 
     def validate_topological_order(self, courses: list[Course]) -> bool:
         seen = set()
@@ -188,3 +193,38 @@ class TestPlannerService(unittest.TestCase):
         self.assertEqual(planner.starting_year, 2000)
         self.assertEqual(planner.starting_period, 3)
         self.assertEqual(scheduler.max_credits, 100)
+
+    def test_import_courses(self):
+        file = os.path.join(self.data_directory, "sample.json")
+
+        self.planner_service.import_courses(file)
+
+        courses = self.planner_service.get_all_courses()
+
+        self.assertEqual(courses[0], Course("A", 5, {2}, course_id=1))
+        self.assertEqual(courses[1], Course("B", 5, {1, 4}, {1}, course_id=2))
+        self.assertEqual(courses[2], Course("C", 10, {3}, {1}, course_id=3))
+
+    def test_import_courses_will_delete_existing_courses(self):
+        file = os.path.join(self.data_directory, "sample.json")
+        a = Course("a", 5, {2}, course_id=10)
+
+        self.planner_service.create_course(a)
+
+        self.planner_service.import_courses(file)
+
+        self.assertNotIn(a, self.planner_service.get_all_courses())
+
+    def test_export_courses(self):
+        file = os.path.join(self.data_directory, "test_output.json")
+
+        self.planner_service.create_course(self.course_ohpe)
+        self.planner_service.create_course(self.course_ohja)
+
+        self.planner_service.export_courses(file)
+        self.planner_service.import_courses(file)
+
+        courses = self.planner_service.get_all_courses()
+
+        self.assertIn(self.course_ohpe, courses)
+        self.assertIn(self.course_ohja, courses)

@@ -4,6 +4,10 @@ from repositories.course_repository import CourseRepository
 from repositories.course_repository import (
     course_repository as default_course_repository,
 )
+from services.export_service import ExportService
+from services.export_service import export_service as default_export_service
+from services.import_service import ImportService
+from services.import_service import import_service as default_import_service
 from services.scheduler_service import SchedulerService
 from services.scheduler_service import scheduler_service as default_scheduler_service
 
@@ -20,6 +24,8 @@ class PlannerService:
         periods_per_year: int,
         scheduler_service: SchedulerService = default_scheduler_service,
         course_repository: CourseRepository = default_course_repository,
+        import_service: ImportService = default_import_service,
+        export_service: ExportService = default_export_service,
     ) -> None:
         """Luokan konstruktori.
 
@@ -30,11 +36,13 @@ class PlannerService:
                 Olio, joka vastaa kurssien tallentamisesta.
                 Oletukseltaan default_course_repository.
         """
+        self.__periods_per_year: int = periods_per_year
+        self.__starting_year: int = 0
 
         self.__course_repository: CourseRepository = course_repository
         self.__scheduler: SchedulerService = scheduler_service
-        self.__periods_per_year: int = periods_per_year
-        self.__starting_year: int = 0
+        self.__importer: ImportService = import_service
+        self.__exporter: ExportService = export_service
 
     @property
     def periods_per_year(self) -> int:
@@ -150,6 +158,27 @@ class PlannerService:
         """
 
         return self.__scheduler.get_schedule()
+
+    def import_courses(self, path: str) -> None:
+        """Poistaa kaikki jo olevat kurssit ja lukee kurssit tiedostosta.
+
+        Args:
+            path (str): Tiedoston polku.
+        """
+
+        self.delete_all_courses()
+
+        for course in self.__importer.read(path):
+            self.create_course(course)
+
+    def export_courses(self, path: str) -> None:
+        """Kirjoittaa kurssit tiedostoon.
+
+        Args:
+            path (str): Tiedoston polku.
+        """
+
+        self.__exporter.write(self.get_all_courses(), path)
 
 
 planner_service = PlannerService(PERIODS_PER_YEAR)
