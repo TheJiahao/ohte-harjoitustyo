@@ -250,7 +250,7 @@ class CreateCourseView(View):
     def __handle_save(self) -> None:
         """Tallentaa kurssin tiedot."""
 
-        name = self.__name_variable.get()
+        name = self.__name_variable.get().strip()
 
         try:
             credits = self.__credits_variable.get()

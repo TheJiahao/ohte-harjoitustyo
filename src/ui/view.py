@@ -13,7 +13,7 @@ class View(ABC):
         self._frame: ttk.Frame = ttk.Frame(master=self._root)
 
     def pack(self) -> None:
-        self._frame.pack(fill=constants.X)
+        self._frame.pack(fill=constants.BOTH, expand=1, padx=10, pady=10)
 
     def destroy(self) -> None:
         self._frame.destroy()
