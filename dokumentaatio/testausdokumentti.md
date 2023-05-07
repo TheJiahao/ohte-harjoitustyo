@@ -2,7 +2,6 @@
 
 Sovellus, poislukien käyttöliittymä, on testattu yksikkötesteillä.
 Käyttöliittymä on testattu käsin.
-Lisäksi yksikkötestit on [asetettu](../.vscode/settings.json) suoritettavaksi myös suoraan VSCode-editorilla.
 
 ## Yksikkö- ja integraatiotestaus
 
@@ -36,6 +35,13 @@ Kurssien tallennuksesta vastaava `CourseRepository`-luokka on testattu [TestCour
 Testeissä käytetyn tietokantatiedostin nimi on määritelty `.env.test`-tiedostoon.
 
 ## Järjestelmätestaus
+
+### Asennus
+
+Sovelluksen asennusta [käyttöhjeen](dokumentaatio/kaytto-ohje.md) mukaan on testattu Linux-ympäristössä.
+
+### Konfiguraatio
+
 
 ### Toiminnallisuudet
 

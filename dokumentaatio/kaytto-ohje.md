@@ -24,6 +24,14 @@ Täytä tiedot ja paina "Tallenna"-nappia.
 
 ![Kurssin luomisnäkymä](kuvat/kurssin_luomisnakyma.png)
 
+### Kurssien vienti
+
+Kurssitiedot voidaan tallentaa JSON-tiedostoksi painamalla "Vie"-nappia ja antamalla haluttu tiedostonimi.
+
+### Kurssien tuonti
+
+Kurssitiedot voidaan lukea JSON-tiedostosta painamalla "Tuo"-nappia ja valitsemalla tiedosto.
+
 ## Laskuri
 
 Kun kurssit on lisätty, niin painamalla laskurivälilehteä pääsee laskurinäkymään.
