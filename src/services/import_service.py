@@ -3,6 +3,10 @@ import json
 from entities.course import Course
 
 
+class FileCorruptedError(IOError):
+    pass
+
+
 class ImportService:
     """Luokka, joka vastaa kurssien tuonnista"""
 
@@ -14,14 +18,20 @@ class ImportService:
 
         Returns:
             list[Course]: Tiedoston sisältämät kurssit.
+
+        Raises:
+            DecoderError: Tiedoston sisältöä ei voida käsitellä.
         """
 
         data = ""
+        try:
+            with open(path, mode="r", encoding="utf-8") as file:
+                data = json.load(file)
 
-        with open(path, mode="r", encoding="utf-8") as file:
-            data = json.load(file)
+            courses = [self.__decode_course(course_dict) for course_dict in data]
 
-        courses = [self.__decode_course(course_dict) for course_dict in data]
+        except (json.JSONDecodeError, KeyError, TypeError) as error:
+            raise FileCorruptedError("Tiedosto on korruptoitunut.") from error
 
         return sorted(courses, key=lambda x: x.id)
 
@@ -34,7 +44,13 @@ class ImportService:
 
         Returns:
             Course: Sanakirjasto muunnettu kurssi.
+
+        Raises:
+            TypeError: course_dict ei ole sanakirja.
         """
+
+        if not isinstance(course_dict, dict):
+            raise TypeError(f"{type(course_dict)} ei ole {dict}.")
 
         course_id = course_dict["id"]
         name = course_dict["name"]
