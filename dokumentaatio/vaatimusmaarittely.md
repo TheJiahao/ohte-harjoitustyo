@@ -36,9 +36,10 @@ Jos tällainen aikataulunäkymä osoittautuu liian vaativaksi, niin teen näkym�
   - [x] Periodikohtainen opintopisteraja
   - [x] Periodien ja lukuvuosien kokonaisopintopistemäärä
 - [x] Konfiguroitava periodimäärä
+- [x] Kurssitietojen lukeminen `json`-tiedostosta
+- [x] Kurssitietojen kirjoittaminen `json`-tiedostoon
 
 ### Jatkokehitysideoita
 
-- [ ] Kurssitietojen lukeminen `json`-tiedostosta
 - [ ] Aikataulun vieminen `json`-tiedostona
 - [ ] Kurssien haku verkosta (jos löytyy API, todennäköisesti ei toteudu)

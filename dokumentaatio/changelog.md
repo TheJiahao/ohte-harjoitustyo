@@ -34,4 +34,5 @@
 - Lisätty opintopistemäärät aikatauluun
 - Lisätty alustava tiedoston käsittelijä
 - Refaktoroitu `Course`-luokka, poistettu turhat metodit ja tehty oliomuuttujista julkisia
-- Lisätty enemmän syötteiden tarkistusta
+- Lisätty toiminnallisuus lukea kurssit JSON-tiedostosta
+- Lisätty toiminnallisuus kirjoittaa kurssit JSON-tiedostoon
