@@ -84,7 +84,7 @@ class CreateCourseView(View):
         course_dropdown_list.bind("<<ComboboxSelected>>", self.__fill_course_data)
 
         course_label.grid(row=1, column=1, sticky=constants.W, padx=10)
-        course_dropdown_list.grid(row=1, column=2, sticky=constants.W, pady=2)
+        course_dropdown_list.grid(row=1, column=2, sticky=constants.W, pady=2, padx=10)
 
     def __initialize_name_field(self) -> None:
         name_label = ttk.Label(master=self._frame, text="Nimi")
@@ -92,7 +92,9 @@ class CreateCourseView(View):
         name_entry = ttk.Entry(master=self._frame, textvariable=self.__name_variable)
 
         name_label.grid(row=2, column=1, sticky=constants.W, padx=10)
-        name_entry.grid(row=2, column=2, columnspan=2, sticky=constants.W, pady=2)
+        name_entry.grid(
+            row=2, column=2, columnspan=2, sticky=constants.W, pady=2, padx=10
+        )
 
     def __initialize_credits_field(self) -> None:
         credits_label = ttk.Label(master=self._frame, text="Laajuus (op)")
@@ -107,7 +109,7 @@ class CreateCourseView(View):
         )
 
         credits_label.grid(row=3, column=1, sticky=constants.W, padx=10)
-        credits_spinbox.grid(row=3, column=2, sticky=constants.W, pady=2)
+        credits_spinbox.grid(row=3, column=2, sticky=constants.W, pady=2, padx=10)
 
     def __initialize_timing_field(self) -> None:
         timing_label = ttk.Label(master=self._frame, text="Ajoitus (periodit)")
@@ -121,7 +123,7 @@ class CreateCourseView(View):
 
             button.grid(row=1, column=i)
 
-        self.__timing_frame.grid(row=4, column=2, sticky=constants.W, pady=2)
+        self.__timing_frame.grid(row=4, column=2, sticky=constants.W, pady=2, padx=10)
 
     def __initialize_requirement_field(self) -> None:
         requirement_label = ttk.Label(master=self._frame, text="Esitietovaatimukset")
