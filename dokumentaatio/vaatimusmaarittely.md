@@ -28,17 +28,22 @@ Aikataulunäkymä on korvattu puulla:
 
 ### Perustoiminnallisuudet
 
+### Kurssitietojen käsittely
+
 - [x] Kurssien lisäys, muokkaus ja poisto
 - [x] Syötettyjen kurssitietojen tyhjentäminen
 - [x] Kurssitietojen säilyttäminen tietokannassa
-- [x] Aikataulun tuottaminen
-  - [x] Esitiedot huomioitu
-  - [x] Mahdollisimman vähän tyhjää
-  - [x] Periodikohtainen opintopisteraja
-  - [x] Periodien ja lukuvuosien kokonaisopintopistemäärä
-- [x] Konfiguroitava periodimäärä
 - [x] Kurssitietojen lukeminen `json`-tiedostosta
 - [x] Kurssitietojen kirjoittaminen `json`-tiedostoon
+
+### Aikataulutus
+
+- [x] Aikataulun tuottaminen
+- [x] Esitiedot huomioitu
+- [x] Mahdollisimman vähän tyhjää
+- [x] Periodikohtainen opintopisteyläraja
+- [x] Aloitusvuosi ja -periodi
+- [x] Konfiguroitava periodimäärä
 
 ### Jatkokehitysideoita
 

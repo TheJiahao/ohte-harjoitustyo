@@ -35,3 +35,4 @@
 - Refaktoroitu `Course`-luokka, poistettu turhat metodit
 - Lisätty toiminnallisuus lukea kurssit JSON-tiedostosta
 - Lisätty toiminnallisuus kirjoittaa kurssit JSON-tiedostoon
+- Yksinkertaistettu asennusta, sovellus luo automaattisesti tietokantatiedoston

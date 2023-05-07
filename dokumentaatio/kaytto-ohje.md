@@ -1,5 +1,13 @@
 # Käyttöohje
 
+## Konfigurointi
+
+Sovelluksen konfiguraatiot ovat `.env`-tiedostossa.
+Tällä hetkellä sovelluksella on seuraavat konfiguraatiot:
+
+- `DATABASE_FILENAME`, tietokantatiedoston nimi
+- `PERIODS_PER_YEAR`, periodien määrä lukuvuodessa, voidaan esimerkiksi asettaa 6 vastaamaan 4 tavallista periodia + 2 kesäperiodia.
+
 ## Asennus
 
 1. Asenna Python `3.10.x` ja [Poetry](https://python-poetry.org/).
@@ -34,13 +42,13 @@ Kurssitiedot voidaan lukea JSON-tiedostosta painamalla "Tuo"-nappia ja valitsema
 
 ## Laskuri
 
-Kun kurssit on lisätty, niin painamalla laskurivälilehteä pääsee laskurinäkymään.
+Painamalla laskurivälilehteä pääsee laskurinäkymään.
 Kun halutut parametrit on syötetty, niin "Laske"-nappia painamalla pääsee aikataulunäkymään.
 
 ![Laskurinäkymä](kuvat/laskurinakyma.png)
 
 ## Aikataulu
 
-Aikataulunäkymässä on kurssit jaettu sopiviin vuosiin ja periodeihin laskurinäkymässä annettujen tietojen perusteella.
+Aikataulunäkymässä on kurssit jaettu sopiviin vuosiin ja periodeihin laskurinäkymässä annettujen ehtojen perusteella.
 
 ![Aikataulunäkymä](kuvat/aikataulunakyma.png)

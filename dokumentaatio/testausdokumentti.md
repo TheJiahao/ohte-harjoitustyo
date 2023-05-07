@@ -42,8 +42,13 @@ Sovelluksen asennusta [käyttöhjeen](dokumentaatio/kaytto-ohje.md) mukaan on te
 
 ### Konfiguraatio
 
+Sovellusta on kokeiltu eri konfiguraatioilla muokkaamalla `.env`-tiedostoa.
 
 ### Toiminnallisuudet
 
 Kaikki [vaatimusmäärittelyssä](vaatimusmaarittely.md) esitetyt toiminnallisuudet on testattu käsin.
 Lisäksi on yritetty antaa virheellisiä syötteitä, esimerkiksi merkkijonoja numerokenttiin tai tyhjiä syötteitä.
+
+## Puutteet
+
+Sovellusta ei voida käynnistää, jos tietokantatiedostoon ei ole luku/kirjoitusoikeuksia.
