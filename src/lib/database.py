@@ -5,7 +5,12 @@ from config import DATABASE_FILE_PATH
 
 
 class Database:
-    """Luokka, joka vastaa tietokantayhteydestä."""
+    """Luokka, joka vastaa tietokantayhteydestä.
+
+    Attributes:
+        connection (Connection): Tietokantayhteys.
+        cursor (Cursor): Tietokantaosoitin.
+    """
 
     def __init__(self) -> None:
         try:

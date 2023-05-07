@@ -17,7 +17,13 @@ class TimingError(Exception):
 
 
 class PlannerService:
-    """""Luokka, joka vastaa sovelluksen logiikasta.""" ""
+    """Luokka, joka vastaa sovelluksen logiikasta.
+
+    Attributes:
+        periods_per_year (int): Periodien määrä vuodessa.
+        starting_year (int): Opintojen aloitusvuosi.
+        starting_period (int): Opintojen aloitusperiodi.
+    """
 
     def __init__(
         self,

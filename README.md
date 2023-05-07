@@ -4,7 +4,7 @@
 
 [Uusin release](https://github.com/TheJiahao/ohte-harjoitustyo/releases/tag/viikko5)
 
-Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/periodi, opintojen kesto) perusteella.
+Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten perusteella.
 
 ## Dokumentaatio
 

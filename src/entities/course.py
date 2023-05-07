@@ -2,17 +2,17 @@ class Course:
     """Luokka, joka kuvaa kurssia.
 
     Attributes:
-        __name (str):
+        name (str):
             Kurssin nimi.
-        __credits (int):
+        credits (int):
             Kurssin opintopistemäärä.
-        __timing (frozenset[int]):
+        timing (frozenset[int]):
             Kurssin perioditarjonta joukkona.
             Oletukseltaan tyhjä joukko.
-        __requirements (frozenset[int]):
+        requirements (frozenset[int]):
             Kurssin esitietovaatimuskurssien id:t joukkona.
             Oletukseltaan tyhjä joukko.
-        __id (int):
+        id (int):
             Kurssin id. Oletukseltaan -1.
     """
 

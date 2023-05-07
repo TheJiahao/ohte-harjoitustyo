@@ -1,17 +1,18 @@
 from sqlite3 import Connection, Cursor
 
 from entities.course import Course
-from lib.database import database
+from lib.database import database as default_database
+from lib.database import Database
 
 
 class CourseRepository:
     """Kurssien tietokantaoperaatioista vastaava luokka."""
 
-    def __init__(self) -> None:
+    def __init__(self, database: Database = default_database) -> None:
         """Luokan konstruktori.
 
         Args:
-            connection (Connection): Tietokantayhteys.
+            database (Database): Tietokanta.
         """
 
         self.__connection: Connection = database.connection

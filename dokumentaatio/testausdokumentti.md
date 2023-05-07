@@ -9,7 +9,7 @@ Käyttöliittymä on testattu käsin.
 
 [![codecov](https://codecov.io/gh/TheJiahao/study-planner/branch/main/graph/badge.svg?token=VSQHAACB32)](https://codecov.io/gh/TheJiahao/study-planner)
 
-Kattavuusraportti löytyy Codecovista painamalla yllä olevaa kuvaketta.
+Testikattavuus näkyy yllä olevassa kuvakkeessa. Kattavuusraportti löytyy Codecovista painamalla kuvaketta.
 `config.py`- ja `build.py`-tiedostoja ei ole testattu yksikkötesteillä.
 
 ### Tietokantayhteys
@@ -27,7 +27,7 @@ Testauksessa on käytetty `CourseRepository`-luokan sijaan `FakeCourseRepository
 
 Kurssitietojen tuonnista ja viennistä vastaavat `ImportService`- ja `ExportService`-luokat on testattu [TestImportService](https://github.com/TheJiahao/study-planner/blob/main/src/tests/services/test_import_service.py)- ja [TestExportService](https://github.com/TheJiahao/study-planner/blob/main/src/tests/services/test_export_service.py)-luokilla ja [`test/data`](https://github.com/TheJiahao/study-planner/tree/main/src/tests/data)-hakemiston JSON-tiedostoilla.
 
-Aikataulutuksesta vastaava `SchedulerService`-luokat on testattu [TestSchedulerService](https://github.com/TheJiahao/study-planner/blob/main/src/tests/services/test_scheduler_service.py)-luokalla.
+Aikataulutuksesta vastaava `SchedulerService`-luokka on testattu [TestSchedulerService](https://github.com/TheJiahao/study-planner/blob/main/src/tests/services/test_scheduler_service.py)-luokalla.
 
 ### Repository-luokka
 

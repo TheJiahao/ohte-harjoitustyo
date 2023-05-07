@@ -39,7 +39,7 @@ Aikataulunäkymä on korvattu puulla:
 ### Aikataulutus
 
 - [x] Aikataulun tuottaminen
-- [x] Esitiedot huomioitu
+- [x] Esitiedovaatimukset huomioitu
 - [x] Mahdollisimman vähän tyhjää
 - [x] Periodikohtainen opintopisteyläraja
 - [x] Aloitusvuosi ja -periodi
