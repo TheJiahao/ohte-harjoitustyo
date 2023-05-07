@@ -6,6 +6,8 @@
 
 Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten perusteella.
 
+![Kuva sovelluksesta](dokumentaatio/kuvat/aikataulunakyma.png)
+
 ## Dokumentaatio
 
 - [Käyttöohje](dokumentaatio/kaytto-ohje.md)
