@@ -1,5 +1,5 @@
 import os
-from sqlite3 import Connection, Cursor, Row, connect
+from sqlite3 import Connection, Cursor, Row, connect, OperationalError
 
 from config import DATABASE_FILE_PATH
 
@@ -8,7 +8,12 @@ class Database:
     """Luokka, joka vastaa tietokantayhteydestä."""
 
     def __init__(self) -> None:
-        self.connection: Connection = connect(DATABASE_FILE_PATH)
+        try:
+            self.connection: Connection = connect(DATABASE_FILE_PATH)
+
+        except OperationalError as error:
+            raise IOError("Ei ole oikeutta tietokantatiedostoon.") from error
+
         self.connection.row_factory = Row
 
         self.cursor: Cursor = self.connection.cursor()
