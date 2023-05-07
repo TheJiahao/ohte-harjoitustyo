@@ -10,12 +10,6 @@ class UI(View):
     """Luokka, joka vastaa sovelluksen käyttöliittymästä."""
 
     def __init__(self, root: ttk.Widget) -> None:
-        """Luokan konstruktori.
-
-        Args:
-            root (Tk): Tkinterin juurikomponentti.
-        """
-
         super().__init__(root)
 
         self.__notebook: ttk.Notebook = ttk.Notebook(self._frame)
