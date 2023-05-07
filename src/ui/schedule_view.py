@@ -45,7 +45,7 @@ class ScheduleView(View):
 
             self.__tree.item(
                 period_id,
-                text=f"Periodi {period}, {credits_of_period} op",
+                text=f"{period}. periodi, {credits_of_period} op",
             )
             self.__tree.item(
                 str(year),
