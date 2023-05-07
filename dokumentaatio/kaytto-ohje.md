@@ -12,13 +12,7 @@
 
 ## Käynnistys
 
-Ennen ensimmäistä käynnistystä, asenna riippuvuudet:
-
-```shell
-poetry install
-```
-
-Kun edelliset toimenpiteet on suoritettu ainakin kerran, sovellus käynnistyy komennolla:
+Sovellus käynnistyy komennolla:
 
 ```shell
 poetry run invoke start
