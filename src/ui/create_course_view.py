@@ -1,4 +1,4 @@
-from tkinter import BooleanVar, IntVar, StringVar, constants, filedialog, ttk
+from tkinter import BooleanVar, IntVar, StringVar, TclError, constants, filedialog, ttk
 from tkinter.messagebox import askyesno, showerror
 
 from entities.course import Course
@@ -128,7 +128,7 @@ class CreateCourseView(View):
             from_=0,
             to=20,
             increment=1,
-            width=2,
+            width=3,
             textvariable=self.__credits_variable,
         )
 
@@ -245,7 +245,12 @@ class CreateCourseView(View):
         """Tallentaa kurssin tiedot."""
 
         name = self.__name_variable.get()
-        credits = self.__credits_variable.get()
+
+        try:
+            credits = self.__credits_variable.get()
+        except TclError:
+            showerror("Virhe", "Tarkista opintopistemäärä.")
+            return
 
         timing = {
             i + 1

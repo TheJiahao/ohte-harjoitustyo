@@ -89,7 +89,11 @@ class CalculationView(View):
             max_credits = self.__credits_variable.get()
             starting_year = self.__year_variable.get()
             starting_period = self.__period_variable.get()
+        except TclError:
+            showerror("Virhe", "Tarkista syötteet.")
+            return
 
+        try:
             planner_service.initialize(starting_year, starting_period, max_credits)
 
             self.__handle_show_schedule_view()
