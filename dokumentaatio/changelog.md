@@ -32,7 +32,6 @@
 ## Loppupalautus
 
 - Lisätty opintopistemäärät aikatauluun
-- Lisätty alustava tiedoston käsittelijä
-- Refaktoroitu `Course`-luokka, poistettu turhat metodit ja tehty oliomuuttujista julkisia
+- Refaktoroitu `Course`-luokka, poistettu turhat metodit
 - Lisätty toiminnallisuus lukea kurssit JSON-tiedostosta
 - Lisätty toiminnallisuus kirjoittaa kurssit JSON-tiedostoon

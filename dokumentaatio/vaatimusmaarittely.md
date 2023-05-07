@@ -7,8 +7,9 @@ Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten (opintopisteraja/p
 ## Käyttöliittymäluonnos
 
 ![Sovelluksen käyttöliittymäluonnos](kuvat/kayttoliittymahahmotelma.svg)
-Sovellus aukeaa kurssien lisäysnäkymään ja oikealta yläkulmalta pääsee vaihtamaan näkymää.
-Jos tällainen aikataulunäkymä osoittautuu liian vaativaksi, niin teen näkymästä puurakenteen esim.
+
+Sovellus aukeaa kurssien lisäysnäkymään ja välilehtiä klikkaamalla voi vaihtaa näkymiä.
+Aikataulunäkymä on korvattu puulla:
 
 ```txt
 2023 (30 op)
