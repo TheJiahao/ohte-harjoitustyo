@@ -12,13 +12,15 @@ class ScheduleView(View):
     def __init__(self, root: ttk.Widget) -> None:
         super().__init__(root)
 
-        self.__tree = ttk.Treeview(master=self._frame, show="tree")
+        scrollbar = ttk.Scrollbar(master=self._frame)
+        self.__tree = ttk.Treeview(
+            master=self._frame, show="tree", yscrollcommand=scrollbar.set
+        )
 
-        self.__initialize()
+        scrollbar.configure(command=self.__tree.yview)
 
-    def __initialize(self) -> None:
-        self.__tree.grid(sticky=constants.NSEW, columnspan=2)
-        self._frame.grid_columnconfigure(0, weight=1)
+        scrollbar.pack(fill=constants.Y, side=constants.RIGHT)
+        self.__tree.pack(fill=constants.BOTH, expand=1)
 
     def __clear_schedule(self) -> None:
         """Tyhjentää aikataulun."""
