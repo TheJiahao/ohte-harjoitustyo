@@ -1,7 +1,7 @@
 from tkinter import BooleanVar, IntVar, StringVar, TclError, constants, filedialog, ttk
 from tkinter.messagebox import askyesno, showerror
 
-from config import PERIODS_PER_YEAR
+from config import PERIODS_PER_YEAR, COURSE_NAME_WIDTH
 from entities.course import Course
 from services.import_service import FileCorruptedError
 from services.planner_service import TimingError, planner_service
@@ -105,6 +105,7 @@ class CreateCourseView(View):
             postcommand=lambda: course_dropdown_list.configure(
                 values=self.__course_list
             ),
+            width=COURSE_NAME_WIDTH,
         )
         course_dropdown_list.bind("<<ComboboxSelected>>", self.__fill_course_data)
 
@@ -114,7 +115,11 @@ class CreateCourseView(View):
     def __initialize_name_field(self) -> None:
         name_label = ttk.Label(master=self._frame, text="Nimi")
 
-        name_entry = ttk.Entry(master=self._frame, textvariable=self.__name_variable)
+        name_entry = ttk.Entry(
+            master=self._frame,
+            textvariable=self.__name_variable,
+            width=COURSE_NAME_WIDTH,
+        )
 
         name_label.grid(row=2, column=1, sticky=constants.W, padx=10)
         name_entry.grid(
@@ -310,6 +315,7 @@ class CreateCourseView(View):
             values=self.__course_list,
             textvariable=requirement_variable,
             state="readonly",
+            width=COURSE_NAME_WIDTH,
         )
 
         delete_button = ttk.Button(

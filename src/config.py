@@ -12,4 +12,12 @@ except FileNotFoundError:
 DATABASE_FILENAME = os.getenv("DATABASE_FILENAME") or "database.db"
 DATABASE_FILE_PATH = os.path.join(dirname, "..", "data", DATABASE_FILENAME)
 
-PERIODS_PER_YEAR = int(os.getenv("PERIODS_PER_YEAR") or 4)
+try:
+    PERIODS_PER_YEAR = int(os.getenv("PERIODS_PER_YEAR") or 4)
+except ValueError:
+    PERIODS_PER_YEAR = 4
+
+try:
+    COURSE_NAME_WIDTH = int(os.getenv("COURSE_NAME_WIDTH") or 35)
+except ValueError:
+    COURSE_NAME_WIDTH = 35

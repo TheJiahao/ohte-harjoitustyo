@@ -7,6 +7,7 @@ Tällä hetkellä sovelluksella on seuraavat konfiguraatiot:
 
 - `DATABASE_FILENAME`, tietokantatiedoston nimi
 - `PERIODS_PER_YEAR`, periodien määrä lukuvuodessa, voidaan esimerkiksi asettaa 6 vastaamaan 4 tavallista periodia + 2 kesäperiodia.
+- `COURSE_NAME_WIDTH`, kurssin nimikentän pituus, voidaan säätää tarpeen mukaan pidemmäksi
 
 ## Asennus
 
