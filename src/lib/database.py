@@ -10,13 +10,11 @@ class Database:
     def __init__(self) -> None:
         try:
             self.connection: Connection = connect(DATABASE_FILE_PATH)
+            self.connection.row_factory = Row
 
+            self.cursor: Cursor = self.connection.cursor()
         except OperationalError as error:
             raise IOError("Ei ole oikeutta tietokantatiedostoon.") from error
-
-        self.connection.row_factory = Row
-
-        self.cursor: Cursor = self.connection.cursor()
 
         if os.path.getsize(DATABASE_FILE_PATH) == 0:
             self.initialize()
