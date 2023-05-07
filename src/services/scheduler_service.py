@@ -1,5 +1,6 @@
 from heapq import heappop, heappush
 
+from config import PERIODS_PER_YEAR
 from entities.course import Course
 
 
@@ -246,7 +247,7 @@ class SchedulerService:
         period = (self.__starting_period + i) % self.__periods_per_year
 
         if period == 0:
-            period = 4
+            period = self.__periods_per_year
 
         return period
 
@@ -301,4 +302,4 @@ class SchedulerService:
         processed.add(course.id)
 
 
-scheduler_service = SchedulerService()
+scheduler_service = SchedulerService(periods_per_year=PERIODS_PER_YEAR)
