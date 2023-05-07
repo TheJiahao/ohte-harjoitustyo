@@ -167,7 +167,7 @@ class CreateCourseView(View):
         )
         requirement_label.grid(row=5, column=1, sticky=constants.W, padx=10)
         self.__requirement_frame.grid(
-            row=6, column=1, columnspan=2, sticky=constants.W, padx=10, pady=2
+            row=6, column=1, columnspan=2, sticky=constants.E, pady=2, padx=10
         )
 
     def __fill_course_data(self, event) -> None:
@@ -330,9 +330,9 @@ class CreateCourseView(View):
         if course:
             requirement_variable.set(str(course))
 
-        delete_button.grid(row=1, column=1, sticky=constants.W, padx=5, pady=2)
-        requirement_dropdown.grid(row=1, column=2, sticky=constants.W, padx=5)
-        requirement_row.grid(column=1)
+        delete_button.grid(row=1, column=1, sticky=constants.E, padx=5, pady=2)
+        requirement_dropdown.grid(row=1, column=2, sticky=constants.E)
+        requirement_row.grid(column=1, sticky=constants.E)
 
     def __handle_remove_requirement(self, variable: StringVar, row: ttk.Frame) -> None:
         """Poistaa esitietovaatimuksen.
