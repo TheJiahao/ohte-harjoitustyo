@@ -47,7 +47,8 @@ Sovellusta on kokeiltu eri konfiguraatioilla muokkaamalla `.env`-tiedostoa.
 ### Toiminnallisuudet
 
 Kaikki [vaatimusmäärittelyssä](vaatimusmaarittely.md) esitetyt toiminnallisuudet on testattu käsin.
-Lisäksi on yritetty antaa virheellisiä syötteitä, esimerkiksi merkkijonoja numerokenttiin tai tyhjiä syötteitä.
+On yritetty antaa virheellisiä syötteitä, esimerkiksi merkkijonoja numerokenttiin tai tyhjiä syötteitä.
+Lisäksi testattu [testisyötteellä](https://github.com/TheJiahao/study-planner/blob/main/src/tests/data/sample_realistic.json), joka sisältää osan TKT- ja MAT-kandiopintojen kurssit.
 
 ## Puutteet
 

@@ -36,3 +36,4 @@
 - Lisätty toiminnallisuus lukea kurssit JSON-tiedostosta
 - Lisätty toiminnallisuus kirjoittaa kurssit JSON-tiedostoon
 - Yksinkertaistettu asennusta, sovellus luo automaattisesti tietokantatiedoston
+- Parannettu käyttöliittymää

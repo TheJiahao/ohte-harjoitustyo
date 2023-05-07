@@ -24,5 +24,5 @@
 |2.5.|30 min|Kirjoitettu testausdokumenttia, asetettu kattavuusraportin automaattinen lataaminen Codecoviin|
 |5.5.|6 tuntia|Säädetty käyttöliittymää, lisätty periodien määrä ympäristömuuttujaksi, lisätty alustava tiedoston käsittelijä|
 |6.5.|7 tuntia|Refaktoroitu luokkia, lajiteltu uudestaan|
-|7.5.|6 tuntia|Toteutettu kurssien vienti ja tuonti|
-|Yht.|76 tuntia 0 min||
+|7.5.|7 tuntia|Toteutettu kurssien vienti ja tuonti, hienosäädetty käyttöliittymää, päivitetty dokumentaatiota|
+|Yht.|77 tuntia 0 min||
