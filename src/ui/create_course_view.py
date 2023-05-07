@@ -1,7 +1,8 @@
-from tkinter import BooleanVar, IntVar, StringVar, constants, ttk
+from tkinter import BooleanVar, IntVar, StringVar, constants, filedialog, ttk
 from tkinter.messagebox import askyesno, showerror
 
 from entities.course import Course
+from services.import_service import FileCorruptedError
 from services.planner_service import TimingError, planner_service
 from ui.view import View
 
@@ -44,7 +45,9 @@ class CreateCourseView(View):
         self.__initialize_credits_field()
         self.__initialize_timing_field()
         self.__initialize_requirement_field()
+        self.__initialize_buttons()
 
+    def __initialize_buttons(self) -> None:
         save_button = ttk.Button(
             master=self._frame,
             text="Tallenna",
@@ -61,6 +64,21 @@ class CreateCourseView(View):
             command=self.__handle_clear,
         )
 
+        import_export_frame = ttk.Frame(master=self._frame)
+
+        import_button = ttk.Button(
+            master=import_export_frame,
+            text="Tuo",
+            command=self.__handle_import,
+            width=3,
+        )
+        export_button = ttk.Button(
+            master=import_export_frame,
+            text="Vie",
+            command=self.__handle_export,
+            width=3,
+        )
+
         save_button.grid(
             row=7, column=1, sticky=constants.W + constants.S, padx=10, pady=10
         )
@@ -68,6 +86,12 @@ class CreateCourseView(View):
             row=7, column=2, sticky=constants.E + constants.S, padx=10, pady=10
         )
         clear_button.grid(row=0, column=1, sticky=constants.NSEW, padx=10, pady=10)
+
+        import_button.grid(row=1, column=1, padx=3)
+        export_button.grid(row=1, column=2, padx=3)
+        import_export_frame.grid(
+            row=0, column=2, sticky=constants.N + constants.E, padx=10, pady=10
+        )
 
     def __initialize_course_field(self) -> None:
         course_label = ttk.Label(master=self._frame, text="Selaa")
@@ -162,6 +186,41 @@ class CreateCourseView(View):
         for requirement_id in course.requirements:
             requirement = planner_service.get_course(requirement_id)
             self.__handle_add_requirement(requirement)
+
+    def __handle_import(self) -> None:
+        """Tuo käyttäjän määräämästä JSON-tiedostosta kurssit."""
+
+        confirm = askyesno(
+            "Tuo kurssit", "Kurssien tuonti poistaa jo olevat kurssit. Varmista tuonti."
+        )
+
+        if not confirm:
+            return
+
+        path = filedialog.askopenfilename(filetypes=[("JSON-tiedostot", "*.json")])
+
+        if not path:
+            return
+
+        try:
+            planner_service.import_courses(path)
+        except FileCorruptedError as error:
+            showerror("Virhe", str(error))
+        except FileNotFoundError:
+            showerror("Virhe", "Tiedostoa ei löytynyt.")
+
+        self.__handle_clear()
+        self.__update_course_list()
+
+    def __handle_export(self) -> None:
+        """Vie kurssit käyttäjän määräämään JSON-tiedostoon."""
+
+        path = filedialog.asksaveasfilename(filetypes=[("JSON-tiedostot", "*.json")])
+
+        if not path:
+            return
+
+        planner_service.export_courses(path)
 
     def __handle_clear(self) -> str:
         """Tyhjentää täytetyt tiedot."""
