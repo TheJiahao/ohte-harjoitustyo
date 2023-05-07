@@ -36,7 +36,7 @@ class TestSchedulerService(unittest.TestCase):
 
         courses = [a, b]
 
-        scheduler = SchedulerService(courses, 1, 4, 5)
+        scheduler = SchedulerService(courses, 1, 5)
         schedule = scheduler.get_schedule()
 
         self.assertEqual(schedule, [[a], [b]])
@@ -47,7 +47,7 @@ class TestSchedulerService(unittest.TestCase):
         c = Course("Ohte", 5, {1, 2, 3}, {2}, course_id=3)
 
         courses = [a, b, c]
-        scheduler = SchedulerService(courses, 1, 4, 5)
+        scheduler = SchedulerService(courses, 1, 5)
 
         schedule = scheduler.get_schedule()
 

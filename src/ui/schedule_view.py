@@ -1,5 +1,6 @@
 from tkinter import constants, ttk
 
+from config import PERIODS_PER_YEAR
 from entities.course import Course
 from services.planner_service import planner_service
 from ui.view import View
@@ -54,7 +55,7 @@ class ScheduleView(View):
 
             period += 1
 
-            if period > planner_service.periods_per_year:
+            if period > PERIODS_PER_YEAR:
                 period = 1
                 year += 1
                 credits_of_year = 0

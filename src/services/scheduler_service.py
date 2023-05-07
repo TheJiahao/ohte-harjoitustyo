@@ -23,7 +23,6 @@ class SchedulerService:
         self,
         courses: list[Course] | None = None,
         starting_period: int = 1,
-        periods_per_year: int = 4,
         max_credits: int = 15,
     ) -> None:
         """Luokan konstruktori.
@@ -33,12 +32,9 @@ class SchedulerService:
                 Aikatauluun lisättävät kurssit.
             starting_period (int, optional):
                 Aloitusperiodi. Oletukseltaan 1.
-            periods_per_year (int, optional):
-                Vuoden periodien määrä. Oletukseltaan 4.
             max_credits (int, optional):
                 Opintopisteyläraja periodeille. Oletukseltaan 15.
         """
-        self.__periods_per_year: int = periods_per_year
         self.__starting_period: int = starting_period
         self.__max_credits: int = max_credits
         self.__courses: dict[int, Course] = {}
@@ -53,7 +49,6 @@ class SchedulerService:
             [
                 f"SchedulerService({list(self.__courses.values())}",
                 f"{self.__starting_period}",
-                f"{self.__periods_per_year}",
                 f"{self.__max_credits})",
             ]
         )
@@ -86,7 +81,6 @@ class SchedulerService:
         Args:
             courses (list[Course]): Lista kursseista
             starting_period (int): Aloitusperiodi
-            periods_per_year (int): Periodien määrä vuodessa
             max_credits (int): Opintopisteyläraja
         """
 
@@ -98,7 +92,7 @@ class SchedulerService:
             course.id: len(course.requirements) for course in courses
         }
         self.__heaps: list[list[tuple[int, int]]] = [
-            [] for i in range(self.__periods_per_year + 1)
+            [] for i in range(PERIODS_PER_YEAR + 1)
         ]
         self.__schedule: dict[int, list[Course]] = {}
 
@@ -241,13 +235,13 @@ class SchedulerService:
             i (int): Periodilaskuri
 
         Returns:
-            int: Periodi väliltä (1, periods_per_year)
+            int: Laskuria vastaava periodi.
         """
 
-        period = (self.__starting_period + i) % self.__periods_per_year
+        period = (self.__starting_period + i) % PERIODS_PER_YEAR
 
         if period == 0:
-            period = self.__periods_per_year
+            period = PERIODS_PER_YEAR
 
         return period
 
@@ -302,4 +296,4 @@ class SchedulerService:
         processed.add(course.id)
 
 
-scheduler_service = SchedulerService(periods_per_year=PERIODS_PER_YEAR)
+scheduler_service = SchedulerService()

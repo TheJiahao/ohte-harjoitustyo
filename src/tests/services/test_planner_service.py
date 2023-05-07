@@ -42,7 +42,6 @@ class TestPlannerService(unittest.TestCase):
         self.course_ohpe = Course("OhPe", 5, {1, 2, 3, 4}, course_id=1)
         self.course_ohja = Course("OhJa", 5, {2})
         self.planner_service = PlannerService(
-            periods_per_year=4,
             course_repository=FakeCourseRepository(),
             scheduler_service=SchedulerService([]),
         )
@@ -186,7 +185,7 @@ class TestPlannerService(unittest.TestCase):
 
     def test_initialize(self):
         scheduler = SchedulerService([])
-        planner = PlannerService(4, scheduler, FakeCourseRepository())
+        planner = PlannerService(scheduler, FakeCourseRepository())
 
         planner.initialize(2000, 3, 100)
 

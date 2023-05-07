@@ -1,6 +1,7 @@
 from tkinter import BooleanVar, IntVar, StringVar, TclError, constants, filedialog, ttk
 from tkinter.messagebox import askyesno, showerror
 
+from config import PERIODS_PER_YEAR
 from entities.course import Course
 from services.import_service import FileCorruptedError
 from services.planner_service import TimingError, planner_service
@@ -28,7 +29,7 @@ class CreateCourseView(View):
         self.__course_list: list[str] = []
         self.__timing_frame: ttk.Frame = ttk.Frame(master=self._frame)
         self.__timing: list[BooleanVar] = [
-            BooleanVar(value=False) for i in range(planner_service.periods_per_year)
+            BooleanVar(value=False) for i in range(PERIODS_PER_YEAR)
         ]
 
         self.__requirement_frame: ttk.Frame = ttk.Frame(master=self._frame)

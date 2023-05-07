@@ -3,6 +3,7 @@ from tkinter import IntVar, TclError, constants, ttk
 from tkinter.messagebox import showerror
 from typing import Callable
 
+from config import PERIODS_PER_YEAR
 from services.planner_service import TimingError, planner_service
 from services.scheduler_service import CycleError, EmptyGraphError, MaxCreditError
 from ui.view import View
@@ -72,7 +73,7 @@ class CalculationView(View):
         period_spinbox = ttk.Spinbox(
             master=self._frame,
             from_=1,
-            to=planner_service.periods_per_year,
+            to=PERIODS_PER_YEAR,
             increment=1,
             width=1,
             textvariable=self.__period_variable,

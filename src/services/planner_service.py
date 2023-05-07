@@ -20,14 +20,12 @@ class PlannerService:
     """Luokka, joka vastaa sovelluksen logiikasta.
 
     Attributes:
-        periods_per_year (int): Periodien määrä vuodessa.
         starting_year (int): Opintojen aloitusvuosi.
         starting_period (int): Opintojen aloitusperiodi.
     """
 
     def __init__(
         self,
-        periods_per_year: int,
         scheduler_service: SchedulerService = default_scheduler_service,
         course_repository: CourseRepository = default_course_repository,
         import_service: ImportService = default_import_service,
@@ -42,17 +40,12 @@ class PlannerService:
                 Olio, joka vastaa kurssien tallentamisesta.
                 Oletukseltaan default_course_repository.
         """
-        self.__periods_per_year: int = periods_per_year
         self.__starting_year: int = 0
 
         self.__course_repository: CourseRepository = course_repository
         self.__scheduler: SchedulerService = scheduler_service
         self.__importer: ImportService = import_service
         self.__exporter: ExportService = export_service
-
-    @property
-    def periods_per_year(self) -> int:
-        return self.__periods_per_year
 
     @property
     def starting_year(self) -> int:
@@ -71,7 +64,7 @@ class PlannerService:
 
     @starting_period.setter
     def starting_period(self, period: int) -> None:
-        if not 0 < period <= self.periods_per_year:
+        if not 0 < period <= PERIODS_PER_YEAR:
             raise ValueError("Virheellinen aloitusperiodi.")
 
         self.__starting_period = period
@@ -132,7 +125,7 @@ class PlannerService:
             raise ValueError("Kurssin nimi ei voi olla tyhjä.")
 
         if (
-            not course.timing.issubset(range(1, self.__periods_per_year + 1))
+            not course.timing.issubset(range(1, PERIODS_PER_YEAR + 1))
             or len(course.timing) == 0
         ):
             raise TimingError("Kurssilla ei ole ajoitusta.")
@@ -187,4 +180,4 @@ class PlannerService:
         self.__exporter.write(self.get_all_courses(), path)
 
 
-planner_service = PlannerService(PERIODS_PER_YEAR)
+planner_service = PlannerService()
