@@ -1,0 +1,265 @@
+[
+    {
+        "id": 1,
+        "name": "Ohjelmoinnin perusteet",
+        "credits": 5,
+        "timing": [
+            1,
+            3
+        ],
+        "requirements": []
+    },
+    {
+        "id": 2,
+        "name": "Ohjelmoinnin jatkokurssi",
+        "credits": 5,
+        "timing": [
+            2,
+            4
+        ],
+        "requirements": [
+            1
+        ]
+    },
+    {
+        "id": 3,
+        "name": "Tietokantojen perusteet",
+        "credits": 5,
+        "timing": [
+            1,
+            3
+        ],
+        "requirements": [
+            1,
+            2
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Johdatus tietojenk\u00e4sittelytieteeseen",
+        "credits": 5,
+        "timing": [
+            2
+        ],
+        "requirements": []
+    },
+    {
+        "id": 5,
+        "name": "Tietokoneen toiminta",
+        "credits": 5,
+        "timing": [
+            2,
+            4
+        ],
+        "requirements": [
+            1
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Ohjelmistotekniikka",
+        "credits": 5,
+        "timing": [
+            4
+        ],
+        "requirements": [
+            2,
+            3
+        ]
+    },
+    {
+        "id": 7,
+        "name": "K\u00e4ytt\u00f6j\u00e4rjestelm\u00e4t",
+        "credits": 5,
+        "timing": [
+            3
+        ],
+        "requirements": [
+            1,
+            5
+        ]
+    },
+    {
+        "id": 8,
+        "name": "Laskennan mallit",
+        "credits": 5,
+        "timing": [
+            1
+        ],
+        "requirements": [
+            9,
+            17,
+            18
+        ]
+    },
+    {
+        "id": 9,
+        "name": "Johdatus yliopistomatematiikkaan",
+        "credits": 5,
+        "timing": [
+            1
+        ],
+        "requirements": []
+    },
+    {
+        "id": 10,
+        "name": "Raja-arvot",
+        "credits": 5,
+        "timing": [
+            1
+        ],
+        "requirements": []
+    },
+    {
+        "id": 11,
+        "name": "Differentiaalilaskenta",
+        "credits": 5,
+        "timing": [
+            2
+        ],
+        "requirements": [
+            10
+        ]
+    },
+    {
+        "id": 12,
+        "name": "Integraalilaskenta",
+        "credits": 5,
+        "timing": [
+            3
+        ],
+        "requirements": [
+            10,
+            11
+        ]
+    },
+    {
+        "id": 13,
+        "name": "Sarjat",
+        "credits": 5,
+        "timing": [
+            4
+        ],
+        "requirements": [
+            12
+        ]
+    },
+    {
+        "id": 14,
+        "name": "Lineaarialgebra ja matriisilaskenta I",
+        "credits": 5,
+        "timing": [
+            2
+        ],
+        "requirements": [
+            9
+        ]
+    },
+    {
+        "id": 15,
+        "name": "Todenn\u00e4k\u00f6isyyslaskenta I",
+        "credits": 5,
+        "timing": [
+            3
+        ],
+        "requirements": []
+    },
+    {
+        "id": 16,
+        "name": "Lineaarialgebra ja matriisilaskenta II",
+        "credits": 5,
+        "timing": [
+            3
+        ],
+        "requirements": [
+            9,
+            14
+        ]
+    },
+    {
+        "id": 17,
+        "name": "Tietorakenteet ja algoritmit I",
+        "credits": 5,
+        "timing": [
+            3
+        ],
+        "requirements": [
+            1,
+            2,
+            9
+        ]
+    },
+    {
+        "id": 18,
+        "name": "Tietorakenteet ja algoritmit II",
+        "credits": 5,
+        "timing": [
+            4
+        ],
+        "requirements": [
+            17
+        ]
+    },
+    {
+        "id": 19,
+        "name": "Tietoliikenteen perusteet",
+        "credits": 5,
+        "timing": [
+            4
+        ],
+        "requirements": []
+    },
+    {
+        "id": 20,
+        "name": "Ohjelmistotuotanto",
+        "credits": 6,
+        "timing": [
+            2
+        ],
+        "requirements": [
+            6,
+            17,
+            18
+        ]
+    },
+    {
+        "id": 21,
+        "name": "Ohjelmistotuotantoprojekti",
+        "credits": 10,
+        "timing": [
+            2,
+            4
+        ],
+        "requirements": [
+            20,
+            22,
+            23
+        ]
+    },
+    {
+        "id": 22,
+        "name": "Aineopintojen harjoitusty\u00f6: Tietorakenteet ja algoritmit",
+        "credits": 4,
+        "timing": [
+            1,
+            2,
+            3,
+            4
+        ],
+        "requirements": [
+            17,
+            18
+        ]
+    },
+    {
+        "id": 23,
+        "name": "Aineopintojen harjoitusty\u00f6: Tietoliikenne",
+        "credits": 4,
+        "timing": [
+            4
+        ],
+        "requirements": [
+            19
+        ]
+    }
+]
