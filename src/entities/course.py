@@ -22,7 +22,7 @@ class Course:
         course_credits: int,
         timing: set[int] | None = None,
         requirements: set[int] | None = None,
-        course_id: int | None = None,
+        course_id: int = -1,
     ) -> None:
         """Luokan konstruktori.
 
@@ -36,8 +36,8 @@ class Course:
             requirements (set[int] | None, optional):
                 Kurssin esitietovaatimuskurssien id:t joukkona.
                 Oletukseltaan None.
-            course_id (int | None, optional):
-                Kurssin id. Oletukseltaan None.
+            course_id (int, optional):
+                Kurssin id. Oletukseltaan -1.
 
         Raises:
             ValueError: Negatiivinen opintopistemäärä.
@@ -50,7 +50,7 @@ class Course:
         self.__credits: int = course_credits
         self.__timing: frozenset[int] = frozenset(timing or frozenset())
         self.__requiments: frozenset[int] = frozenset(requirements or frozenset())
-        self.__id: int = course_id or -1
+        self.__id: int = course_id
 
     def __eq__(self, other: "Course") -> bool:
         if isinstance(other, Course):
@@ -89,3 +89,19 @@ class Course:
     @property
     def id(self) -> int:
         return self.__id
+
+    @id.setter
+    def id(self, course_id: int) -> None:
+        """Asettaa uuden id:n.
+
+        Args:
+            course_id (int): Asetettava id.
+
+        Raises:
+            ValueError: Id on negatiivinen.
+        """
+
+        if course_id <= 0:
+            raise ValueError(f"Negatiivinen id {course_id} ei kelpaa.")
+
+        self.__id = course_id

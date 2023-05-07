@@ -33,6 +33,9 @@ class CourseRepository:
                 (course.name, course.credits),
             )
 
+            if self.__cursor.lastrowid:
+                course.id = self.__cursor.lastrowid
+
         else:
             if self.find_by_id(course.id):
                 self.delete(course.id)

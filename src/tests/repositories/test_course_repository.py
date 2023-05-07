@@ -21,11 +21,11 @@ class TestCourseRepository(unittest.TestCase):
         self.assertEqual(courses[1], self.course_ohte)
 
     def test_create_without_existing_id(self):
-        course_repository.create(Course("Tikape", 5))
+        course_repository.create(Course("Tikape", 5, {1}))
 
         courses = course_repository.find_all()
 
-        self.assertEqual(courses[0], Course("Tikape", 5, course_id=1))
+        self.assertEqual(courses[0], Course("Tikape", 5, {1}, course_id=1))
 
     def test_create_updates_existing_course(self):
         course_repository.create(Course("OhJa", 5, {1, 2}, course_id=20))
