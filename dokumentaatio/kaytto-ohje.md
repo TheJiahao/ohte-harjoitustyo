@@ -27,6 +27,8 @@ Sovellus käynnistyy komennolla:
 poetry run invoke start
 ```
 
+Jos sovellus valittaa, että ei ole oikeuksia tietokantaan, niin säädä tiedoston `data/database.db` (oletusnimi) oikeudet tai poista se ja käynnistä sovellus uudelleen.
+
 ## Kurssin luominen
 
 Täytä tiedot ja paina "Tallenna"-nappia.

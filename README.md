@@ -17,16 +17,17 @@ Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten perusteella.
 - [Työaikakirjanpito](dokumentaatio/tyoaikakirjanpito.md)
 - [Changelog](dokumentaatio/changelog.md)
 
-## Asennus
+## Asennus ja käynnistys
 
-1. Asenna Python `3.10.x`.
-2. Asenna riippuvuudet:
+1. Asenna Python `3.10.x` ja [Poetry](https://python-poetry.org/).
+2. Klonaa repositorio.
+3. Asenna riippuvuudet:
 
     ```shell
     poetry install
     ```
 
-3. Käynnistä sovellus:
+4. Käynnistä sovellus:
 
     ```shell
     poetry run invoke start
