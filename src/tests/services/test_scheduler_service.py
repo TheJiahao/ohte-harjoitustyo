@@ -93,19 +93,43 @@ class TestSchedulerService(unittest.TestCase):
             self.scheduler._SchedulerService__check(graph3)
 
     def test_check_raises_error_with_empty_graph(self):
-        scheduler = SchedulerService([])
-
-        graph = {}
-
         with self.assertRaises(EmptyGraphError):
-            scheduler._SchedulerService__check(graph)
+            self.scheduler._SchedulerService__check({})
 
     def test_non_existent_requirements_are_ignored(self):
-        course1 = Course("Test", 10, {1, 2}, {20, 99}, course_id=1)
-        course2 = Course("Test", 10, {1}, {1, 3}, course_id=2)
+        course1 = Course("Test1", 10, {1, 2}, {20, 99}, course_id=1)
+        course2 = Course("Test2", 10, {1}, {1, 3}, course_id=2)
 
-        scheduler = SchedulerService([course1])
+        self.scheduler.initialize([course1, course2], 1, 20)
 
-        self.assertNotIn(20, scheduler._SchedulerService__get_graph().keys())
-        self.assertNotIn(99, scheduler._SchedulerService__get_graph().keys())
-        self.assertNotIn(3, scheduler._SchedulerService__get_graph().keys())
+        self.assertNotIn(20, self.scheduler._SchedulerService__get_graph().keys())
+        self.assertNotIn(99, self.scheduler._SchedulerService__get_graph().keys())
+        self.assertNotIn(3, self.scheduler._SchedulerService__get_graph().keys())
+
+    def test_get_schedule_period_credits_within_limit(self):
+        a = Course("A", 7, {1, 2}, course_id=1)
+        b = Course("B", 4, {1, 2}, course_id=2)
+        c = Course("C", 4, {1, 2}, course_id=3)
+        d = Course("D", 7, {1, 2}, course_id=4)
+        e = Course("E", 8, {1, 2}, course_id=5)
+
+        self.scheduler.initialize([a, b, c, d, e], 1, 10)
+
+        for period in self.scheduler.get_schedule():
+            total_credits = sum(map(lambda x: x.credits, period))
+            self.assertLessEqual(total_credits, 10)
+
+    def test_get_schedule_courses_available_in_period(self):
+        a = Course("A", 7, {1, 2}, course_id=1)
+        b = Course("B", 4, {3, 4}, course_id=2)
+        c = Course("C", 4, {4}, course_id=3)
+        d = Course("D", 7, {1}, course_id=4)
+        e = Course("E", 8, {2}, course_id=5)
+
+        self.scheduler.initialize([a, b, c, d, e], 1, 10)
+
+        for i, period in enumerate(self.scheduler.get_schedule()):
+            period_number = i % 4 + 1
+
+            for course in period:
+                self.assertIn(period_number, course.timing)
