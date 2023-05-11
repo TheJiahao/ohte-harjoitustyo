@@ -238,12 +238,7 @@ class SchedulerService:
             int: Laskuria vastaava periodi.
         """
 
-        period = (self.__starting_period + i) % PERIODS_PER_YEAR
-
-        if period == 0:
-            period = PERIODS_PER_YEAR
-
-        return period
+        return (i + self.starting_period - 1) % PERIODS_PER_YEAR + 1
 
     def __get_next_course(self, heap: list[tuple[int, int]]) -> Course | None:
         """Palauttaa seuraavan kurssin keosta.
