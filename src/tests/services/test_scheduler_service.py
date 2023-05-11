@@ -5,51 +5,46 @@ from services.scheduler_service import *
 
 
 class TestSchedulerService(unittest.TestCase):
-    def test_negative_max_credits_raises_error(self):
-        scheduler = SchedulerService([])
+    def setUp(self) -> None:
+        self.scheduler = SchedulerService([])
 
+    def test_negative_max_credits_raises_error(self):
         with self.assertRaises(MaxCreditError):
-            scheduler.max_credits = -10
+            self.scheduler.max_credits = -10
 
     def test_max_credits_lower_than_minimum_course_credits_raises_error(self):
-        scheduler = SchedulerService([Course("test", 5, {1})])
-
+        self.scheduler.initialize([Course("test", 5, {1})], 1, 15)
         with self.assertRaises(MaxCreditError):
-            scheduler.max_credits = 2
+            self.scheduler.max_credits = 2
 
     def test_get_schedule_raises_error_with_cycle_in_graph(self):
-        courses = []
+        courses = [
+            Course("a", 5, {1}, {2}, 1),
+            Course("b", 5, {2}, {3}, 2),
+            Course("c", 5, {3}, {1}, 3),
+            Course("d", 5, {4}, {1}, 4),
+        ]
 
-        courses.append(Course("a", 5, {1}, {2}, 1))
-        courses.append(Course("b", 5, {2}, {3}, 2))
-        courses.append(Course("c", 5, {3}, {1}, 3))
-        courses.append(Course("d", 5, {4}, {1}, 4))
-
-        scheduler = SchedulerService(courses)
+        self.scheduler.initialize(courses, 3, 20)
 
         with self.assertRaises(CycleError):
-            scheduler.get_schedule()
+            self.scheduler.get_schedule()
 
     def test_get_schedule_delays_course_when_credits_exceed(self):
         a = Course("Ohpe", 5, {1, 3}, course_id=1)
         b = Course("Ohja", 5, {1, 2}, {1}, course_id=2)
 
-        courses = [a, b]
+        self.scheduler.initialize([a, b], 1, 5)
 
-        scheduler = SchedulerService(courses, 1, 5)
-        schedule = scheduler.get_schedule()
-
-        self.assertEqual(schedule, [[a], [b]])
+        self.assertEqual(self.scheduler.get_schedule(), [[a], [b]])
 
     def test_get_schedule_can_delay_course_multiple_times(self):
         a = Course("Ohpe", 5, {1, 3}, course_id=1)
         b = Course("Ohja", 5, {1, 2}, {1}, course_id=2)
         c = Course("Ohte", 5, {1, 2, 3}, {2}, course_id=3)
 
-        courses = [a, b, c]
-        scheduler = SchedulerService(courses, 1, 5)
-
-        schedule = scheduler.get_schedule()
+        self.scheduler.initialize([a, b, c], 1, 5)
+        schedule = self.scheduler.get_schedule()
 
         self.assertEqual(schedule[0], [a])
         self.assertEqual(schedule[1], [b])
@@ -60,10 +55,9 @@ class TestSchedulerService(unittest.TestCase):
         b = Course("b", 1, {1}, {1}, course_id=2)
         c = Course("c", 1, {3}, course_id=3)
 
-        courses = [a, b, c]
-        scheduler = SchedulerService(courses)
+        self.scheduler.initialize([a, b, c], 1, 15)
 
-        schedule = scheduler.get_schedule()
+        schedule = self.scheduler.get_schedule()
 
         self.assertEqual(schedule[1], [a])
         self.assertEqual(schedule[2], [c])
@@ -74,11 +68,9 @@ class TestSchedulerService(unittest.TestCase):
         graph2 = {1: [2, 3], 2: [4], 3: [4], 4: []}
         graph3 = {1: [3], 2: [3], 3: []}
 
-        scheduler = SchedulerService([])
-
-        scheduler._SchedulerService__check(graph1)
-        scheduler._SchedulerService__check(graph2)
-        scheduler._SchedulerService__check(graph3)
+        self.scheduler._SchedulerService__check(graph1)
+        self.scheduler._SchedulerService__check(graph2)
+        self.scheduler._SchedulerService__check(graph3)
 
     def test_check_raises_error_with_cyclic_graph(self):
         graph1 = {1: [1]}
@@ -91,16 +83,14 @@ class TestSchedulerService(unittest.TestCase):
             5: [1, 3, 6],
         }
 
-        scheduler = SchedulerService([])
+        with self.assertRaises(CycleError):
+            self.scheduler._SchedulerService__check(graph1)
 
         with self.assertRaises(CycleError):
-            scheduler._SchedulerService__check(graph1)
+            self.scheduler._SchedulerService__check(graph2)
 
         with self.assertRaises(CycleError):
-            scheduler._SchedulerService__check(graph2)
-
-        with self.assertRaises(CycleError):
-            scheduler._SchedulerService__check(graph3)
+            self.scheduler._SchedulerService__check(graph3)
 
     def test_check_raises_error_with_empty_graph(self):
         scheduler = SchedulerService([])
