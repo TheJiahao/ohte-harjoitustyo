@@ -25,5 +25,5 @@
 |5.5.|6 tuntia|Säädetty käyttöliittymää, lisätty periodien määrä ympäristömuuttujaksi, lisätty alustava tiedoston käsittelijä|
 |6.5.|7 tuntia|Refaktoroitu luokkia, lajiteltu uudestaan|
 |7.5.|7 tuntia|Toteutettu kurssien vienti ja tuonti, hienosäädetty käyttöliittymää, päivitetty dokumentaatiota|
-|11.5.|1 tunti|Täydennetty ja refaktoroitu `SchedulerService`-luokan testejä|
+|11.5.|1 tunti|Täydennetty ja refaktoroitu testejä|
 |Yht.|78 tuntia 0 min||

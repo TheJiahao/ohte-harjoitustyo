@@ -52,17 +52,6 @@ class TestPlannerService(unittest.TestCase):
 
         self.data_directory = os.path.join(dirname, "..", "data")
 
-    def validate_topological_order(self, courses: list[Course]) -> bool:
-        seen = set()
-
-        for course in courses:
-            if not course.requirements.issubset(seen):
-                return False
-
-            seen.add(course.id)
-
-        return True
-
     def validate_schedule(self, schedule: list[list[Course]]) -> bool:
         seen = set()
 
@@ -227,3 +216,12 @@ class TestPlannerService(unittest.TestCase):
 
         self.assertIn(self.course_ohpe, courses)
         self.assertIn(self.course_ohja, courses)
+
+    def test_import_courses_and_get_schedule(self):
+        file = os.path.join(self.data_directory, "sample_realistic.json")
+
+        self.planner_service.import_courses(file)
+        self.planner_service.initialize(2023, 1, 15)
+        schedule = self.planner_service.get_schedule()
+
+        self.assertTrue(self.validate_schedule(schedule))
