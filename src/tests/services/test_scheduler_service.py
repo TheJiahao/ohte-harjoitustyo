@@ -5,8 +5,62 @@ from services.scheduler_service import *
 
 
 class TestSchedulerService(unittest.TestCase):
+    @classmethod
+    def check_course_timing(cls, schedule: list[list[Course]]) -> bool:
+        for i, period in enumerate(schedule):
+            period_number = i % 4 + 1
+
+            for course in period:
+                if period_number not in course.timing:
+                    return False
+
+        return True
+
+    @classmethod
+    def check_credits_below_limit(
+        cls, schedule: list[list[Course]], max_credits: int
+    ) -> bool:
+        for period in schedule:
+            total_credits = sum(map(lambda x: x.credits, period))
+
+            if total_credits > max_credits:
+                return False
+
+        return True
+
+    @classmethod
+    def check_topological_order(cls, schedule: list[list[Course]]) -> bool:
+        seen = set()
+
+        for period in schedule:
+            seen = seen.union(map(lambda x: x.id, period))
+
+            for course in period:
+                if not course.requirements.issubset(seen):
+                    return False
+
+                seen.add(course.id)
+
+        return True
+
+    @classmethod
+    def check_schedule(cls, schedule: list[list[Course]], max_credits: int) -> bool:
+        return (
+            cls.check_course_timing(schedule)
+            and cls.check_credits_below_limit(schedule, max_credits)
+            and cls.check_topological_order(schedule)
+        )
+
     def setUp(self) -> None:
         self.scheduler = SchedulerService([])
+
+    def test_max_credits(self):
+        courses = [Course("A", 5, {2}, course_id=10), Course("B", 3, {2}, course_id=10)]
+
+        scheduler = SchedulerService(courses)
+
+        scheduler.max_credits = 3
+        scheduler.max_credits = 2
 
     def test_negative_max_credits_raises_error(self):
         with self.assertRaises(MaxCreditError):
@@ -115,9 +169,9 @@ class TestSchedulerService(unittest.TestCase):
 
         self.scheduler.initialize([a, b, c, d, e], 1, 10)
 
-        for period in self.scheduler.get_schedule():
-            total_credits = sum(map(lambda x: x.credits, period))
-            self.assertLessEqual(total_credits, 10)
+        self.assertTrue(
+            self.check_credits_below_limit(self.scheduler.get_schedule(), 10)
+        )
 
     def test_get_schedule_courses_available_in_period(self):
         a = Course("A", 7, {1, 2}, course_id=1)
@@ -128,8 +182,19 @@ class TestSchedulerService(unittest.TestCase):
 
         self.scheduler.initialize([a, b, c, d, e], 1, 10)
 
-        for i, period in enumerate(self.scheduler.get_schedule()):
-            period_number = i % 4 + 1
+        self.assertTrue(self.check_course_timing(self.scheduler.get_schedule()))
 
-            for course in period:
-                self.assertIn(period_number, course.timing)
+    def test_get_schedule_with_realistic_case(self):
+        courses = [
+            Course("Ohpe", 5, {1, 3}, course_id=1),
+            Course("Ohja", 5, {2, 4}, {1}, course_id=2),
+            Course("Jym", 5, {1}, course_id=3),
+            Course("Tito", 5, {2, 3}, {1}, course_id=4),
+            Course("Tira", 10, {3}, {3, 4}, course_id=5),
+            Course("Tilpe", 5, {4}, {4, 5}, course_id=6),
+        ]
+
+        self.scheduler.initialize(courses, 1, 15)
+        schedule = self.scheduler.get_schedule()
+
+        self.assertTrue(self.check_schedule(schedule, 15))

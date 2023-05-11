@@ -3,6 +3,7 @@ import unittest
 
 from services.planner_service import *
 from services.scheduler_service import *
+from tests.services.test_scheduler_service import TestSchedulerService
 
 
 class FakeCourseRepository:
@@ -51,20 +52,6 @@ class TestPlannerService(unittest.TestCase):
         dirname = os.path.dirname(__file__)
 
         self.data_directory = os.path.join(dirname, "..", "data")
-
-    def validate_schedule(self, schedule: list[list[Course]]) -> bool:
-        seen = set()
-
-        for period in schedule:
-            seen = seen.union(map(lambda x: x.id, period))
-
-            for course in period:
-                if not course.requirements.issubset(seen):
-                    return False
-
-                seen.add(course.id)
-
-        return True
 
     def test_setting_negative_starting_year_raises_error(self):
         with self.assertRaises(ValueError):
@@ -152,26 +139,6 @@ class TestPlannerService(unittest.TestCase):
 
         self.assertEqual(self.planner_service.get_all_courses(), [])
 
-    def test_get_schedule(self):
-        course_ohpe = Course("Ohpe", 5, {1, 3}, course_id=1)
-        course_ohja = Course("Ohja", 5, {2, 4}, {1}, course_id=2)
-        course_jym = Course("Jym", 5, {1}, course_id=3)
-        course_tito = Course("Tito", 5, {2, 3}, {1}, course_id=4)
-        course_tira = Course("Tira", 10, {3}, {3, 4}, course_id=5)
-        course_tilpe = Course("Tilpe", 5, {4}, {4, 5}, course_id=6)
-
-        self.planner_service.create_course(course_ohpe)
-        self.planner_service.create_course(course_ohja)
-        self.planner_service.create_course(course_jym)
-        self.planner_service.create_course(course_tito)
-        self.planner_service.create_course(course_tira)
-        self.planner_service.create_course(course_tilpe)
-
-        self.planner_service.initialize(0, 1, 15)
-        schedule = self.planner_service.get_schedule()
-
-        self.assertTrue(self.validate_schedule(schedule))
-
     def test_initialize(self):
         scheduler = SchedulerService([])
         planner = PlannerService(scheduler, FakeCourseRepository())
@@ -217,11 +184,11 @@ class TestPlannerService(unittest.TestCase):
         self.assertIn(self.course_ohpe, courses)
         self.assertIn(self.course_ohja, courses)
 
-    def test_import_courses_and_get_schedule(self):
+    def test_get_schedule(self):
         file = os.path.join(self.data_directory, "sample_realistic.json")
 
         self.planner_service.import_courses(file)
         self.planner_service.initialize(2023, 1, 15)
         schedule = self.planner_service.get_schedule()
 
-        self.assertTrue(self.validate_schedule(schedule))
+        self.assertTrue(TestSchedulerService.check_schedule(schedule, 15))
