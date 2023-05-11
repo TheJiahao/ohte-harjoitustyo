@@ -60,9 +60,13 @@ class TestSchedulerService(unittest.TestCase):
         scheduler = SchedulerService(courses)
 
         scheduler.max_credits = 3
-        scheduler.max_credits = 2
+        scheduler.max_credits = 4
+        scheduler.max_credits = 100
 
-    def test_negative_max_credits_raises_error(self):
+    def test_max_credits_with_non_positive_value_raises_error(self):
+        with self.assertRaises(MaxCreditError):
+            self.scheduler.max_credits = 0
+
         with self.assertRaises(MaxCreditError):
             self.scheduler.max_credits = -10
 

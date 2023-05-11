@@ -59,8 +59,8 @@ class SchedulerService:
 
     @max_credits.setter
     def max_credits(self, max_credits: int) -> None:
-        if max_credits < 0:
-            raise MaxCreditError("Opintopisteyläraja ei voi olla negatiivinen.")
+        if max_credits <= 0:
+            raise MaxCreditError("Opintopisteyläraja ei voi olla ei-positiivinen.")
 
         for course in self.__courses.values():
             if course.credits > max_credits:
