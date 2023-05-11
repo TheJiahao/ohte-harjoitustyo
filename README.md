@@ -2,7 +2,7 @@
 
 [![codecov](https://codecov.io/gh/TheJiahao/study-planner/branch/main/graph/badge.svg?token=VSQHAACB32)](https://codecov.io/gh/TheJiahao/study-planner)
 
-[Uusin release](https://github.com/TheJiahao/ohte-harjoitustyo/releases/tag/loppupalautus)
+[Uusin release](https://github.com/TheJiahao/ohte-harjoitustyo/releases/latest)
 
 Sovellus tuottaa aikataulun opinnoille annettujen vaatimusten perusteella.
 
