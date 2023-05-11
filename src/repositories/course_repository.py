@@ -1,8 +1,8 @@
 from sqlite3 import Connection, Cursor
 
 from entities.course import Course
-from lib.database import database as default_database
 from lib.database import Database
+from lib.database import database as default_database
 
 
 class CourseRepository:

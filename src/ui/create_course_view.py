@@ -1,7 +1,7 @@
 from tkinter import BooleanVar, IntVar, StringVar, TclError, constants, filedialog, ttk
 from tkinter.messagebox import askyesno, showerror
 
-from config import PERIODS_PER_YEAR, COURSE_NAME_WIDTH
+from config import COURSE_NAME_WIDTH, PERIODS_PER_YEAR
 from entities.course import Course
 from services.import_service import FileCorruptedError
 from services.planner_service import TimingError, planner_service

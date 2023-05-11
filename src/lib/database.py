@@ -1,5 +1,5 @@
 import os
-from sqlite3 import Connection, Cursor, Row, connect, OperationalError
+from sqlite3 import Connection, Cursor, OperationalError, Row, connect
 
 from config import DATABASE_FILE_PATH
 
