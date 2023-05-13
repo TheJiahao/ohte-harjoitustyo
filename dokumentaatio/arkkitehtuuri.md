@@ -86,12 +86,12 @@ remaining_credits = max_credits
 i = 0
 processed = set()
 
-while queues_not_empty():
+while not heaps.empty():
     # Laskee periodin jakojäännöksen perusteella
     period = get_period(i) 
     heap = heaps[period]
-    
-    if queue.empty():
+
+    if heap.empty():
         i += 1
         remaining_credits = _max_credits
     
@@ -268,5 +268,5 @@ CourseRepository -->> User:
 - Vaihtoehtoiset esitietovaatimukset
   - Workaround: Merkkaa esitietovaatimuksiin ne kurssit, jotka haluat suorittaa.
 
-[^tirakirja]: Antti Laaksonen, *Tietorakenteet ja algoritmit*, 2022. https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/
-[^kahn]: Geeksforgeeks, *Kahn’s algorithm for Topological Sorting*. https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/, luettu 28.4.2023.
+[^tirakirja]: Antti Laaksonen, *Tietorakenteet ja algoritmit*, 2022. <https://www.cs.helsinki.fi/u/ahslaaks/tirakirja/>
+[^kahn]: Geeksforgeeks, *Kahn’s algorithm for Topological Sorting*. <https://www.geeksforgeeks.org/topological-sorting-indegree-based-solution/>, luettu 28.4.2023.
