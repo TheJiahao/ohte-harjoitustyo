@@ -26,4 +26,5 @@
 |6.5.|7 tuntia|Refaktoroitu luokkia, lajiteltu uudestaan|
 |7.5.|7 tuntia|Toteutettu kurssien vienti ja tuonti, hienosäädetty käyttöliittymää, päivitetty dokumentaatiota|
 |11.5.|1 tunti 30 min|Täydennetty ja refaktoroitu testejä|
-|Yht.|78 tuntia 30 min||
+|13.5.|30 min|Päivitetty arkkitehtuuridokumentti|
+|Yht.|79 tuntia 0 min||

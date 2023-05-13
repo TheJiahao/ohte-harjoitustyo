@@ -173,8 +173,7 @@ CourseRepository ->> ohte: id()
 ohte -->> CourseRepository: 1
 CourseRepository ->> CourseRepository: delete(1)
 CourseRepository ->> CourseRepository: write(ohte)
-CourseRepository -->> UI: 
-UI -->> User: clear fields
+CourseRepository -->> User: 
 ```
 
 ### Olemassaolevan kurssin poistaminen
@@ -187,12 +186,11 @@ sequenceDiagram
 actor User
 
 User ->> UI: click "delete" button
-UI -->> User: confirm delete
-User ->> UI: "yes"
+UI ->> User: confirm delete
+User -->> UI: "yes"
 UI ->> PlannerService: delete_course(1)
 PlannerService ->> CourseRepository: delete(1)
-CourseRepository -->> UI: 
-UI -->> User: clear fields
+CourseRepository -->> User: 
 ```
 
 ### Aikataulun laskeminen
@@ -205,18 +203,17 @@ sequenceDiagram
 actor User
 
 User ->> UI: click "calculate" button
-UI ->> PlannerService: set(year, period, max_credits)
-PlannerService -->> UI: 
-UI ->> UI: handle_show_schedule_view()
-UI ->> PlannerService: get_schedule()
-PlannerService ->> PlannerService: get_all_courses()
+UI ->> PlannerService: initialize(starting_year, starting_period, max_credits)
+
 PlannerService ->> SchedulerService: initialize(courses, starting_period, max_credits)
-SchedulerService -->> PlannerService: SchedulerService
+SchedulerService -->> UI:  
+
+UI ->> PlannerService: get_schedule()
 PlannerService ->> SchedulerService: get_schedule()
 SchedulerService -->> PlannerService: schedule
 
 PlannerService -->> UI: schedule
-UI -->> User: show schedule
+UI ->> User: show schedule
 ```
 
 ### Kurssitietojen vieminen JSON-tiedostoon
@@ -248,13 +245,13 @@ sequenceDiagram
 actor User
 
 User ->> UI: click "import" button
-UI -->> User: confirm import
-User ->> UI: confirm
+UI ->> User: confirm import
+User -->> UI: "yes"
 UI ->> PlannerService: import_courses(path)
 PlannerService ->> CourseRepository: delete_all()
 CourseRepository -->> PlannerService: 
 PlannerService ->> ImportService: read(courses, path)
-ImportService ->> PlannerService: courses
+ImportService -->> PlannerService: courses
 PlannerService ->> CourseRepository: for course in courses: create(course)
 CourseRepository -->> User: 
 ```
